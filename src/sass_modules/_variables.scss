@@ -1,0 +1,83 @@
+:root {
+	--darkTextColor: #000000;
+	--blurColor: #252525b7;
+	--lightCTATextColor: #E9E9E9;
+	--darkCTABackgroundColor: #000000dc;
+	--logoOutlineColor: #191919;
+	--homeNavTextColor: #393939;
+	--BodyColor: #E5D6CB;
+
+
+	// HATS PAGE
+	--accentColor: #BB9D88;
+	--cartModalBorderColor: #5F5F5F;
+	--lightBGColor: #FFFFFF;
+	--collectionPriceTextColor: #707070;
+	--cartCTAColor: #E0E0E0;
+
+
+	// CHECKOUT PAGE
+	--QTcountColor: #1E1E1E;
+	--checkoutCTAIconColor: #E3D4CB;
+	--checkoutCTAShadowColor: #6464647e;
+	--checkoutModalTitleColor: #171717;
+	--checkoutModalIconColor: #70655F;
+	--checkoutModalSelectBTNColor: #363535;
+	--checkoutModalPlaceholderColor: #A9A9A9;
+	--checkoutModalCursorColor: #494646;
+	--checkoutModalHeroColor: #E3D4CB;
+	--checkoutModalShadowColor: #0a0a0a88;
+	--checkoutModalOverlayColor: #000000;
+
+
+
+
+
+
+	// AUTH PAGE
+	--authMainTitleColor: #373737;
+	--authSubtitleColor: #6C6C6C;
+	--authTextColor: #808080;
+	--authSecondaryCTAColor: #2F6FE2;
+}
+
+$darkTextColor: var(--darkTextColor);
+$blurColor: var(--blurColor);
+$lightCTATextColor: var(--lightCTATextColor);
+$darkCTABackgroundColor: var(--darkCTABackgroundColor);
+$logoOutlineColor: var(--logoOutlineColor);
+$homeNavTextColor: var(--homeNavTextColor);
+$BodyColor: var(--BodyColor);
+
+
+// HATS PAGE
+$accentColor: var(--accentColor);
+$cartModalBorderColor: var(--cartModalBorderColor);
+$lightBGColor: var(--lightBGColor);
+$collectionPriceTextColor: var(--collectionPriceTextColor);
+$cartCTAColor: var(--cartCTAColor);
+
+
+// CHECKOUT PAGE
+$QTcountColor: var(--QTcountColor);
+$checkoutCTAIconColor: var(--checkoutCTAIconColor);
+$checkoutCTAShadowColor: var(--checkoutCTAShadowColor);
+$checkoutModalTitleColor: var(--checkoutModalTitleColor);
+$checkoutModalIconColor: var(--checkoutModalIconColor);
+$checkoutModalSelectBTNColor: var(--checkoutModalSelectBTNColor);
+$checkoutModalPlaceholderColor: var(--checkoutModalPlaceholderColor);
+$checkoutModalCursorColor: var(--checkoutModalCursorColor);
+$checkoutModalHeroColor: var(--checkoutModalHeroColor);
+$checkoutModalShadowColor: var(--checkoutModalShadowColor);
+$checkoutModalOverlayColor: var(--checkoutModalOverlayColor);
+
+
+
+
+
+
+// AUTH PAGE
+$authMainTitleColor: var(--authMainTitleColor);
+$authSubtitleColor: var(--authSubtitleColor);
+$authTextColor: var(--authTextColor);
+$authSecondaryCTAColor: var(--authSecondaryCTAColor);

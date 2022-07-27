@@ -1,0 +1,17 @@
+@import "../../sass_modules/default";
+
+.form-input {
+	height: 5rem;
+	// background-color: red;
+	@include makeFullWidthBlock();
+	&:focus{
+		&::placeholder{
+			@include makeFullWidthBlock();
+			all: unset;
+			color: $authTextColor;
+			transform: translate(-4%,-60%) scale(.9);
+			transition: transform .2s ease-in;
+			left: 0;
+		}
+	}
+}

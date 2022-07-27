@@ -1,0 +1,105 @@
+@mixin makeFlexCenter {
+	display: flex;
+	align-items: center;
+}
+
+@mixin makeFlex {
+	display: flex;
+	align-items: center;
+}
+
+@mixin makeFlexEnd {
+	display: flex;
+	align-items: flex-end;
+}
+
+@mixin makeRowFlex {
+	display: flex;
+	flex-direction: row;
+}
+
+@mixin makeRowFlexStart {
+	@include makeFlex();
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+@mixin makeRowFlexCenter {
+	@include makeFlex();
+	flex-direction: row;
+	justify-content: center;
+}
+
+@mixin makeRowFlexEnd {
+	@include makeFlex();
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+@mixin makeColFlexStart {
+	@include makeFlex();
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+@mixin makeColFlexCenter {
+	@include makeFlex();
+	flex-direction: column;
+	justify-content: center;
+}
+
+@mixin makeColFlexEnd {
+	@include makeFlex();
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+@mixin makeFullWidthBlock {
+	display: block;
+	width: 100%;
+}
+
+@mixin makeFullHeightBlock {
+	display: block;
+	height: 100%;
+}
+
+@mixin makeFullSizeBlock {
+	@include makeFullHeightBlock();
+	@include makeFullWidthBlock();
+}
+
+@mixin makeAbsoluteDiv {
+	position: absolute;
+	content: "";
+}
+
+@mixin makeAbsoluteTopDiv {
+	@include makeAbsoluteDiv();
+	top: 0;
+}
+
+@mixin makeAbsoluteTopRightDiv {
+	@include makeAbsoluteTopDiv();
+	right: 0;
+}
+
+@mixin makeAbsoluteTopLeftDiv {
+	@include makeAbsoluteTopDiv();
+	left: 0;
+}
+
+@mixin makeAbsoluteBottomDiv {
+	@include makeAbsoluteDiv();
+	bottom: 0;
+}
+
+@mixin makeAbsoluteBottomRightDiv {
+	@include makeAbsoluteBottomDiv();
+	right: 0;
+}
+
+@mixin makeAbsoluteBottomLeftDiv {
+	@include makeAbsoluteBottomDiv();
+	left: 0;
+}
