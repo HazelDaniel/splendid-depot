@@ -2,6 +2,10 @@ import React from "react";
 import "./sign_up.styles.scss";
 import { FormInput } from "../form_input/form_input.component";
 import { CustomButton } from "../custom_button/custom_button.component";
+import { createUserProfileDocument } from "../../firebase/firebase.utils";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/firebase.utils";
+import { getDoc } from "firebase/firestore";
 
 class SignUp extends React.Component{
 	constructor() {
@@ -20,18 +24,32 @@ class SignUp extends React.Component{
 				[name]: value
 			}
 		}, () => {
-			console.log(this.state)
+			// console.log(this.state)
 		})
 	}
-	handleSubmit = event => {
-		console.log("handled");
+	handleSubmit = async event => {
 		event.preventDefault();
+		const { email, password, confirmPassword, displayName } = this.state;
+		if (password !== confirmPassword) {
+			alert("passwords do not match!");
+			return;
+		};
+		if (password.length < 6 || confirmPassword.length < 6) {
+			alert("them say make you provide correct password, no chop wotowoto oh")
+		}
+		const { user } = await createUserWithEmailAndPassword(
+			auth,email, password
+		);
+		// console.log(user)
+		const createUserRef = await createUserProfileDocument(user, { displayName });
 		this.setState({
 			displayName: "",
 			email: "",
 			password: "",
 			confirmPassword: "",
 		});
+		const createUserSnapshot = await getDoc(createUserRef);
+		// console.log(createUserSnapshot.data())
 	}
 	render() {
 		return (
@@ -59,3 +77,4 @@ class SignUp extends React.Component{
 	}
 }
 export default SignUp;
+

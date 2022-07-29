@@ -7,13 +7,16 @@
 	// padding: 0 3rem;
 	margin: 1rem;
 	color: $lightBGColor;
-	font-weight: 500;
+	font-weight: 600;
 	@include makeColFlexCenter();
 	border: .1rem solid $blurColor;
 
 	@media only screen and (max-width: 680px) {
 		font-size: 1.5rem;
 	}
+	// &:hover{
+		
+	// }
 }
 .cta-primary,.cta-secondary{
 	@include styled-button();

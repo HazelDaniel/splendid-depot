@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore,doc,setDoc,getDoc,collection, getDocs} from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,6 +23,38 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 
+const DB = getFirestore(app);
+
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+	// console.log(userAuth);
+	if (!userAuth) return;
+	const docRef = doc(DB, "users", userAuth.uid);
+	const docSnapshot = await getDoc(docRef);
+	// console.log(docSnapshot.id,userAuth.uid);
+
+	if (!docSnapshot.exists()) {
+		const { displayName, email } = userAuth;
+		const createdAt = new Date().getTime();
+		try {
+			await setDoc(docRef, {
+				displayName,
+				email,
+				createdAt,
+				...additionalData,
+			});
+		} catch (error) {
+			console.log("failed to create user details ", error.message);
+		}
+	}
+
+	return docRef;
+
+
+	// console.log(ref)
+	// const refRes = await getDoc(ref);
+	// console.log(refRes.data())
+	// const res = await DB;
+}
 
 
 

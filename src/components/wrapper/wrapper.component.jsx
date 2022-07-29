@@ -6,10 +6,11 @@ import ShopPage from "../../pages/shop_page/shop_page.component";
 import { CheckoutPage } from "../../pages/checkout_page/checkout_page.component";
 import {AuthPage} from "../../pages/auth_page/auth_page.component";
 const Wrapper = (props) => {
-	const { match, history, location } = props;
+	// console.log(props);
+	const { match, history, location,currentUser } = props;
 	return (
 		<div className={`wrapper ${location.pathname === "/auth"?"auth":""}`}>
-			<Header></Header>
+			<Header currentUser={currentUser}></Header>
 			{/* <Route path="/" component={Header}>
       </Route> */}
 			<Switch>
