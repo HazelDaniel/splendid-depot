@@ -1,6 +1,12 @@
 import React from "react";
 import "./menu_item.styles.scss";
-export const MenuItem = ({ title,imageUrl, size }) => (
+// import { useSelector } from "react-redux";
+// import { userSelector } from "../../redux/store";
+
+export const MenuItem = ({ title, imageUrl, size }) => {
+	// const user = useSelector(userSelector);
+	// console.log(user);
+	return(
 		<div className={`${size ? size : ""} category`}>
 					<div className="cover-image" style={{backgroundImage: `url(${imageUrl})`}}></div>
 					<div className="content">
@@ -8,4 +14,5 @@ export const MenuItem = ({ title,imageUrl, size }) => (
 						<button className="content-cta">SHOP NOW</button>
 					</div>
 				</div>
-);
+	)
+};

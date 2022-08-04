@@ -9,6 +9,7 @@ import { auth , createUserProfileDocument} from "./firebase/firebase.utils";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { getDoc, onSnapshot } from "firebase/firestore";
 
+
 export let user = null;
 
 class App extends Component {
@@ -67,3 +68,17 @@ class App extends Component {
 
 
 export default withRouter(App);
+
+export const App1 = () => {
+	return (
+		<Switch>
+			<Route exact path="/checkout/">
+				<Wrapper currentUser={user}></Wrapper>
+				<ModalOverlay></ModalOverlay>
+			</Route>
+			{/* <Route path="/" component={Wrapper}>
+				</Route> */}
+			<Wrapper currentUser={user}></Wrapper>
+		</Switch>
+	);
+}
