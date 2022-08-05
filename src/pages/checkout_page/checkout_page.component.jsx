@@ -1,9 +1,12 @@
 import React from "react";
 import "./checkout_page.styles.scss";
-import itemImage1 from "../../../src/assets/images/istockphoto-478386093-612x612.jpg";
-import itemImage2 from "../../../src/assets/images/istockphoto-1305253946-612x612.jpg";
-import { CardIcon } from "../../assets/icons/card_icon/card_icon.component";
 
+import { publicUrl } from "../../utils";
+
+const { CardIcon } = "../../assets/icons/card_icon/card_icon.component";
+
+const itemImage1 = `${publicUrl}images/istockphoto-478386093-612x612.jpg`;
+const itemImage2 = `${publicUrl}images/istockphoto-1305253946-612x612.jpg`;
 
 export const CheckoutPage = (props) => (
 	<div className="checkout-wrapper">

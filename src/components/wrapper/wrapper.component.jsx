@@ -32,9 +32,10 @@ const Wrapper = (props) => {
 			{/* <Route path="/" component={Header}>
       </Route> */}
 			<Switch>
-				<Route exact path="/" component={Homepage}></Route>
-				<Route exact path="/collections" component={ShopPage}></Route>
-				<Route exact path="/checkout" component={CheckoutPage}></Route>
+				<Route exact path="/" component={Homepage}/>
+				<Route exact path="/shop" component={ShopPage}/>
+				<Route exact path="/shop/hats" component={Homepage}/>
+				<Route exact path="/checkout" component={CheckoutPage}/>
 				<Route exact path="/auth" render={() => (currentUser ? <Redirect to="/" /> : <AuthPage />)}></Route>
 			</Switch>
 		</div>
