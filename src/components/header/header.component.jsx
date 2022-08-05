@@ -2,7 +2,7 @@ import React from "react";
 import "./header.styles.scss";
 import { withRouter,Link } from "react-router-dom/cjs/react-router-dom.min";
 import { Logo } from "../logo/logo.component";
-import { CartIcon } from "../../assets/icons/cart_icon/cart_icon.component";
+import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase.utils";
 

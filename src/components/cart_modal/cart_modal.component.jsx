@@ -1,10 +1,19 @@
 import React from "react";
+
+// COMPONENTS
 import "./cart_modal.styles.scss";
+
+// MISC
 import { publicUrl } from "../../utils";
 
-const CartModal = props => {
+// REDUX
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { cartSelector } from "../../redux/store";
+
+const CartModal = ({cart}) => {
 	return (
-		<div className="cart-modal">
+		<div className={`cart-modal ${cart.cartVisible? "" : 'hidden'}`}>
 			<div className="cart-cancel-btn-div">
 				<button>X</button>
 			</div>
@@ -35,5 +44,10 @@ const CartModal = props => {
 		</div>
 	);
 }
-export default CartModal;
+
+const mapStateToProps = createStructuredSelector({
+	cart: cartSelector
+});
+
+export default connect(mapStateToProps)(CartModal);
 

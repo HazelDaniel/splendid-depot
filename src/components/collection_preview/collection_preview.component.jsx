@@ -1,5 +1,5 @@
 import React from "react";
-import { CollectionItem } from "../collection_item/collection_item.component";
+import CollectionItem from "../collection_item/collection_item.component";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 export const CollectionPreview = (props) => {
 	// console.log(props);

@@ -1,6 +1,16 @@
 import React from "react";
 
-export const CollectionItem = ({ imageUrl, name, price }) => {
+// REDUX
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { cartSelector } from "../../redux/store";
+import { addToCart } from "../../redux/cart/cart_slice";
+// import { nanoid } from "@reduxjs/toolkit";
+
+const CollectionItem = ({ addToCart,cart, ...cartDetails }) => {
+	// console.log(cartDetails)z
+	const { imageUrl, name, price } = cartDetails;
+
 	return (
 		<div className="collection-item">
 			<div className="item-image-div">
@@ -9,8 +19,26 @@ export const CollectionItem = ({ imageUrl, name, price }) => {
 			<div className="item-details-div">
 				<p className="item-name">{name}</p>
 				<p className="item-price-text">{price}</p>
-				<button className="add-to-cart-cta">ADD TO CART</button>
+				<button className="add-to-cart-cta" onClick={() => {
+					addToCart(cartDetails);
+					console.log(cart);
+
+				}}>ADD TO CART</button>
 			</div>
 		</div>
 	);
 }
+
+const mapStateToProps = createStructuredSelector({
+	cart: cartSelector
+})
+
+const mapDispatchToProps = dispatch => {
+	return {
+		addToCart: (item) => {
+			dispatch(addToCart(item));
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionItem);

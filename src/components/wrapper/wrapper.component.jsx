@@ -1,18 +1,29 @@
 import React from "react";
-import { Switch, Route, withRouter } from "react-router-dom/cjs/react-router-dom.min";
+
+// ROUTER
+import { Switch, Route, withRouter, Redirect } from "react-router-dom/cjs/react-router-dom.min";
+
+// COMPONENTS
+import "./wrapper.styles.scss";
 import Header from "../header/header.component";
 import Homepage from "../../pages/homepage/homepage.component";
 import ShopPage from "../../pages/shop_page/shop_page.component";
 import { CheckoutPage } from "../../pages/checkout_page/checkout_page.component";
 import { AuthPage } from "../../pages/auth_page/auth_page.component";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
-import { connect } from "react-redux";
-import { userSelector } from "../../redux/store";
-import { createStructuredSelector } from "reselect";
 import CartModal from "../cart_modal/cart_modal.component";
+
+// REDUX
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { userSelector } from "../../redux/store";
+// import { cartSelector } from "../../redux/store";
+
+
+
+
 const Wrapper = (props) => {
 	// console.log(props);
-	const {location,currentUser } = props;
+	const { location, currentUser } = props;
 	return (
 		<div className={`wrapper ${location.pathname === "/auth" ? "auth" : ""}`}>
 			<Header></Header>
@@ -31,7 +42,8 @@ const Wrapper = (props) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	currentUser: userSelector
+	currentUser: userSelector,
+	// cart: cartSelector
 })
 
 export default connect(mapStateToProps)(withRouter(Wrapper));

@@ -35,7 +35,7 @@ export const userSelector = createSelector(
 	(currentUser) => currentUser
 )
 const cartSelect = (state) => state.cartReducer;
-export const cartselector = createSelector(
+export const cartSelector = createSelector(
 	[cartSelect],
 	(cart) => cart
 )

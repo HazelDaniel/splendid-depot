@@ -1,0 +1,16 @@
+@import "../../sass_modules/default";
+.wrapper {
+	padding: 3rem 3rem 6rem 3rem;
+	background-color: $BodyColor;
+	width: 100%;
+	min-height: 100vh;
+	height: inherit;
+	@include makeColFlexStart();
+	overflow: hidden;
+
+	@media only screen and (max-width: 550px) {
+		padding: 2rem 3rem 6rem 3rem;
+	}
+
+	
+}
