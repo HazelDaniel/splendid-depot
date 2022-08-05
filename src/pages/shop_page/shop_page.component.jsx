@@ -22,39 +22,14 @@ class ShopPage extends React.Component{
 		};
 	}
 	render() {
+		
 		return (
 			<div className="collection-container">
-				<div className="cart-modal">
-					<div className="cart-cancel-btn-div">
-						<button>X</button>
-					</div>
-					<div className="cart-items-body">
-						<div className="cart-item">
-							<img src={itemImage1} alt=""></img>
-							<div className="cart-item-details">
-								<p className="item-name">Hugo Hats</p>
-								<p className="item-quantity"> 1 x $100</p>
-							</div>
-						</div>
-						<div className="cart-item">
-							<img src={itemImage2} alt=""></img>
-							<div className="cart-item-details">
-								<p className="item-name">Bobby Jackets</p>
-								<p className="item-quantity"> 1 x $180</p>
-							</div>
-						</div>
-					</div>
-					<button
-						className="cart-modal-cta"
-						onClick={() => {
-							this.props.history.push(`/checkout`);
-						}}
-					>
-						GO TO CHECKOUT
-					</button>
-				</div>
 				
-				{this.state.collections.map(({id, ...otherProps}) => < CollectionPreview key={id} {...otherProps}  />)}
+
+				{this.state.collections.map(({ id, ...otherProps }) => (
+					<CollectionPreview key={id} {...otherProps} />
+				))}
 			</div>
 		);
 	}

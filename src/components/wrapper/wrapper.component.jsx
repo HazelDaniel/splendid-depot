@@ -9,12 +9,15 @@ import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import { connect } from "react-redux";
 import { userSelector } from "../../redux/store";
 import { createStructuredSelector } from "reselect";
+import CartModal from "../cart_modal/cart_modal.component";
 const Wrapper = (props) => {
 	// console.log(props);
 	const {location,currentUser } = props;
 	return (
 		<div className={`wrapper ${location.pathname === "/auth" ? "auth" : ""}`}>
 			<Header></Header>
+			<CartModal />
+
 			{/* <Route path="/" component={Header}>
       </Route> */}
 			<Switch>

@@ -25,7 +25,7 @@ class App extends Component {
 	}
 	render() {
 		const { currentUser } = this.props;
-		console.log(currentUser);
+		// console.log(currentUser);
 		return (
 			<Switch>
 				<Route exact path="/checkout/">
@@ -58,7 +58,7 @@ class App extends Component {
 				updateUser({ currentUser: userAuth });
 			}
 			// user = userAuth;
-			console.log(currentUser);
+			// console.log(currentUser);
 			//TODO: IMPLEMENT A "WELCOME, USER.DISPLAY_NAME , CLICK HERE TO GO TO ..." POPUP MESSAGE ,  WHICH SHOULD HAPPEN ONLY ONCE (WILL NOT HAPPEN HERE IN THIS BLOCK)
 			// console.log(currentUser)
 		})

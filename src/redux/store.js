@@ -1,5 +1,8 @@
-// import { configureStore } from "@reduxjs/toolkit";
+//REDUCERS
 import userReducer from "./user/user.slice";
+import cartReducer from "./cart/cart_slice";
+
+// TOOL KITS
 import { createSelector } from "@reduxjs/toolkit";
 import { Iterable } from "immutable";
 import { configureStore, createSerializableStateInvariantMiddleware, isPlain } from "@reduxjs/toolkit";
@@ -19,12 +22,21 @@ const serializableMiddleware = createSerializableStateInvariantMiddleware({
 export const store = configureStore({
 	reducer: {
 		userReducer,
+		cartReducer
 	},
 	middleware: [serializableMiddleware],
 });
+
+
+
 const userSelect = (state) => state.userReducer.currentUser;
 export const userSelector = createSelector(
 	[userSelect],
 	(currentUser) => currentUser
+)
+const cartSelect = (state) => state.cartReducer;
+export const cartselector = createSelector(
+	[cartSelect],
+	(cart) => cart
 )
 
