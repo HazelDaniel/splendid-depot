@@ -91,17 +91,5 @@ class SignIn extends React.Component {
 		)
 
 	}
-	////MIGRATE CODEBASE TO APP
-	// componentDidMount() {
-	// 	onAuthStateChanged(auth, (currentUser) => {
-	// 		// user = currentUser;
-	// 		this.setState((_) => {
-	// 			user = currentUser;
-	// 			return { user: currentUser }
-	// 		}, () => {
-	// 			console.log(currentUser);
-	// 		})
-	// 	})
-	// }
 }
 export default SignIn;

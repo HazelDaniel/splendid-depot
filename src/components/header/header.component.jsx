@@ -6,6 +6,10 @@ import { CartIcon } from "../../assets/icons/cart_icon/cart_icon.component";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase.utils";
 
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { userSelector } from "../../redux/store";
+
 const Header = function ({ match, history, currentUser }) {
 	// console.log(currentUser)
 	return (<header>
@@ -32,4 +36,7 @@ const Header = function ({ match, history, currentUser }) {
 		</nav>
 		</header>)
 }
-export default withRouter(Header);
+const mapStateToProps = createStructuredSelector({
+	currentUser: userSelector
+})
+export default connect(mapStateToProps)(withRouter(Header));
