@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import checkAndAddITem from "./cart.slice.utils";
+import { current } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
 	cartVisible: true,
@@ -10,13 +12,13 @@ const cartSlice = createSlice({
 	initialState: INITIAL_STATE,
 	reducers: {
 		toggleCartVisibility: (state) => {
+			// console.log(state)
 			state.cartVisible = !state.cartVisible
 		},
 		addToCart: (state, action) => {
-			return {
-				...state,
-				carts: [...state.carts, action.payload]
-			}
+
+			// console.log(state,action.payload)
+			return checkAndAddITem(current(state),action.payload);
 		}
 	}
 

@@ -24,7 +24,7 @@ const CollectionPreview = (props) => {
 					</p>
 				</div>
 				{items.slice(0, 4).map(({ id, ...otherProps }) => (
-					<CollectionItem key={id} {...otherProps}></CollectionItem>
+					<CollectionItem key={id} id={id} {...otherProps}></CollectionItem>
 				))}
 			</div>
 		);

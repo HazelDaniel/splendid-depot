@@ -10,31 +10,22 @@ import "./cart_modal.styles.scss";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { cartSelector } from "../../redux/store";
+import CartModalITem from "../cart_modal_item/cart_modal_item.component";
+import { nanoid } from "@reduxjs/toolkit";
 
-const publicUrl = window.location.origin;
+
 
 const CartModal = ({ cart }) => {
-	console.log(cart)
+	console.log(cart.carts)
 	return (
-		<div className={`cart-modal ${cart.cartVisible? "" : 'hidden'}`}>
+		<div className={`cart-modal ${cart.cartVisible ? "" : "hidden"}`}>
 			<div className="cart-cancel-btn-div">
 				<button>X</button>
 			</div>
 			<div className="cart-items-body">
-				<div className="cart-item">
-					<img src={`${publicUrl}/images/istockphoto-478386093-612x612.jpg`} alt=""></img>
-					<div className="cart-item-details">
-						<p className="item-name">Hugo Hats</p>
-						<p className="item-quantity"> 1 x $100</p>
-					</div>
-				</div>
-				<div className="cart-item">
-					<img src={`${publicUrl}/images/istockphoto-1305253946-612x612.jpg`} alt=""></img>
-					<div className="cart-item-details">
-						<p className="item-name">Bobby Jackets</p>
-						<p className="item-quantity"> 1 x $180</p>
-					</div>
-				</div>
+				{cart.carts.map((cartItem) => (
+					<CartModalITem cart ={cartItem} key={nanoid()} />
+				))}
 			</div>
 			<button
 				className="cart-modal-cta"
