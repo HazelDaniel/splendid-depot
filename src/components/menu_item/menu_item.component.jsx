@@ -1,9 +1,11 @@
 import React from "react";
 import "./menu_item.styles.scss";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 // import { useSelector } from "react-redux";
 // import { userSelector } from "../../redux/store";
 
-export const MenuItem = ({ title, imageUrl, size }) => {
+const MenuItem = ({ title, imageUrl, size, destination,history,...others }) => {
+	console.log(others)
 	// const user = useSelector(userSelector);
 	// console.log(user);
 	return(
@@ -11,8 +13,10 @@ export const MenuItem = ({ title, imageUrl, size }) => {
 					<div className="cover-image" style={{backgroundImage: `url(${imageUrl})`}}></div>
 					<div className="content">
 						<p className="title">{title.toUpperCase()}</p>
-						<button className="content-cta">SHOP NOW</button>
+						<button className="content-cta" onClick={()=>{history.push(`/shop/${destination}`)}}>SHOP NOW</button>
 					</div>
 				</div>
 	)
 };
+
+export default withRouter(MenuItem);

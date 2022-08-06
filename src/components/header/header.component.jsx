@@ -21,7 +21,7 @@ const Header = function ({ match, history, currentUser }) {
 		</div>
 		<nav className="header-nav">
 			<ul className="header-nav-texts">
-				<li className="header-nav-text" onClick={()=>{history.push(`${match.url}collections`)}}>SHOP</li>
+				<li className="header-nav-text" onClick={()=>{history.push(`${match.url}shop`)}}>SHOP</li>
 				<li className="header-nav-text">CONTACT</li>
 				{currentUser ? <li className="header-nav-text" onClick={async () => {
 					await signOut(auth);

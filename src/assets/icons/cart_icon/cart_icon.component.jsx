@@ -1,17 +1,16 @@
-
 import React from "react";
 import "../../../sass_modules/_variables.scss";
 
 import { connect } from "react-redux";
-import { toggleCartVisibility } from "../../../redux/cart/cart_slice";
+import { toggleCartVisibility } from "../../../redux/cart/cart.slice";
 import { cartSelector } from "../../../redux/store";
 import { createStructuredSelector } from "reselect";
 
 const CartIcon = ({ toggleCartVisibility, cart }) => {
 	return (
 		<svg
-		onClick={() => {
-			toggleCartVisibility();
+			onClick={() => {
+				toggleCartVisibility();
 			}}
 			width="43px"
 			height="42.999996px"
@@ -44,18 +43,15 @@ const CartIcon = ({ toggleCartVisibility, cart }) => {
 	);
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		toggleCartVisibility: () => {
 			dispatch(toggleCartVisibility());
-		}
-	}
-}
+		},
+	};
+};
 const mapStateToProps = createStructuredSelector({
-	cart: cartSelector
-})
+	cart: cartSelector,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartIcon);
-
-
-

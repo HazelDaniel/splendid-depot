@@ -11,19 +11,23 @@ import ShopPage from "../../pages/shop_page/shop_page.component";
 import { CheckoutPage } from "../../pages/checkout_page/checkout_page.component";
 import { AuthPage } from "../../pages/auth_page/auth_page.component";
 import CartModal from "../cart_modal/cart_modal.component";
+import CollectionPreview from "../collection_preview/collection_preview.component";
 
 // REDUX
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { userSelector } from "../../redux/store";
+import { collectionSelector } from "../../redux/store";
 // import { cartSelector } from "../../redux/store";
+
+
 
 
 
 
 const Wrapper = (props) => {
 	// console.log(props);
-	const { location, currentUser } = props;
+	const { location, currentUser,collections } = props;
 	return (
 		<div className={`wrapper ${location.pathname === "/auth" ? "auth" : ""}`}>
 			<Header></Header>
@@ -34,7 +38,7 @@ const Wrapper = (props) => {
 			<Switch>
 				<Route exact path="/" component={Homepage}/>
 				<Route exact path="/shop" component={ShopPage}/>
-				<Route exact path="/shop/hats" component={Homepage}/>
+				<Route exact path="/shop/:collection" render={()=><CollectionPreview collection={collections} />}/>
 				<Route exact path="/checkout" component={CheckoutPage}/>
 				<Route exact path="/auth" render={() => (currentUser ? <Redirect to="/" /> : <AuthPage />)}></Route>
 			</Switch>
@@ -44,6 +48,7 @@ const Wrapper = (props) => {
 
 const mapStateToProps = createStructuredSelector({
 	currentUser: userSelector,
+	collections: collectionSelector
 	// cart: cartSelector
 })
 

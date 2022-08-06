@@ -5,40 +5,14 @@
 	@include makeFullWidthBlock();
 	padding: 0rem 3rem 6rem;
 	position: relative;
-	// background-color: red;
-
+	
 	@media only screen and (max-width: 550px) {
 		padding: 0rem 3rem 4rem;
 	}
 
 	@include makeColFlexStart();
-
-	.collection-title-div {
-		@include makeFullWidthBlock();
-		@include makeRowFlexCenter();
-		margin-bottom: 4rem;
-		height: 5rem;
-		margin-top: 3rem;
-
-		.collection-title {
-			position: relative;
-			font-size: 3.5rem;
-			color: $homeNavTextColor;
-			a{
-				all: inherit;
-				cursor: pointer;
-			}
-
-			&::after {
-				@include makeAbsoluteBottomDiv();
-				bottom: -30%;
-				left: 25%;
-				height: .4rem;
-				width: 50%;
-				background-color: $accentColor;
-			}
-		}
-	}
+	
+	
 
 	.collection-body {
 		@include makeFullWidthBlock();
