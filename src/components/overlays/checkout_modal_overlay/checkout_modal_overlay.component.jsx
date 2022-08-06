@@ -6,7 +6,7 @@ import "./checkout_modal_overlay.styles.scss";
 
 export const ModalOverlay = () => (
 
-		<div class="checkout-modal-overlay ">
+		<div class="checkout-modal-overlay hidden ">
 			<div class="checkout-modal">
 				<div class="checkout-modal-avatar">
 					{/* <?xml version="1.0" encoding="utf-8"?>

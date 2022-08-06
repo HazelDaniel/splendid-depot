@@ -9,34 +9,59 @@ import { auth } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { userSelector } from "../../redux/store";
+import { cartItemsTotalSelector } from "../../redux/store";
 
-const Header = function ({ match, history, currentUser }) {
+const Header = function ({ match, history, currentUser, totalSelectedItems }) {
 	// console.log(currentUser)
-	return (<header>
-		<div className="logo-div">
-			<Link to="/">
-				<Logo></Logo>
-			</Link>
-			
-		</div>
-		<nav className="header-nav">
-			<ul className="header-nav-texts">
-				<li className="header-nav-text" onClick={()=>{history.push(`${match.url}shop`)}}>SHOP</li>
-				<li className="header-nav-text">CONTACT</li>
-				{currentUser ? <li className="header-nav-text" onClick={async () => {
-					await signOut(auth);
-					history.push(`${match.url}auth`);
-				}}>SIGN OUT</li> : <li className="header-nav-text" onClick={() => { history.push(`${match.url}auth`) }}>SIGN IN</li>}
-			</ul>
-			<div className="shopping-icon-div">
-				<CartIcon></CartIcon>
-				<span>20983</span>
-			
+	return (
+		<header>
+			<div className="logo-div">
+				<Link to="/">
+					<Logo></Logo>
+				</Link>
 			</div>
-		</nav>
-		</header>)
-}
+			<nav className="header-nav">
+				<ul className="header-nav-texts">
+					<li
+						className="header-nav-text"
+						onClick={() => {
+							history.push(`/shop`);
+						}}
+					>
+						SHOP
+					</li>
+					<li className="header-nav-text">CONTACT</li>
+					{currentUser ? (
+						<li
+							className="header-nav-text"
+							onClick={async () => {
+								await signOut(auth);
+								history.push(`${match.url}auth`);
+							}}
+						>
+							SIGN OUT
+						</li>
+					) : (
+						<li
+							className="header-nav-text"
+							onClick={() => {
+								history.push(`/auth`);
+							}}
+						>
+							SIGN IN
+						</li>
+					)}
+				</ul>
+				<div className="shopping-icon-div">
+					<CartIcon></CartIcon>
+					<span>{ totalSelectedItems}</span>
+				</div>
+			</nav>
+		</header>
+	);
+};
 const mapStateToProps = createStructuredSelector({
-	currentUser: userSelector
+	currentUser: userSelector,
+	totalSelectedItems: cartItemsTotalSelector
 })
 export default connect(mapStateToProps)(withRouter(Header));

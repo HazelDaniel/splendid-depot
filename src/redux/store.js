@@ -4,7 +4,7 @@ import cartReducer from "./cart/cart.slice";
 import shopReducer from "./shop/shop.slice";
 
 // TOOL KITS
-import { createSelector } from "@reduxjs/toolkit";
+import { createReducer, createSelector } from "@reduxjs/toolkit";
 import { Iterable } from "immutable";
 import { configureStore, createSerializableStateInvariantMiddleware, isPlain } from "@reduxjs/toolkit";
 
@@ -37,3 +37,18 @@ export const collectionSelector = createSelector(
 	[collectionSelect],
 	(collections) => collections
 )
+const cartItemsTotalSelect = state => {
+	return state.cartReducer.carts
+		.map((cart) => {
+			return cart.quantity;
+		})
+		.reduce((prev, next) => {
+			return prev + next;
+		}, 0);
+}
+
+export const cartItemsTotalSelector = createSelector(
+	[cartItemsTotalSelect],
+	(totalQuantity) => totalQuantity
+)
+

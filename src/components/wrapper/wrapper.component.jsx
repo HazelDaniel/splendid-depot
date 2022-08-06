@@ -8,7 +8,7 @@ import "./wrapper.styles.scss";
 import Header from "../header/header.component";
 import Homepage from "../../pages/homepage/homepage.component";
 import ShopPage from "../../pages/shop_page/shop_page.component";
-import { CheckoutPage } from "../../pages/checkout_page/checkout_page.component";
+import CheckoutPage from "../../pages/checkout_page/checkout_page.component";
 import { AuthPage } from "../../pages/auth_page/auth_page.component";
 import CartModal from "../cart_modal/cart_modal.component";
 import CollectionPreview from "../collection_preview/collection_preview.component";
@@ -40,7 +40,7 @@ const Wrapper = (props) => {
 				<Route exact path="/shop" component={ShopPage}/>
 				<Route exact path="/shop/:collection" render={()=><CollectionPreview collection={collections} />}/>
 				<Route exact path="/checkout" component={CheckoutPage}/>
-				<Route exact path="/auth" render={() => (currentUser ? <Redirect to="/" /> : <AuthPage />)}></Route>
+				<Route exact path="/auth" render={() => (currentUser ? <Redirect to="/" /> : <AuthPage />)}/>
 			</Switch>
 		</div>
 	);

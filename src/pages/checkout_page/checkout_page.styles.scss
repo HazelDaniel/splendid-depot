@@ -2,6 +2,7 @@
 
 .checkout-wrapper {
 	margin-top: 10rem;
+	
 
 	@media only screen and (max-width: 550px) {
 		margin-top: 15rem;
@@ -56,9 +57,9 @@
 
 		.checkout-div {
 			border-bottom: .2rem solid $authTextColor;
+			// min-height: 30rem;
 			padding: 1rem 0;
 			overflow: hidden;
-			// background-color: red;
 
 			img {
 				height: 80%;

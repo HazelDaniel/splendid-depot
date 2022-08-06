@@ -241,7 +241,7 @@ export const COLLECTION_DATA = [
 				id: nanoid(),
 				name: "versace miles",
 				imageUrl: `https://media.istockphoto.com/photos/businessman-buttoning-his-shirt-low-key-picture-id483713752?k=20&m=483713752&s=612x612&w=0&h=HJyv2EQR0bHbsrJLkgxPiHmkea7ciF8iOsR4pp-gsoQ=`,
-				price: "52.35",
+				price: "$52.35",
 			},
 		],
 	},
