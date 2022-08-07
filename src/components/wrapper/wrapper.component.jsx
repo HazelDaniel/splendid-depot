@@ -27,7 +27,7 @@ import { collectionsSelector } from "../../redux/store";
 
 const Wrapper = (props) => {
 	// console.log(props);
-	const { location, currentUser,collections } = props;
+	const { location, currentUser } = props;
 	return (
 		<div className={`wrapper ${location.pathname === "/auth" ? "auth" : ""}`}>
 			<Header></Header>

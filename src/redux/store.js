@@ -12,6 +12,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+
 const cartPersistConfig = {
 	key: "cart",
 	storage,

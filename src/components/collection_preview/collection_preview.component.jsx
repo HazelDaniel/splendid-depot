@@ -1,8 +1,7 @@
 import React from "react";
 import CollectionItem from "../collection_item/collection_item.component";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
-// import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, withRouter, Redirect } from "react-router-dom/cjs/react-router-dom.min";
+
 
 import "./collection_preview.styles.scss";
 
@@ -13,7 +12,7 @@ import { URLDeducedCollectionSelector } from "../../redux/store";
 const CollectionPreview = (props) => {
 
 
-	if (!props.match.params.collection) {
+	if (props.match.path === `/shop`) {
 		const { title, routeName, location, items } = props;
 		// console.log(title, location, routeName)
 		// console.log(`${location.pathname}${routeName}`)
@@ -30,8 +29,12 @@ const CollectionPreview = (props) => {
 			</div>
 		);
 	}
-
 	const { collection } = props;
+
+	// HANDLE 404 ON SHOP COLLECTION
+	if (!collection) return (
+		<Redirect to={`/`}/>
+	)
 	const { title, items } = collection;
 	return (
 		<div className="collection-body">
@@ -46,9 +49,13 @@ const CollectionPreview = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-	// console.log(ownProps);
 	return {
-		collection: URLDeducedCollectionSelector(ownProps.match.params.collection)(state),
+		collection: (() => {
+			const collectionCheck = URLDeducedCollectionSelector(ownProps.match.params.collection)(state);
+			const collectionExists = Boolean(collectionCheck);
+			if (!collectionExists) return null;
+			return collectionCheck;
+		})(),
 	};
 };
 
