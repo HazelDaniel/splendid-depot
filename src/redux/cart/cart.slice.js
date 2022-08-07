@@ -24,9 +24,6 @@ const cartSlice = createSlice({
 		clearFromCart: (state, action) => {
 			return clearItem(current(state), action.payload);
 		},
-		// cartItemsTotal: (state) => {
-		// 	// return
-		// }
 	}
 
 });

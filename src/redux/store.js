@@ -22,7 +22,7 @@ export const store = configureStore({
 	reducer: {
 		userReducer,
 		cartReducer,
-		shopReducer
+		shopReducer,
 	},
 	middleware: [serializableMiddleware],
 });
@@ -33,11 +33,8 @@ export const userSelector = createSelector([userSelect], (currentUser) => curren
 const cartSelect = (state) => state.cartReducer;
 export const cartSelector = createSelector([cartSelect], (cart) => cart);
 const collectionSelect = (state) => state.shopReducer.collections;
-export const collectionSelector = createSelector(
-	[collectionSelect],
-	(collections) => collections
-)
-const cartItemsTotalSelect = state => {
+export const collectionSelector = createSelector([collectionSelect], (collections) => collections);
+const cartItemsTotalSelect = (state) => {
 	return state.cartReducer.carts
 		.map((cart) => {
 			return cart.quantity;
@@ -45,10 +42,19 @@ const cartItemsTotalSelect = state => {
 		.reduce((prev, next) => {
 			return prev + next;
 		}, 0);
-}
+};
 
-export const cartItemsTotalSelector = createSelector(
-	[cartItemsTotalSelect],
-	(totalQuantity) => totalQuantity
-)
+export const cartItemsTotalSelector = createSelector([cartItemsTotalSelect], (totalQuantity) => totalQuantity);
 
+const cartPricesTotalSelect = (state) => {
+	const total = state.cartReducer.carts
+		.map((cart) => {
+			return +cart.quantity * +cart.price.slice(1);
+		})
+		.reduce((prev, next) => {
+			return (prev + next);
+		}, 0)
+	return total.toFixed(2);
+};
+
+export const cartPricesTotalSelector = createSelector([cartPricesTotalSelect], (totalPrice) => totalPrice);
