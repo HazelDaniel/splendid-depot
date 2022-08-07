@@ -12,8 +12,8 @@ import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { cartSelector } from "../../redux/store";
 import { cartPricesTotalSelector } from "../../redux/store";
+import StripeButton from "../../components/stripe_button/stripe_button.component";
 // import { cartItemsTotalSelector } from "../../redux/store";
-
 
 
 
@@ -35,11 +35,14 @@ export const CheckoutPage = ({ cart, subTotal }) => (
 		</ul>
 		<div className="checkout-footer">
 			<p className="checkout-summary-text">TOTAL: ${subTotal}</p>
-			<button className="checkout-cta-btn">
-				PAY WITH
-				<CardIcon />
-			</button>
+
+			<StripeButton price={subTotal} />
 		</div>
+
+		<p className="checkout-text-warning">
+			Please use the following details for your test payment info: <br />
+			**card number: 5555 5555 5555 4444 **exp: any future date **cvv: 000
+		</p>
 	</div>
 );
 

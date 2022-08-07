@@ -37,7 +37,7 @@ const CollectionPreview = (props) => {
 	)
 	const { title, items } = collection;
 	return (
-		<div className="collection-body">
+		<div className="collection-body collection-preview-body">
 			<div className="collection-title-div">
 				<p className="collection-title">{title.toUpperCase()}</p>
 			</div>

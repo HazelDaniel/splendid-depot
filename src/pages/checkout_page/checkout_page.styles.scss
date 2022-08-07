@@ -2,7 +2,7 @@
 
 .checkout-wrapper {
 	margin-top: 10rem;
-	
+
 
 	@media only screen and (max-width: 550px) {
 		margin-top: 15rem;
@@ -193,31 +193,39 @@
 			padding-right: 4rem;
 		}
 
-		.checkout-cta-btn {
-			border: unset;
-			background-color: unset;
-			background-color: $accentColor;
-			color: $lightBGColor;
-			font-size: 1rem;
-			font-weight: 700;
-			font-family: montserrat;
-			width: 10rem;
-			height: 5rem;
-			@include makeRowFlexCenter();
-			overflow: hidden;
-			margin-top: 2rem;
-			cursor: pointer;
-			box-shadow: .1rem .2rem .4rem $checkoutCTAShadowColor;
+		// .checkout-cta-btn {
+		// 	border: unset;
+		// 	background-color: unset;
+		// 	background-color: $accentColor;
+		// 	color: $lightBGColor;
+		// 	font-size: 1rem;
+		// 	font-weight: 700;
+		// 	font-family: montserrat;
+		// 	width: 10rem;
+		// 	height: 5rem;
+		// 	@include makeRowFlexCenter();
+		// 	overflow: hidden;
+		// 	margin-top: 2rem;
+		// 	cursor: pointer;
+		// 	box-shadow: .1rem .2rem .4rem $checkoutCTAShadowColor;
 
-			svg {
-				height: 50%;
-				margin-left: .5rem;
-				transform: scaleY(.9);
-			}
+		// 	svg {
+		// 		height: 50%;
+		// 		margin-left: .5rem;
+		// 		transform: scaleY(.9);
+		// 	}
 
-		}
+		// }
 	}
-
+	.checkout-text-warning{
+		color: red;
+		@include makeFullWidthBlock();
+		text-align: center;
+		font-size: 1.8rem;
+		// background-color: red;
+		padding-top: 20%;
+		// bottom: -10rem;
+	}
 
 }
 
