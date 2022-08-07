@@ -9,7 +9,7 @@ import "./collection_preview.styles.scss";
 
 const CollectionPreview = (props) => {
 	// console.log(props.match.params);
-	console.log(props)
+	// console.log(props)
 
 	if (!props.match.params.collection) {
 		const { title,routeName, location, items } = props;

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 // import { userSelector } from "../../redux/store";
 
 const MenuItem = ({ title, imageUrl, size, destination,history,...others }) => {
-	console.log(others)
+	// console.log(others)
 	// const user = useSelector(userSelector);
 	// console.log(user);
 	return(

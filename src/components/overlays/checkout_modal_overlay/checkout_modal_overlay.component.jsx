@@ -6,9 +6,9 @@ import "./checkout_modal_overlay.styles.scss";
 
 export const ModalOverlay = () => (
 
-		<div class="checkout-modal-overlay hidden ">
-			<div class="checkout-modal">
-				<div class="checkout-modal-avatar">
+		<div className="checkout-modal-overlay hidden ">
+			<div className="checkout-modal">
+				<div className="checkout-modal-avatar">
 					{/* <?xml version="1.0" encoding="utf-8"?>
 					<svg viewBox="0 0 47.045746 50.5" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
 						xmlns="http://www.w3.org/2000/svg">
@@ -29,18 +29,18 @@ export const ModalOverlay = () => (
 						</g>
 					</svg> */}
 				</div>
-				<div class="checkout-modal-body">
-					<div class="checkout-modal-body-hero">
-						<div class="checkout-modal-body-hero-cancel-btn"><span>&times;</span>
+				<div className="checkout-modal-body">
+					<div className="checkout-modal-body-hero">
+						<div className="checkout-modal-body-hero-cancel-btn"><span>&times;</span>
 						</div>
-						<p class="checkout-modal-body-hero-title">
+						<p className="checkout-modal-body-hero-title">
 							Splendid Depot Ltd.
 						</p>
-						<p class="checkout-modal-body-hero-subtitle">Your total is $280</p>
+						<p className="checkout-modal-body-hero-subtitle">Your total is $280</p>
 					</div>
-					<div class="checkout-modal-body-content">
-						<div class="top-modal-contents">
-							<div class="primary-modal-content modal-content">
+					<div className="checkout-modal-body-content">
+						<div className="top-modal-contents">
+							<div className="primary-modal-content modal-content">
 								{/* <?xml version="1.0" encoding="utf-8"?>
 								<svg width="16px" height="12px" viewBox="0 0 16 12" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
 									xmlns="http://www.w3.org/2000/svg">
@@ -59,14 +59,14 @@ export const ModalOverlay = () => (
 								</svg> */}
 								<input type="email" name=""  placeholder="Email"></input>
 							</div>
-							<div class="primary-modal-content modal-content">
+							<div className="primary-modal-content modal-content">
 								<input type="checkbox" name="" id=""></input>
 	
 								<input type="text" name=""  id="" placeholder="Email" value="Same billing and shipping info" disabled></input>
 							</div>
 						</div>
-						<div class="bottom-modal-contents">
-							<div class="modal-content">
+						<div className="bottom-modal-contents">
+							<div className="modal-content">
 									{/* <?xml version="1.0" encoding="utf-8"?>
 									<svg viewBox="0 0 37 40" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
 										xmlns="http://www.w3.org/2000/svg">
@@ -88,7 +88,7 @@ export const ModalOverlay = () => (
 									</svg> */}
 									<input type="text" name=""  placeholder="Name"></input>
 							</div>
-							<div class="modal-content">
+							<div className="modal-content">
 									{/* <?xml version="1.0" encoding="utf-8"?>
 									<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
 										xmlns="http://www.w3.org/2000/svg">
@@ -107,13 +107,13 @@ export const ModalOverlay = () => (
 									</svg> */}
 									<input type="text" name=""  placeholder="Street"></input>
 							</div>
-							<div class="modal-content">
-									<input type="text" class="MC-input" name=""  placeholder="Postcode"></input>
-									<input type="text" class="MC-input" name=""  placeholder="City"></input>
+							<div className="modal-content">
+									<input type="text" className="MC-input" name=""  placeholder="Postcode"></input>
+									<input type="text" className="MC-input" name=""  placeholder="City"></input>
 							</div>
-							<div class="modal-content">
+							<div className="modal-content">
 									{/* <?xml version="1.0" encoding="utf-8"?>
-									<svg class="modal-content-icon" width="16px" height="12px" viewBox="0 0 16 12" version="1.1"
+									<svg className="modal-content-icon" width="16px" height="12px" viewBox="0 0 16 12" version="1.1"
 										xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 										<path
 											d="M-551.2 -319L-539.2 -319C-538.095 -319 -537.2 -318.105 -537.2 -317L-537.2 -309C-537.2 -307.895 -538.095 -307 -539.2 -307L-551.2 -307C-552.305 -307 -553.2 -307.895 -553.2 -309L-553.2 -317C-553.2 -318.105 -552.305 -319 -551.2 -319ZM-552.2 -317L-552.2 -316.783L-545.2 -312.583L-538.2 -316.783L-538.2 -317C-538.2 -317.552 -538.648 -318 -539.2 -318L-551.2 -318C-551.752 -318 -552.2 -317.552 -552.2 -317ZM-542.908 -312.792L-538.2 -309.895L-538.2 -315.617L-542.908 -312.792ZM-543.874 -312.212L-545.2 -311.417L-546.526 -312.212L-552.166 -308.741C-552.052 -308.314 -551.663 -308 -551.2 -308L-539.2 -308C-538.737 -308 -538.348 -308.314 -538.234 -308.741L-543.874 -312.212ZM-547.492 -312.792L-552.2 -315.617L-552.2 -309.895L-547.492 -312.792Z"
@@ -128,7 +128,7 @@ export const ModalOverlay = () => (
 						</div>
 	
 					</div>
-					<button class="checkout-modal-body-cta">Payment Info 
+					<button className="checkout-modal-body-cta">Payment Info 
 						{/* <?xml version="1.0" encoding="utf-8"?>
 						<?xml version="1.0" encoding="utf-8"?>
 						<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"

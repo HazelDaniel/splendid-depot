@@ -13,7 +13,9 @@
 	background-color: $lightBGColor;
 	padding: 1rem;
 	border: .1rem solid $cartModalBorderColor;
-	box-shadow: .5rem .5rem 1rem $checkoutCTAShadowColor;
+	box-shadow: -.5rem .5rem 1rem $checkoutCTAShadowColor;
+	transform: perspective(10cm) rotate(10deg,-10deg);
+
 
 	// display: none;
 	// img{

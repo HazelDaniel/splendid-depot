@@ -4,27 +4,36 @@ import cartReducer from "./cart/cart.slice";
 import shopReducer from "./shop/shop.slice";
 
 // TOOL KITS
-import { createReducer, createSelector } from "@reduxjs/toolkit";
-import { Iterable } from "immutable";
-import { configureStore, createSerializableStateInvariantMiddleware, isPlain } from "@reduxjs/toolkit";
+import { configureStore, createReducer, createSelector } from "@reduxjs/toolkit";
+import { combineReducers } from "@reduxjs/toolkit";
 
-// Augment middleware to consider Immutable.JS iterables serializable
-const isSerializable = (value) => Iterable.isIterable(value) || isPlain(value);
 
-const getEntries = (value) => (Iterable.isIterable(value) ? value.entries() : Object.entries(value));
+// STORAGE AND PERSISTENCE
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-const serializableMiddleware = createSerializableStateInvariantMiddleware({
-	isSerializable,
-	getEntries,
+const cartPersistConfig = {
+	key: "cart",
+	storage,
+}
+
+const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
+
+const rootReducer = combineReducers({
+	userReducer,
+	cartReducer: persistedCartReducer,
+	shopReducer,
 });
+const rootPersistConfig = {
+	key: "root",
+	storage,
+	whitelist: ["cart"],
+
+};
+const persistedRootReducer = persistReducer(rootPersistConfig, rootReducer);
 
 export const store = configureStore({
-	reducer: {
-		userReducer,
-		cartReducer,
-		shopReducer,
-	},
-	middleware: [serializableMiddleware],
+	reducer: persistedRootReducer,
 });
 
 // SELECTORS AND MEMOIZED
@@ -58,3 +67,5 @@ const cartPricesTotalSelect = (state) => {
 };
 
 export const cartPricesTotalSelector = createSelector([cartPricesTotalSelect], (totalPrice) => totalPrice);
+
+export const persistedStore = persistStore(store);
