@@ -24,7 +24,7 @@ export const checkAndRemoveItem = (state, item) => {
 		...state,
 		carts: state.carts.filter(cart => cart.id !== item.id)
 	};
-	console.log('item has more than one occurrences');
+	// console.log('item has more than one occurrences');
 	return {
 		...state,
 		carts: state.carts.map(cart => cart.id === item.id ? { ...cart, quantity: cart.quantity - 1 } : cart)

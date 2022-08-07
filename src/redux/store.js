@@ -41,8 +41,13 @@ const userSelect = (state) => state.userReducer.currentUser;
 export const userSelector = createSelector([userSelect], (currentUser) => currentUser);
 const cartSelect = (state) => state.cartReducer;
 export const cartSelector = createSelector([cartSelect], (cart) => cart);
-const collectionSelect = (state) => state.shopReducer.collections;
-export const collectionSelector = createSelector([collectionSelect], (collections) => collections);
+const collectionsSelect = (state) => Object.values(state.shopReducer.collections);
+export const collectionsSelector = createSelector([collectionsSelect], (collections) => collections);
+const URLDeducedCollectionSelect = (parameter) => (state) => state.shopReducer.collections[parameter];
+export const URLDeducedCollectionSelector = createSelector(
+	[URLDeducedCollectionSelect],
+	collection => collection
+)
 const cartItemsTotalSelect = (state) => {
 	return state.cartReducer.carts
 		.map((cart) => {

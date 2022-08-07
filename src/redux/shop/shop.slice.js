@@ -5,8 +5,8 @@ import { nanoid } from "@reduxjs/toolkit";
 
 // console.log(window.location.origin);
 
-export const COLLECTION_DATA = [
-	{
+export const COLLECTION_DATA = {
+	hats:{
 		id: 1,
 		title: "hats",
 		routeName: "/hats",
@@ -55,7 +55,7 @@ export const COLLECTION_DATA = [
 			},
 		],
 	},
-	{
+	jackets:{
 		id: 2,
 		title: "jackets",
 		routeName: "/jackets",
@@ -98,7 +98,7 @@ export const COLLECTION_DATA = [
 			},
 		],
 	},
-	{
+	sneakers:{
 		id: 3,
 		title: "sneakers",
 		routeName: "/sneakers",
@@ -147,7 +147,7 @@ export const COLLECTION_DATA = [
 			},
 		],
 	},
-	{
+	women:{
 		id: 4,
 		title: "women's",
 		routeName: "/women",
@@ -196,7 +196,7 @@ export const COLLECTION_DATA = [
 			},
 		],
 	},
-	{
+	men:{
 		id: 5,
 		title: "men's",
 		routeName: "/men",
@@ -245,7 +245,7 @@ export const COLLECTION_DATA = [
 			},
 		],
 	},
-];
+}
 
 const INITIAL_STATE = {
 	collections: COLLECTION_DATA

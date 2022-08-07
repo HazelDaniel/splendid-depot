@@ -2,20 +2,21 @@ import React from "react";
 import CollectionItem from "../collection_item/collection_item.component";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+// import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
-import { deduceCollectionFromProps } from "./collection_preview.utils";
 import "./collection_preview.styles.scss";
 
+import { connect } from "react-redux";
+import { URLDeducedCollectionSelector } from "../../redux/store";
+
+
 const CollectionPreview = (props) => {
-	// console.log(props.match.params);
-	// console.log(props)
+
 
 	if (!props.match.params.collection) {
-		const { title,routeName, location, items } = props;
+		const { title, routeName, location, items } = props;
 		// console.log(title, location, routeName)
 		// console.log(`${location.pathname}${routeName}`)
-
 		return (
 			<div className="collection-body">
 				<div className="collection-title-div">
@@ -29,32 +30,26 @@ const CollectionPreview = (props) => {
 			</div>
 		);
 	}
+
 	const { collection } = props;
-	switch (props.match.params.collection) {
-		case "hats":
-			return (() => {
-				return deduceCollectionFromProps(collection, 0);
-			})();
-		case "jackets":
-			return (() => {
-				return deduceCollectionFromProps(collection, 1);
-			})();
-		case "sneakers":
-			return (() => {
-				return deduceCollectionFromProps(collection, 2);
-			})();
-		case "women":
-			return (() => {
-				return deduceCollectionFromProps(collection, 3);
-			})();
-		case "men":
-			return (() => {
-				return deduceCollectionFromProps(collection, 4);
-			})();
-		default:
-			return (
-				<Redirect to="/"></Redirect>
-			)
-	}
-}
-export default withRouter(CollectionPreview);
+	const { title, items } = collection;
+	return (
+		<div className="collection-body">
+			<div className="collection-title-div">
+				<p className="collection-title">{title.toUpperCase()}</p>
+			</div>
+			{items.map(({ id, ...otherProps }) => (
+				<CollectionItem key={id} id={id} {...otherProps} />
+			))}
+		</div>
+	);
+};
+
+const mapStateToProps = (state, ownProps) => {
+	// console.log(ownProps);
+	return {
+		collection: URLDeducedCollectionSelector(ownProps.match.params.collection)(state),
+	};
+};
+
+export default (withRouter(connect(mapStateToProps)(CollectionPreview)));

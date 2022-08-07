@@ -9,7 +9,7 @@ import CollectionPreview from "../../components/collection_preview/collection_pr
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 // REDUX
-import { collectionSelector } from "../../redux/store";
+import { collectionsSelector } from "../../redux/store";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 const  ShopPage = props=> {
@@ -25,7 +25,7 @@ const  ShopPage = props=> {
 }
 
 const mapStateToProps = createStructuredSelector({
-	collections: collectionSelector
+	collections: collectionsSelector
 })
 
 export default connect(mapStateToProps)(withRouter(ShopPage));
