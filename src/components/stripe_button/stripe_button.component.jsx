@@ -1,7 +1,7 @@
 import React from "react";
 import StripeCheckout from "react-stripe-checkout";
 import "./stripe_button.styles.scss";
-import { CardIcon } from "../../assets/icons/card_icon/card_icon.component";
+
 
 
 const StripeButton = ({ price }) => {
@@ -18,7 +18,7 @@ const StripeButton = ({ price }) => {
 			name="Splendid Depot Ltd."
 			billingAddress
 			shippingAddress
-			image={`https://github.com/HazelDaniel/splendid-depot/blob/master/public/logo/logo.svg`}
+			image={`https://raw.githubusercontent.com/HazelDaniel/splendid-depot/21dbbaf9247ac49f5f5731dd243db3d0a06bedae/public/logo/logo.svg`}
 			description={`Your total is: $${price}`}
 			amount={priceForStripe}
 			panelLabel="Pay Now"

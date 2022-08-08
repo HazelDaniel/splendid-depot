@@ -12,6 +12,7 @@ import CheckoutPage from "../../pages/checkout_page/checkout_page.component";
 import { AuthPage } from "../../pages/auth_page/auth_page.component";
 import CartModal from "../cart_modal/cart_modal.component";
 import CollectionPreview from "../collection_preview/collection_preview.component";
+import F04Page from "../../pages/404_page/F04_page.component";
 
 // REDUX
 import { connect } from "react-redux";
@@ -36,11 +37,13 @@ const Wrapper = (props) => {
 			{/* <Route path="/" component={Header}>
       </Route> */}
 			<Switch>
-				<Route exact path="/" component={Homepage}/>
+				<Route exact path="/" component={Homepage} />
+				<Route exact path="/FourZeroFour" component={F04Page} />
 				<Route exact path="/shop" component={ShopPage}/>
 				<Route exact path="/shop/:collection" render={()=><CollectionPreview/>}/>
 				<Route exact path="/checkout" component={CheckoutPage}/>
-				<Route exact path="/auth" render={() => (currentUser ? <Redirect to="/" /> : <AuthPage />)}/>
+				<Route exact path="/auth" render={() => (currentUser ? <Redirect to="/" /> : <AuthPage />)} />
+				<Route exact path="/*" render={()=><Redirect to="/FourZeroFour" />} />
 			</Switch>
 		</div>
 	);

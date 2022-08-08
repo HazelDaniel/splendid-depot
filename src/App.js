@@ -13,6 +13,7 @@ import { updateUser } from "./redux/user/user.slice";
 import { userSelector } from "./redux/store";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import Loader from "./components/loader/loader.component";
 
 
 
@@ -22,28 +23,42 @@ import { createStructuredSelector } from "reselect";
 class App extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			isLoading: true
+		}
+	}
+	renderLoader() {
+		this.setState((state, props) => {
+			return { isLoading: true };
+		});
+	}
+	unmountLoader() {
+		this.setState((state, props) => {
+			return { isLoading: false };
+		});
+		
 	}
 	render() {
-		const { currentUser } = this.props;
-		// console.log(currentUser);
-		return (
+		return this.state.isLoading === false? (
 			<Switch>
 				<Route exact path="/checkout/">
-					<Wrapper ></Wrapper>
+					<Wrapper></Wrapper>
 					{/* <ModalOverlay></ModalOverlay> */}
 				</Route>
 				{/* <Route path="/" component={Wrapper}>
 				</Route> */}
-				<Wrapper ></Wrapper>
+				<Wrapper></Wrapper>
 			</Switch>
-		);
+		): <Loader />
 	}
 	unsubscribeFromAuth = null;
 	componentDidMount() {
-		const { updateUser, currentUser } = this.props;
+		this.unmountLoader();
+		const { updateUser } = this.props;
 		this.unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
 			if (userAuth) {
 				const userRef = await createUserProfileDocument(userAuth);
+				this.renderLoader();
 				let userSnapshot = await getDoc(userRef);
 				onSnapshot(userRef, () => {
 					const userData = {
@@ -52,10 +67,12 @@ class App extends Component {
 						currentUser: userAuth,
 					};
 					updateUser(JSON.parse(JSON.stringify(userData)));
+					this.unmountLoader();
 				});
 			} else {
 				// this.setState({currentUser: userAuth})
 				updateUser({ currentUser: userAuth });
+				this.unmountLoader();
 			}
 			// user = userAuth;
 			// console.log(currentUser);

@@ -32,9 +32,7 @@ const CollectionPreview = (props) => {
 	const { collection } = props;
 
 	// HANDLE 404 ON SHOP COLLECTION
-	if (!collection) return (
-		<Redirect to={`/`}/>
-	)
+	if (!collection) return <Redirect to={`/FourZeroFour`} />;
 	const { title, items } = collection;
 	return (
 		<div className="collection-body collection-preview-body">
