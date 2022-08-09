@@ -6,7 +6,8 @@ import { Link, withRouter, Redirect } from "react-router-dom/cjs/react-router-do
 import "./collection_preview.styles.scss";
 
 import { connect } from "react-redux";
-import { URLDeducedCollectionSelector } from "../../redux/store";
+import { appSelector, cartSelector, URLDeducedCollectionSelector } from "../../redux/store";
+
 
 
 const CollectionPreview = (props) => {
@@ -46,6 +47,7 @@ const CollectionPreview = (props) => {
 	);
 };
 
+
 const mapStateToProps = (state, ownProps) => {
 	return {
 		collection: (() => {
@@ -54,6 +56,7 @@ const mapStateToProps = (state, ownProps) => {
 			if (!collectionExists) return null;
 			return collectionCheck;
 		})(),
+		// app: appSelector
 	};
 };
 

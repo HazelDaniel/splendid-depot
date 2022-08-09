@@ -8,6 +8,7 @@ import { addToCart } from "../../redux/cart/cart.slice";
 // import { nanoid } from "@reduxjs/toolkit";
 
 const CollectionItem = ({ addToCart, cart, ...cartDetails }) => {
+
 	// console.log(cartDetails)z
 	const { imageUrl, name, price } = cartDetails;
 

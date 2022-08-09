@@ -1,0 +1,75 @@
+@import "../../../sass_modules/_functions";
+@import "../../../sass_modules/variables";
+
+.alert-popup {
+	position: fixed;
+	left: 3rem;
+	top: 70%;
+	width: 25rem;
+	height: 4rem;
+	animation-name: alertPopup;
+	animation-duration: 2s;
+	animation-play-state: running;
+	animation-fill-mode: forwards;
+	animation-timing-function: ease-out;
+
+	border-top-left-radius: 3rem;
+	@include makeColFlexCenter();
+	visibility: visible;
+
+	p {
+		color: $lightBGColor;
+		text-transform: uppercase;
+		font-size: 1.6rem;
+		font-weight: 700;
+	}
+
+	&::after {
+		@include makeAbsoluteBottomLeftDiv();
+		width: 100%;
+		height: .1rem;
+		bottom: -1rem;
+		animation-name: popupUnderline;
+		animation-duration: inherit;
+		animation-timing-function: inherit;
+	}
+
+
+	&.failure-popup {
+		border: .1rem solid #FF0707;
+		background-color: #c10f0f28;
+		box-shadow: 0 1rem 2rem #64646467, inset 0rem .5rem 1rem #ffeaea4f;
+
+		&::after {
+			background-color: red;
+		}
+	}
+
+	&.success-popup {
+		border: .1rem solid #07FF87;
+		background-color: #0fc13f23;
+		box-shadow: 0 1rem 2rem #64646467, inset 0rem .5rem 1rem #ffeaea4f;
+
+		&::after {
+			background-color: green;
+		}
+	}
+
+	@keyframes popupUnderline {
+		0% {
+			width: 100%;
+		}
+		100% {
+			width: 0%;
+		}
+	}
+	@keyframes alertPopup {
+		0% {
+			visibility: visible;
+		}
+		
+		100% {
+			visibility: hidden;
+		}
+	}
+}

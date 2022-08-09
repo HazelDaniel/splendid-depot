@@ -2,6 +2,7 @@
 import userReducer from "./user/user.slice";
 import cartReducer from "./cart/cart.slice";
 import shopReducer from "./shop/shop.slice";
+import appReducer from "./app/app.slice";
 
 // TOOL KITS
 import { configureStore, createReducer, createSelector } from "@reduxjs/toolkit";
@@ -11,6 +12,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 // STORAGE AND PERSISTENCE
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { useSelector } from "react-redux";
 
 
 const cartPersistConfig = {
@@ -20,10 +22,12 @@ const cartPersistConfig = {
 
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
+
 const rootReducer = combineReducers({
 	userReducer,
 	cartReducer: persistedCartReducer,
 	shopReducer,
+	appReducer
 });
 const rootPersistConfig = {
 	key: "root",
@@ -35,11 +39,15 @@ const persistedRootReducer = persistReducer(rootPersistConfig, rootReducer);
 
 export const store = configureStore({
 	reducer: persistedRootReducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: false,
+		}),
 });
 
 // SELECTORS AND MEMOIZED
-const userSelect = (state) => state.userReducer.currentUser;
-export const userSelector = createSelector([userSelect], (currentUser) => currentUser);
+
+export const userSelector = (state) => state.userReducer.currentUser;
 const cartSelect = (state) => state.cartReducer;
 export const cartSelector = createSelector([cartSelect], (cart) => cart);
 const collectionsSelect = (state) => Object.values(state.shopReducer.collections);
@@ -58,7 +66,6 @@ const cartItemsTotalSelect = (state) => {
 			return prev + next;
 		}, 0);
 };
-
 export const cartItemsTotalSelector = createSelector([cartItemsTotalSelect], (totalQuantity) => totalQuantity);
 
 const cartPricesTotalSelect = (state) => {
@@ -73,5 +80,22 @@ const cartPricesTotalSelect = (state) => {
 };
 
 export const cartPricesTotalSelector = createSelector([cartPricesTotalSelect], (totalPrice) => totalPrice);
+
+const appSelect = (state) => state.appReducer;
+
+export const appSelector = createSelector(
+	[appSelect,cartSelect,collectionsSelect,URLDeducedCollectionSelect,cartItemsTotalSelect,cartPricesTotalSelect],
+	(app,cart,collections,urlDeducedCollection,cartItemsTotal,cartPricesTotal) => {
+		return {
+			app,
+			cart,
+			collections,
+			cartItemsTotal,
+			cartPricesTotal,
+			urlDeducedCollection,
+		}
+	}
+)
+
 
 export const persistedStore = persistStore(store);
