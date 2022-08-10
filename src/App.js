@@ -56,38 +56,43 @@ class App extends Component {
 	componentDidMount() {
 		this.unmountLoader();
 		const { updateUser, app, renderWelcome, unmountWelcome } = this.props;
-		this.unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
-			if (userAuth) {
-				try {
-					this.renderLoader();
-					const userRef = await createUserProfileDocument(userAuth);
-					let userSnapshot = await getDoc(userRef);
-					onSnapshot(userRef, () => {
-						const userData = {
-							id: userRef.id,
-							...userSnapshot.data(),
-							currentUser: userAuth,
-						};
-						updateUser(JSON.parse(JSON.stringify(userData)));
-						this.unmountLoader();
-					});
-				} catch (error) {
-					console.log(error);
+		try {
+			this.unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
+				if (userAuth) {
+					try {
+						this.renderLoader();
+						const userRef = await createUserProfileDocument(userAuth);
+						// console.log(userRef);
+						let userSnapshot = await getDoc(userRef);
+						onSnapshot(userRef, () => {
+							const userData = {
+								id: userRef.id,
+								...userSnapshot.data(),
+								currentUser: userAuth,
+							};
+							updateUser(JSON.parse(JSON.stringify(userData)));
+							this.unmountLoader();
+						});
+					} catch (error) {
+						throw (error);
+					}
+					// console.log(userAuth.displayName.split(" ")[1])
+					renderWelcome();
+					await wait(3);
+					unmountWelcome();
+				} else {
+					// this.setState({currentUser: userAuth})
+					updateUser({ currentUser: userAuth });
+					unmountWelcome();
 				}
-				// console.log(userAuth.displayName.split(" ")[1])
-				renderWelcome();
-				await wait(3);
-				unmountWelcome();
-			} else {
-				// this.setState({currentUser: userAuth})
-				updateUser({ currentUser: userAuth });
-				unmountWelcome();
-			}
 
-			// user = userAuth;
-			// console.log(currentUser);
-			//TODO: IMPLEMENT A "WELCOME, USER.DISPLAY_NAME , CLICK HERE TO GO TO ..." POPUP MESSAGE ,  WHICH SHOULD HAPPEN ONLY ONCE (WILL NOT HAPPEN HERE IN THIS BLOCK)
-		});
+				// user = userAuth;
+				// console.log(currentUser);
+				//TODO: IMPLEMENT A "WELCOME, USER.DISPLAY_NAME , CLICK HERE TO GO TO ..." POPUP MESSAGE ,  WHICH SHOULD HAPPEN ONLY ONCE (WILL NOT HAPPEN HERE IN THIS BLOCK)
+			});
+		} catch (error) {
+			console.log(error);
+		}
 	}
 	
 	componentWillUnmount() {

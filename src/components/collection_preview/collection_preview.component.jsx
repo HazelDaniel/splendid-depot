@@ -18,7 +18,7 @@ const CollectionPreview = (props) => {
 		// console.log(title, location, routeName)
 		// console.log(`${location.pathname}${routeName}`)
 		return (
-			<div className="collection-body">
+			<div className="collection-preview-body">
 				<div className="collection-title-div">
 					<p className="collection-title">
 						<Link to={`${location.pathname}${routeName}`}>{title.toUpperCase()}</Link>
@@ -36,8 +36,8 @@ const CollectionPreview = (props) => {
 	if (!collection) return <Redirect to={`/FourZeroFour`} />;
 	const { title, items } = collection;
 	return (
-		<div className="collection-body collection-preview-body">
-			<div className="collection-title-div">
+		<div className="collection-body">
+			<div className="collection-title-div ctd">
 				<p className="collection-title">{title.toUpperCase()}</p>
 			</div>
 			{items.map(({ id, ...otherProps }) => (

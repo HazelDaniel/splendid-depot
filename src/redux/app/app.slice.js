@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	isLoading: true,
-	displayWelcomeMessage: false
+	displayWelcomeMessage: false,
+	displayPaymentMessage: false
 };
 const appSlice = createSlice({
 	name: "app",
@@ -33,11 +34,25 @@ const appSlice = createSlice({
 				displayWelcomeMessage: false
 			}
 		},
+		renderPaymentPopup: (state,action) => {
+			return {
+				...state,
+				displayPaymentMessage: true,
+				paymentStatus: action.payload
+			}
+		},
+		unmountPaymentPopup: (state,action) => {
+			return {
+				...state,
+				displayPaymentMessage: false,
+				paymentStatus: action.payload
+			}
+		}
 	}
 
 });
 
-export const { unmountLoader, renderLoader, renderWelcome,unmountWelcome } = appSlice.actions;
+export const { unmountLoader, renderLoader, renderWelcome,unmountWelcome,renderPaymentPopup,unmountPaymentPopup } = appSlice.actions;
 
 export default appSlice.reducer;
 

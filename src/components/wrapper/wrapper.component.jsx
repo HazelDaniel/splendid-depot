@@ -48,7 +48,8 @@ class Wrapper extends React.Component {
 						<Route exact path="/auth" render={() => (currentUser ? <Redirect to="/" /> : <AuthPage />)} />
 						<Route exact path="/*" render={() => <Redirect to="/FourZeroFour" />} />
 					</Switch>
-						<Route exact path="/" render={()=>app.app.displayWelcomeMessage && displayName ? <AlertPopup alertClass={`success-popup`} alertMessage={`WELCOME ${displayName[displayName.length - 1]}!` } />: null} />
+					<Route exact path="/" render={() => app.app.displayWelcomeMessage && displayName ? <AlertPopup alertClass={`success-popup`} alertMessage={`WELCOME ${displayName[displayName.length - 1]}!`} /> : null} />
+					<Route exact path="/checkout" render={() => app.app.displayPaymentMessage? <AlertPopup alertClass={`success-popup`} alertMessage={`Transaction Successful!`} /> : null} />
 				</div>
 			);
 			})();

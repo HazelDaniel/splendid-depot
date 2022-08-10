@@ -3,17 +3,16 @@ import "./checkout_page.styles.scss";
 
 
 
-
-import { CardIcon } from "../../assets/icons/card_icon/card_icon.component";
+// COMPONENTS
 import CheckoutItem from "../../components/checkout_item/checkout_item.component";
+import StripeButton from "../../components/stripe_button/stripe_button.component";
 // import CartModal from "../../components/cart_modal/cart_modal.component";
 //REDUX
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { appSelector, cartSelector } from "../../redux/store";
 import { cartPricesTotalSelector } from "../../redux/store";
-import StripeButton from "../../components/stripe_button/stripe_button.component";
-// import { cartItemsTotalSelector } from "../../redux/store";
+
 
 
 
@@ -52,5 +51,6 @@ const mapStateToProps = createStructuredSelector({
 	subTotal: cartPricesTotalSelector,
 	app: appSelector
 })
+
 
 export default connect(mapStateToProps)(CheckoutPage);

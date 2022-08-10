@@ -2,14 +2,30 @@ import React from "react";
 import StripeCheckout from "react-stripe-checkout";
 import "./stripe_button.styles.scss";
 
+// UTILS
+import { wait } from "../../utils";
 
 
-const StripeButton = ({ price }) => {
+// REDUX
+import { connect } from "react-redux";
+import { renderPaymentPopup,unmountPaymentPopup } from "../../redux/app/app.slice";
+
+
+
+
+const showAndHide = async (action,reverse,seconds) => {
+	action();
+	await wait(seconds);
+	reverse();
+}
+
+const StripeButton = ({ price,showPaymentAlert,hidePaymentAlert }) => {
 	const priceForStripe = price * 100;
 	const publishableKey = `pk_test_51LUFcYATwSVQxsAFogaEa5bjZBTkmvXqlxGR1RxqCyoGT9bP3JrZB2R3pjGTrbD2v2VaJUut15U6BjsmNsJIx6pN00TkTQ6muu`;
 	const onToken = token => {
-		console.log(token);
-		alert("payment was successful");
+		// console.log(token);
+		showAndHide(showPaymentAlert, hidePaymentAlert, 3);
+		return token;
 	}
 	return (
 
@@ -54,4 +70,15 @@ const StripeButton = ({ price }) => {
 	)
 }
 
-export default StripeButton;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		showPaymentAlert: () => {
+			dispatch(renderPaymentPopup());
+		},
+		hidePaymentAlert: () => {
+			dispatch(unmountPaymentPopup());
+		},
+	};
+};
+
+export default connect(null, mapDispatchToProps)(StripeButton);
