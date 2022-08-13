@@ -3,6 +3,8 @@ import "./header.styles.scss";
 import { withRouter,Link } from "react-router-dom/cjs/react-router-dom.min";
 import { Logo } from "../logo/logo.component";
 import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
+import {HEADER } from "./header.styles";
+
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase.utils";
 
@@ -14,7 +16,7 @@ import { cartItemsTotalSelector } from "../../redux/store";
 const Header = function ({ match, history, currentUser, totalSelectedItems }) {
 	// console.log(currentUser)
 	return (
-		<header>
+		<HEADER>
 			<div className="logo-div">
 				<Link to="/">
 					<Logo></Logo>
@@ -57,7 +59,7 @@ const Header = function ({ match, history, currentUser, totalSelectedItems }) {
 					<span>{ totalSelectedItems}</span>
 				</div>
 			</nav>
-		</header>
+		</HEADER>
 	);
 };
 const mapStateToProps = createStructuredSelector({

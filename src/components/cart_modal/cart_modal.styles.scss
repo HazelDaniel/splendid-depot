@@ -77,10 +77,18 @@
 				.item-quantity {
 					font-size: 1.3rem;
 				}
+
 			}
 
 			&:hover {
 				background-color: #00000025;
+				position: relative;
+				&::before {
+						@include makeAbsoluteTopLeftDiv();
+						@include makeFullHeightBlock();
+						width: .2rem;
+						background-color: #00000025;
+					}
 			}
 
 		}

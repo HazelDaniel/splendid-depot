@@ -1,7 +1,8 @@
 import { React, Component } from "react";
 import "./App.scss";
 import Wrapper from "./components/wrapper/wrapper.component";
-import { Switch, Route,withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { Switch, Route, withRouter } from "react-router-dom/cjs/react-router-dom.min";
+
 
 // FIREBASE
 import { onAuthStateChanged } from "firebase/auth";

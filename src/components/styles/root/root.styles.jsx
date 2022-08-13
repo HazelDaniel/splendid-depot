@@ -1,8 +1,47 @@
-@import "_functions.scss";
-@import "_variables.scss";
-@import "_typography.scss";
+import { createGlobalStyle } from "styled-components";
 
-* {
+import { _variables } from "./variables.styles";
+
+import { makeAbsoluteBottomDiv, makeColFlexStart, makeFullHeightBlock, makeFullWidthBlock, makeRowFlexCenter } from "./functions.styles";
+
+export const global = createGlobalStyle`
+	:root {
+		--darkTextColor: #000000;
+		--blurColor: #252525b7;
+		--lightCTATextColor: #e9e9e9;
+		--darkCTABackgroundColor: #000000dc;
+		--logoOutlineColor: #191919;
+		--homeNavTextColor: #393939;
+		--BodyColor: #e5d6cb;
+
+		// HATS PAGE
+		--accentColor: #bb9d88;
+		--cartModalBorderColor: #5f5f5f;
+		--lightBGColor: #ffffff;
+		--collectionPriceTextColor: #707070;
+		--cartCTAColor: #e0e0e0;
+
+		// CHECKOUT PAGE
+		--QTcountColor: #1e1e1e;
+		--checkoutCTAIconColor: #e3d4cb;
+		--checkoutCTAShadowColor: #6464647e;
+		--checkoutModalTitleColor: #171717;
+		--checkoutModalIconColor: #70655f;
+		--checkoutModalSelectBTNColor: #363535;
+		--checkoutModalPlaceholderColor: #a9a9a9;
+		--checkoutModalCursorColor: #494646;
+		--checkoutModalHeroColor: #e3d4cb;
+		--checkoutModalShadowColor: #0a0a0a88;
+		--checkoutModalOverlayColor: #000000;
+
+		// AUTH PAGE
+		--authMainTitleColor: #373737;
+		--authSubtitleColor: #6c6c6c;
+		--authTextColor: #808080;
+		--authSecondaryCTAColor: #2f77e2;
+	}
+	${_variables}
+	* {
 	margin: 0;
 	padding: 0;
 
@@ -10,8 +49,6 @@
 		background-color: transparent;
 	}
 }
-
-
 *,
 *::before,
 *::after {
@@ -63,6 +100,8 @@ body {
 
 
 
+
+
 .auth {
 	background-color: $lightBGColor;
 }
@@ -77,11 +116,11 @@ body {
 		padding: 0rem 3rem 4rem;
 	}
 
-	@include makeColFlexStart();
+	${makeColFlexStart}
 
 	.collection-title-div {
-		@include makeFullWidthBlock();
-		@include makeRowFlexCenter();
+		${makeFullWidthBlock}
+		${makeRowFlexCenter}
 		margin-bottom: 4rem;
 		height: 5rem;
 		margin-top: 3rem;
@@ -97,7 +136,7 @@ body {
 			}
 
 			&::after {
-				@include makeAbsoluteBottomDiv();
+				${makeAbsoluteBottomDiv}
 				bottom: -30%;
 				left: 25%;
 				height: .4rem;
@@ -108,7 +147,7 @@ body {
 	}
 
 	.collection-body {
-		@include makeFullWidthBlock();
+		${makeFullWidthBlock}
 		// height: fit-content;
 		padding: 0 12rem;
 		padding-right: 10rem;
@@ -118,7 +157,7 @@ body {
 			padding-right: 5rem;
 		}
 
-		@include makeRowFlexCenter();
+		${makeRowFlexCenter}
 		flex-basis: 30rem;
 
 		@media only screen and (max-width: 620px) {
@@ -157,10 +196,10 @@ body {
 
 			height: 45rem;
 			padding-top: 2rem;
-			@include makeColFlexStart();
+			${makeColFlexStart}
 
 			.item-image-div {
-				@include makeFullHeightBlock();
+				${makeFullHeightBlock}
 				height: 55%;
 				background-color: $lightBGColor;
 				overflow: hidden;
@@ -175,8 +214,8 @@ body {
 
 			.item-details-div {
 				height: 50%;
-				@include makeFullWidthBlock();
-				@include makeColFlexStart();
+				${makeFullWidthBlock}
+				${makeColFlexStart}
 				padding: 3rem 5rem;
 
 				@media only screen and (max-width: 620px) {
@@ -234,3 +273,5 @@ body {
 		}
 	}
 }
+
+`;
