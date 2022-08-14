@@ -11,8 +11,7 @@ import { getDoc, onSnapshot } from "firebase/firestore";
 
 // REDUX
 import { updateUser } from "./redux/user/user.slice";
-import {
-	renderWelcome, unmountWelcome} from "./redux/app/app.slice";
+import {renderWelcome, unmountWelcome} from "./redux/app/app.slice";
 import { appSelector, userSelector } from "./redux/store";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -56,7 +55,7 @@ class App extends Component {
 	unsubscribeFromAuth = null;
 	componentDidMount() {
 		this.unmountLoader();
-		const { updateUser, app, renderWelcome, unmountWelcome } = this.props;
+		const { updateUser, renderWelcome, unmountWelcome } = this.props;
 		try {
 			this.unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
 				if (userAuth) {
@@ -71,6 +70,8 @@ class App extends Component {
 								...userSnapshot.data(),
 								currentUser: userAuth,
 							};
+
+
 							updateUser(JSON.parse(JSON.stringify(userData)));
 							this.unmountLoader();
 						});

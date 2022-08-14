@@ -1,9 +1,9 @@
 import React from "react";
-import "./header.styles.scss";
+
 import { withRouter,Link } from "react-router-dom/cjs/react-router-dom.min";
 import { Logo } from "../logo/logo.component";
 import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
-import {HEADER } from "./header.styles";
+import {HEADER} from "./header.styles";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase.utils";
@@ -13,7 +13,7 @@ import { createStructuredSelector } from "reselect";
 import { userSelector } from "../../redux/store";
 import { cartItemsTotalSelector } from "../../redux/store";
 
-const Header = function ({ match, history, currentUser, totalSelectedItems }) {
+const Header = function ({ match, history, user, totalSelectedItems }) {
 	// console.log(currentUser)
 	return (
 		<HEADER>
@@ -33,12 +33,12 @@ const Header = function ({ match, history, currentUser, totalSelectedItems }) {
 						SHOP
 					</li>
 					<li className="header-nav-text">CONTACT</li>
-					{currentUser ? (
+					{user.currentUser ? (
 						<li
 							className="header-nav-text"
 							onClick={async () => {
 								await signOut(auth);
-								history.push(`${match.url}auth`);
+								history.push(`/auth`);
 							}}
 						>
 							SIGN OUT
@@ -46,7 +46,8 @@ const Header = function ({ match, history, currentUser, totalSelectedItems }) {
 					) : (
 						<li
 							className="header-nav-text"
-							onClick={() => {
+								onClick={() => {
+								console.log(user)
 								history.push(`/auth`);
 							}}
 						>
@@ -63,7 +64,7 @@ const Header = function ({ match, history, currentUser, totalSelectedItems }) {
 	);
 };
 const mapStateToProps = createStructuredSelector({
-	currentUser: userSelector,
+	user: userSelector,
 	totalSelectedItems: cartItemsTotalSelector
 })
 export default connect(mapStateToProps)(withRouter(Header));

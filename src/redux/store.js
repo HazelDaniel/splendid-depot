@@ -23,6 +23,7 @@ const cartPersistConfig = {
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
 
+
 const rootReducer = combineReducers({
 	userReducer,
 	cartReducer: persistedCartReducer,
@@ -47,11 +48,21 @@ export const store = configureStore({
 
 // SELECTORS AND MEMOIZED
 
-export const userSelector = (state) => state.userReducer.currentUser;
+const userSelect = (state) => state.userReducer;
+export const userSelector = createSelector(
+	[userSelect],
+	(user) => {
+		return user
+	}
+)
 const cartSelect = (state) => state.cartReducer;
 export const cartSelector = createSelector([cartSelect], (cart) => cart);
 const collectionsSelect = (state) => Object.values(state.shopReducer.collections);
 export const collectionsSelector = createSelector([collectionsSelect], (collections) => collections);
+// export const collectionListSelector = createSelector(
+// 	[collectionsSelect],
+// 	collection => Object.entries(collection).map(ent => ent[1])
+// )
 const URLDeducedCollectionSelect = (parameter) => (state) => state.shopReducer.collections[parameter];
 export const URLDeducedCollectionSelector = createSelector(
 	[URLDeducedCollectionSelect],

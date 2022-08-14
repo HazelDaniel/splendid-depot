@@ -28,27 +28,24 @@ import AlertPopup from "../popup/alert_popup/alert_popup.component";
 class Wrapper extends React.Component {
 
 	render(){
-		const { location, app ,currentUser} = this.props;
-		let displayName = currentUser?.providerData[0].displayName.split(" ");
-		// console.log(app)
+		const { location, app, user } = this.props;
+		// let displayName = "hls shl";
+		let displayName = user.currentUser ? user.displayName.split(" ") : null;
 				return (() => {
 			return (
 				<div className={`wrapper ${location.pathname === "/auth" ? "auth" : ""}`}>
 					<Header/>
 					<CartModal />
-			
-					{/* <Route path="/" component={Header}>
-				</Route> */}
 					<Switch>
 						<Route exact path="/" component={Homepage} />
 						<Route exact path="/FourZeroFour" component={F04Page} />
 						<Route exact path="/shop" component={ShopPage} />
 						<Route exact path="/shop/:collection" render={() => <CollectionPreview />} />
 						<Route exact path="/checkout" component={CheckoutPage} />
-						<Route exact path="/auth" render={() => (currentUser ? <Redirect to="/" /> : <AuthPage />)} />
+						<Route exact path="/auth" render={() => (user.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
 						<Route exact path="/*" render={() => <Redirect to="/FourZeroFour" />} />
 					</Switch>
-					<Route exact path="/" render={() => app.app.displayWelcomeMessage && displayName ? <AlertPopup alertClass={`success-popup`} alertMessage={`WELCOME ${displayName[displayName.length - 1]}!`} /> : null} />
+					<Route exact path="/" render={() => app.app.displayWelcomeMessage && displayName ? <AlertPopup alertClass={`success-popup`} alertMessage={`WELCOME ${Array.isArray(displayName)?displayName[displayName.length - 1]:displayName}!`} /> : null} />
 					<Route exact path="/checkout" render={() => app.app.displayPaymentMessage? <AlertPopup alertClass={`success-popup`} alertMessage={`Transaction Successful!`} /> : null} />
 				</div>
 			);
@@ -61,7 +58,7 @@ class Wrapper extends React.Component {
 
 
 const mapStateToProps = createStructuredSelector({
-	currentUser: userSelector,
+	user: userSelector,
 	collections: collectionsSelector,
 	app: appSelector
 })

@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 import { _variables } from "./variables.styles";
+import { colors } from "./variables.styles";
 
 import { makeAbsoluteBottomDiv, makeColFlexStart, makeFullHeightBlock, makeFullWidthBlock, makeRowFlexCenter } from "./functions.styles";
 
@@ -103,12 +104,12 @@ body {
 
 
 .auth {
-	background-color: $lightBGColor;
+	background-color: ${colors.$lightBGColor};
 }
 
 .collection-container {
 	margin-top: 6rem;
-	@include makeFullWidthBlock();
+	${makeFullWidthBlock}
 	padding: 0rem 3rem 6rem;
 	position: relative;
 
@@ -128,7 +129,7 @@ body {
 		.collection-title {
 			position: relative;
 			font-size: 3.5rem;
-			color: $homeNavTextColor;
+			color: ${colors.$homeNavTextColor};
 
 			a {
 				all: inherit;
@@ -141,7 +142,7 @@ body {
 				left: 25%;
 				height: .4rem;
 				width: 50%;
-				background-color: $accentColor;
+				background-color: ${colors.$accentColor};
 			}
 		}
 	}
@@ -201,7 +202,7 @@ body {
 			.item-image-div {
 				${makeFullHeightBlock}
 				height: 55%;
-				background-color: $lightBGColor;
+				background-color: ${colors.$lightBGColor};
 				overflow: hidden;
 
 				img {
@@ -229,7 +230,7 @@ body {
 				.item-name {
 					text-transform: uppercase;
 					font-size: 2.8rem;
-					color: $homeNavTextColor;
+					color: ${colors.$homeNavTextColor};
 					padding-bottom: 3rem;
 
 					@media only screen and (max-width: 680px) {
@@ -244,7 +245,7 @@ body {
 
 				.item-price-text {
 					font-size: 2rem;
-					color: $collectionPriceTextColor;
+					color: ${colors.$collectionPriceTextColor};
 					padding-bottom: 3rem;
 				}
 
@@ -253,16 +254,16 @@ body {
 					height: 3.5rem;
 					min-height: 3rem;
 					width: 10rem;
-					background-color: $accentColor;
+					background-color: ${colors.$accentColor};
 					font-weight: bolder;
-					color: $lightCTATextColor;
+					color: ${colors.$lightCTATextColor};
 				}
 			}
 
 			&:hover {
-				background-color: $lightBGColor;
+				background-color: ${colors.$lightBGColor};
 				transform: scaleY(1.05);
-				box-shadow: .2rem .2rem 1rem $checkoutCTAShadowColor;
+				box-shadow: .2rem .2rem 1rem ${colors.$checkoutCTAShadowColor};
 
 				@media only screen and (max-width: 680px) {
 					transform: scaleY(1.02);

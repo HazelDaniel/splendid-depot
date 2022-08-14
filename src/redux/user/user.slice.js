@@ -9,10 +9,10 @@ const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
-		updateUser : (state, action)=> {
+		updateUser: (state, action) => {
 			return {
-				...action.payload,
-			};
+				...action.payload
+			}
 		}
 	}
 });

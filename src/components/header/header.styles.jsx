@@ -1,12 +1,6 @@
 import styled from "styled-components";
-import { makeFlexCenter } from "../styles/root/functions.styles";
-import { makeAbsoluteBottomDiv } from "../styles/root/functions.styles";
-import { makeAbsoluteDiv } from "../styles/root/functions.styles";
-import { makeRowFlexEnd } from "../styles/root/functions.styles";
-import { makeFullHeightBlock } from "../styles/root/functions.styles";
-import { makeRowFlex } from "../styles/root/functions.styles";
-import { makeFullWidthBlock } from "../styles/root/functions.styles";
-
+import { makeFlexCenter, makeAbsoluteBottomDiv, makeAbsoluteDiv, makeRowFlexEnd, makeFullHeightBlock, makeRowFlex, makeFullWidthBlock } from "../styles/root/functions.styles";
+import { colors } from "../styles/root/variables.styles";
 export const HEADER = styled.header`
 	${makeFullWidthBlock}
 	${makeRowFlex}
@@ -71,7 +65,7 @@ export const HEADER = styled.header`
 					font-size: 2rem;
 				}
 
-				color: $homeNavTextColor;
+				color: ${colors.$homeNavTextColor};
 				margin-right: 4rem;
 
 				@media only screen and (max-width: 450px) {
@@ -84,7 +78,7 @@ export const HEADER = styled.header`
 						width: 1rem;
 						height: 1rem;
 						border-radius: 50%;
-						background-color: $accentColor;
+						background-color: ${colors.$accentColor};
 						left: 45%;
 						bottom: -25%;
 					}
@@ -105,7 +99,7 @@ export const HEADER = styled.header`
 				height: 100%;
 
 				path {
-					fill: $homeNavTextColor;
+					fill: ${colors.$homeNavTextColor};
 				}
 			}
 
