@@ -1,10 +1,7 @@
-
 import React from "react";
 import "./shop_page.styles.scss";
 
-
 import CollectionPreview from "../../components/collection_preview/collection_preview.component";
-
 
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
@@ -13,8 +10,12 @@ import { collectionsSelector } from "../../redux/store";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 
+// FIREBASE
+import { collection, doc, getDoc, getDocs, onSnapshot } from "firebase/firestore";
+import { DB, getCollectionsMap } from "../../firebase/firebase.utils";
+import { updateCollections } from "../../redux/shop/shop.slice";
 
-class  ShopPage extends React.Component {
+class ShopPage extends React.Component {
 	render() {
 		const { collections } = this.props;
 		return (
@@ -26,12 +27,25 @@ class  ShopPage extends React.Component {
 		);
 	}
 	componentDidMount() {
-		console.log("shop page mounted");
+		const {updateCollections} = this.props;
+		const collectionRef = collection(DB, "collections");
+		onSnapshot(collectionRef, async () => {
+			// console.log("snapshot changed");
+			const collections = await getCollectionsMap(collectionRef);
+			updateCollections(collections);
+		});
 	}
 }
 
 const mapStateToProps = createStructuredSelector({
-	collections: collectionsSelector
-})
+	collections: collectionsSelector,
+});
+const mapDispatchToProps = dispatch => {
+	return {
+		updateCollections: (collection) => {
+			dispatch(updateCollections(collection));
+		}
+	}
+}
 
-export default connect(mapStateToProps)(withRouter(ShopPage));
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(ShopPage));
