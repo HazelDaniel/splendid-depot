@@ -6,15 +6,21 @@ import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
 import {HEADER} from "./header.styles";
 
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebase.utils";
+import { auth, DB, getCollectionsMap } from "../../firebase/firebase.utils";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { userSelector } from "../../redux/store";
 import { cartItemsTotalSelector } from "../../redux/store";
+import { collection, onSnapshot } from "firebase/firestore";
+import { updateCollections } from "../../redux/shop/shop.slice";
+import { renderLoader, unmountLoader } from "../../redux/app/app.slice";
 
-const Header = function ({ match, history, user, totalSelectedItems }) {
-	// console.log(currentUser)
+
+class Header extends React.Component {
+	render() {
+		console.log("rendering header")
+	const { match, history, user, totalSelectedItems } = this.props;
 	return (
 		<HEADER>
 			<div className="logo-div">
@@ -47,7 +53,6 @@ const Header = function ({ match, history, user, totalSelectedItems }) {
 						<li
 							className="header-nav-text"
 								onClick={() => {
-								console.log(user)
 								history.push(`/auth`);
 							}}
 						>
@@ -62,9 +67,41 @@ const Header = function ({ match, history, user, totalSelectedItems }) {
 			</nav>
 		</HEADER>
 	);
+	}
+	componentDidMount() {
+		const { updateCollections ,renderLoader,unmountLoader} = this.props;
+		const collectionRef = collection(DB, "collections");
+		onSnapshot(collectionRef, async () => {
+			renderLoader()
+			try {
+				const collections = await getCollectionsMap(collectionRef);
+				updateCollections(collections);
+			} catch (error) {
+				console.log(error);
+			} finally {
+				unmountLoader();
+			}
+		});
+	}
+
 };
+
+
 const mapStateToProps = createStructuredSelector({
 	user: userSelector,
 	totalSelectedItems: cartItemsTotalSelector
 })
-export default connect(mapStateToProps)(withRouter(Header));
+const mapDispatchToProps = dispatch => {
+	return {
+		updateCollections: (collections) => {
+			dispatch(updateCollections(collections));
+		},
+		renderLoader: (_) => {
+			dispatch(renderLoader())
+		},
+		unmountLoader: (_) => {
+			dispatch(unmountLoader())
+		},
+	}
+}
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Header));

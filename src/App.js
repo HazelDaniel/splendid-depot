@@ -15,52 +15,26 @@ import {renderWelcome, unmountWelcome} from "./redux/app/app.slice";
 import { appSelector, userSelector } from "./redux/store";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import Loader from "./components/loader/loader.component";
+import { unmountLoader,renderLoader } from "./redux/app/app.slice";
+
 
 // UTILS
 import { wait } from "./utils";
 
-
-
 class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isLoading: true,
-		};
-	}
-	renderLoader() {
-		this.setState((state, props) => {
-			return { isLoading: true };
-		});
-	}
-	unmountLoader() {
-		this.setState((state, props) => {
-			return { isLoading: false };
-		});
-	}
+	
 	render() {
-		return this.state.isLoading === false ? (
-			<Switch>
-				<Route exact path="/checkout/">
-					<Wrapper />
-				</Route>
-
-				<Wrapper />
-			</Switch>
-		) : (
-			<Loader />
-		);
+		return <Wrapper />
 	}
 	unsubscribeFromAuth = null;
 	componentDidMount() {
-		this.unmountLoader();
-		const { updateUser, renderWelcome, unmountWelcome } = this.props;
+
+		const { updateUser, renderWelcome, unmountWelcome,renderLoader,unmountLoader } = this.props;
 		try {
 			this.unsubscribeFromAuth = onAuthStateChanged(auth, async (userAuth) => {
 				if (userAuth) {
 					try {
-						this.renderLoader();
+						renderLoader();
 						const userRef = await createUserProfileDocument(userAuth);
 						// console.log(userRef);
 						let userSnapshot = await getDoc(userRef);
@@ -73,7 +47,7 @@ class App extends Component {
 
 
 							updateUser(JSON.parse(JSON.stringify(userData)));
-							this.unmountLoader();
+							unmountLoader();
 						});
 					} catch (error) {
 						throw (error);
@@ -117,6 +91,12 @@ const mapDispatchToProps = (dispatch) => {
 		unmountWelcome: (_) => {
 			dispatch(unmountWelcome());
 		},
+		renderLoader: (_) => {
+			dispatch(renderLoader())
+		},
+		unmountLoader: (_) => {
+			dispatch(unmountLoader())
+		}
 	};
 };
 

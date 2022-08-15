@@ -22,12 +22,17 @@ const cartPersistConfig = {
 
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
+const shopPersistConfig = {
+	key: "shop",
+	storage,
+}
 
+const persistedShopReducer = persistReducer(shopPersistConfig, shopReducer);
 
 const rootReducer = combineReducers({
 	userReducer,
 	cartReducer: persistedCartReducer,
-	shopReducer,
+	shopReducer: persistedShopReducer,
 	appReducer
 });
 const rootPersistConfig = {
@@ -57,13 +62,13 @@ export const userSelector = createSelector(
 )
 const cartSelect = (state) => state.cartReducer;
 export const cartSelector = createSelector([cartSelect], (cart) => cart);
-const collectionsSelect = (state) => Object.values(state.shopReducer.collections);
+const collectionsSelect = (state) => state.shopReducer.collections? Object.values(state.shopReducer.collections): [];
 export const collectionsSelector = createSelector([collectionsSelect], (collections) => collections);
 // export const collectionListSelector = createSelector(
 // 	[collectionsSelect],
 // 	collection => Object.entries(collection).map(ent => ent[1])
 // )
-const URLDeducedCollectionSelect = (parameter) => (state) => state.shopReducer.collections[parameter];
+const URLDeducedCollectionSelect = (parameter) => (state) => state.shopReducer.collections? state.shopReducer.collections[parameter]: null;
 export const URLDeducedCollectionSelector = createSelector(
 	[URLDeducedCollectionSelect],
 	collection => collection
