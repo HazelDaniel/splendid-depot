@@ -19,7 +19,7 @@ import { renderLoader, unmountLoader } from "../../redux/app/app.slice";
 
 class Header extends React.Component {
 	render() {
-		console.log("rendering header")
+		// console.log("rendering header")
 	const { match, history, user, totalSelectedItems } = this.props;
 	return (
 		<HEADER>

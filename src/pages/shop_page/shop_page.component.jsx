@@ -17,7 +17,7 @@ const isEqual = require("lodash.isequal");
 
 class ShopPage extends React.Component {
 	render() {
-		console.log("rendering shop page")
+		// console.log("rendering shop page")
 		const { collections } = this.props;
 		return (
 			<div className="collection-container">

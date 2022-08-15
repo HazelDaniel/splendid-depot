@@ -15,7 +15,7 @@ const isEqual = require("lodash.isequal");
 class ShopCollection extends React.Component {
 
 	render() {
-		console.log("rendering shop collection");
+		// console.log("rendering shop collection");
 		if (this.props.match.path === `/shop`) {
 			const { title, routeName, location, items } = this.props;
 			return (

@@ -12,7 +12,7 @@ const CollectionItem = ({ addToCart, cart, ...cartDetails }) => {
 	// console.log(cartDetails)z
 	const { imageUrl, name, price } = cartDetails;
 
-	console.log("rendering shop collection item");
+	// console.log("rendering shop collection item");
 	return (
 		<div className="collection-item">
 			<div className="item-image-div">
