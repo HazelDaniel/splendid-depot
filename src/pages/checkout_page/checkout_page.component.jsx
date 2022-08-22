@@ -16,7 +16,7 @@ import { cartPricesTotalSelector } from "../../redux/store";
 
 
 
-export const CheckoutPage = ({ cart, subTotal,app }) => (
+export const CheckoutPage = ({ cart, subTotal }) => (
 	<div className="checkout-wrapper">
 		<ul className="checkout-body">
 			<li className="checkout-title-div">

@@ -1,13 +1,10 @@
 import React from "react";
 import "./menu_item.styles.scss";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
-// import { useSelector } from "react-redux";
-// import { userSelector } from "../../redux/store";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-const MenuItem = ({ title, imageUrl, size, destination,history,...others }) => {
-	// console.log(others)
-	// const user = useSelector(userSelector);
-	// console.log(user);
+
+const MenuItem = ({ title, imageUrl, size, destination,...others }) => {
+	const history = useHistory();
 	return(
 		<div className={`${size ? size : ""} category`}>
 					<div className="cover-image" style={{backgroundImage: `url(${imageUrl})`}}></div>
@@ -19,4 +16,5 @@ const MenuItem = ({ title, imageUrl, size, destination,history,...others }) => {
 	)
 };
 
-export default withRouter(MenuItem);
+
+export default MenuItem;

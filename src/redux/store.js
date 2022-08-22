@@ -100,17 +100,8 @@ export const cartPricesTotalSelector = createSelector([cartPricesTotalSelect], (
 const appSelect = (state) => state.appReducer;
 
 export const appSelector = createSelector(
-	[appSelect,cartSelect,collectionsSelect,URLDeducedCollectionSelect,cartItemsTotalSelect,cartPricesTotalSelect],
-	(app,cart,collections,urlDeducedCollection,cartItemsTotal,cartPricesTotal) => {
-		return {
-			app,
-			cart,
-			collections,
-			cartItemsTotal,
-			cartPricesTotal,
-			urlDeducedCollection,
-		}
-	}
+	[appSelect],
+	app=>app
 )
 
 

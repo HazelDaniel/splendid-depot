@@ -3,7 +3,6 @@ import "./F04_page.styles.scss";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const F04Page = ({ location }) => {
-	console.log(location);
 	return (
 		<div className="F04-wrapper">
 			<div className="F04-div">
