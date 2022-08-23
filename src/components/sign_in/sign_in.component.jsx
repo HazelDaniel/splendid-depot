@@ -9,8 +9,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import isEqual from "lodash.isequal";
 
 
-const handleSubmit = async (event,email,password) => {
-	event.preventDefault();
+const handleSubmit = async (email,password) => {
 	try {
 		const authWithEmailAndPassword = await signInWithEmailAndPassword(auth, email, password);
 		console.log(authWithEmailAndPassword);
@@ -55,7 +54,7 @@ const SignInReducer = (state, action) => {
 
 const SignIn = React.memo(() => {
 	const [formState, dispatch] = useReducer(SignInReducer, InitialState);
-	
+	const { email, password } = formState;
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		dispatch({ type: "UPDATE_FORM", payload: { [name]: value } });
@@ -68,8 +67,9 @@ const SignIn = React.memo(() => {
 			</div>
 
 			<form
-				onSubmit={() => {
-					handleSubmit();
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleSubmit(email,password);
 					dispatch({ type: "CLEAR_FORM" });
 				}}
 			>
