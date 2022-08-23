@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React from "react";
 
 // ROUTER
-import { Switch, Route, withRouter, Redirect, useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 // COMPONENTS
 import "./wrapper.styles.scss";
@@ -20,53 +20,15 @@ import { appSelector, userSelector } from "../../redux/store";
 import AlertPopup from "../popup/alert_popup/alert_popup.component";
 const isEqual = require("lodash.isequal");
 
-// class Wrapper extends React.Component {
-// 	render() {
 
-// 		return (
-
-// 		);
-
-// 	}
-// 	// componentDidMount() {
-// 	// 	console.log("mounted");
-// 	// }
-// 	shouldComponentUpdate(nextProps) {
-		// if (isEqual(this.props.app, nextProps.app) && isEqual(this.props.user, nextProps.user) && isEqual(this.props.collections, nextProps.collections)) {
-		// 	let willRender = false;
-		// 	if (this.props.location.pathname !== nextProps.location.pathname) {
-		// 		willRender = true;
-		// 	}
-		// 	return willRender;
-		// }
-		// return true;
-	// }
-// }
-
-// const mapStateToProps = createStructuredSelector({
-// 	user: userSelector,
-// 	collections: collectionsSelector,
-// 	app: appSelector,
-// });
-// // TODO: REMEMBER TO MEMOIZE
-// export default connect(mapStateToProps)(withRouter(Wrapper));
-
-const areEqual = (currentProps, nextProps) => {
-	// if (isEqual(currentProps.app, nextProps.app) && isEqual(currentProps.user, nextProps.user) && isEqual(currentProps.collections, nextProps.collections)) {
-	// 	let willRender = false;
-	// 	if (currentProps.location.pathname !== nextProps.location.pathname) {
-	// 		willRender = true;
-	// 	}
-	// 	return willRender;
-	// }
-	if (isEqual(currentProps, nextProps)) return false;
-	return true;
+export const areEqual = (currentProps, nextProps) => {
+	if (isEqual(currentProps, nextProps)) return true;
+	return false;
 }
 
 
 
-const Wrapper = React.memo(
-	() => {
+const Wrapper = React.memo(() => {
 		const location = useLocation();
 		let app = useSelector(appSelector);
 		let user = useSelector(userSelector);
@@ -75,7 +37,7 @@ const Wrapper = React.memo(
 
 		let displayName = user.currentUser ? user.displayName.split(" ") : null;
 
-		console.log("rendering wrapper ");
+		// console.log("rendering wrapper ");
 		return (
 			<div className={`wrapper ${location.pathname === "/auth" ? "auth" : ""}`}>
 				<Header />
@@ -99,10 +61,10 @@ const Wrapper = React.memo(
 		);
 	},
 	(prevProps, nextProps) => {
-		if (isEqual(prevProps,nextProps)) {
+		if (prevProps === nextProps) {
 			return true; // props are equal
 		}
-		return true; // props are not equal -> update the component
+		return false; // props are not equal -> update the component
 	}
 );
 export default Wrapper;

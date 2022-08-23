@@ -17,7 +17,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const CartModal = () => {
 	const cart = useSelector(cartSelector);
-	// console.log(cart)
+	// console.log("rendering cart modal.")
 	const history = useHistory();
 	const dispatch = useDispatch();
 	// console.log(history)

@@ -1,57 +1,61 @@
-import React from "react";
+import React, { useReducer } from "react";
 import "./sign_up.styles.scss";
 import { FormInput } from "../form_input/form_input.component";
 import { CustomButton } from "../custom_button/custom_button.component";
 import { createUserProfileDocument } from "../../firebase/firebase.utils";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase.utils";
-import { getDoc } from "firebase/firestore";
+import isEqual from "lodash.isequal";
 
-class SignUp extends React.Component{
-	constructor() {
-		super();
-		this.state = {
-			displayName: "",
-			email: "",
-			password: "",
-			confirmPassword: "",
-		}
+
+const handleSubmit = async (email,password,confirmPassword,displayName) => {
+	if (password !== confirmPassword) {
+		alert("passwords do not match!");
+		return;
 	}
-	handleChange = event => {
-		const { name, value } = event.target;
-		this.setState((_) => {
+	if (password.length < 6 || confirmPassword.length < 6) {
+		alert("them say make you provide correct password, nor collect oh");
+	}
+	const { user } = await createUserWithEmailAndPassword(auth, email, password);
+	// console.log(user)
+	const userDocument = await createUserProfileDocument(user, { displayName: displayName });
+};
+
+const InitialState = {
+	displayName: "",
+	email: "",
+	password: "",
+	confirmPassword: "",
+};
+
+const SignUpReducer = (state, action) => {
+	switch (action.type) {
+		case "CLEAR_FORM":
 			return {
-				[name]: value
-			}
-		}, () => {
-			// console.log(this.state)
-		})
+				...state,
+				displayName: "",
+				email: "",
+				password: "",
+				confirmPassword: "",
+			};
+		case "UPDATE_FORM":
+			return {
+				...state,
+				...action.payload,
+			};
+		default:
+			return state;
 	}
-	handleSubmit = async event => {
-		event.preventDefault();
-		const { email, password, confirmPassword, displayName } = this.state;
-		if (password !== confirmPassword) {
-			alert("passwords do not match!");
-			return;
+};
+
+const SignUp = React.memo(
+	() => {
+		const [formState, dispatch] = useReducer(SignUpReducer, InitialState);
+		const { email, password, confirmPassword, displayName } = formState;
+		const handleChange = (event) => {
+			const { name, value } = event.target;
+			dispatch({ type: "UPDATE_FORM", payload: { [name]: value } });
 		};
-		if (password.length < 6 || confirmPassword.length < 6) {
-			alert("them say make you provide correct password, no chop wotowoto oh")
-		}
-		const { user } = await createUserWithEmailAndPassword(
-			auth,email, password
-		);
-		// console.log(user)
-		const createUserRef = await createUserProfileDocument(user, { displayName });
-		this.setState({
-			displayName: "",
-			email: "",
-			password: "",
-			confirmPassword: "",
-		});
-		const createUserSnapshot = await getDoc(createUserRef);
-		// console.log(createUserSnapshot.data())
-	}
-	render() {
 		return (
 			<div className="SUPB auth-body">
 				<div className="heading-div">
@@ -59,22 +63,35 @@ class SignUp extends React.Component{
 					<p className="subtitle">sign in with your email and password</p>
 				</div>
 
-				<form onSubmit={this.handleSubmit}>
+				<form
+					onSubmit={async (e) => {
+						e.preventDefault();
+						await handleSubmit(email, password, confirmPassword, displayName);
+						dispatch({ type: "CLEAR_FORM" });
+					}}
+				>
 					<div className="inputs-div">
-						<FormInput handleChange={this.handleChange} type="text" name="displayName" placeholder="Display Name" required value={ this.state.displayName} />
-					<FormInput handleChange={this.handleChange}  type="email" name="email" placeholder="Email" required value={ this.state.email}/>
-					<FormInput handleChange={this.handleChange}  type="password" name="password" placeholder="Password" required value={ this.state.password}/>
-					<FormInput handleChange={this.handleChange}  type="password" name="confirmPassword" placeholder="Confirm password" required value={ this.state.confirmPassword}/>
-				</div>
-				<div className="cta-div">
-					<CustomButton type="submit" className="cta-primary" >
-						SIGN UP
-					</CustomButton>
-				</div>
+						<FormInput handleChange={handleChange} type="text" name="displayName" placeholder="Display Name" required value={formState.displayName} />
+						<FormInput handleChange={handleChange} type="email" name="email" placeholder="Email" required value={formState.email} />
+						<FormInput handleChange={handleChange} type="password" name="password" placeholder="Password" required value={formState.password} />
+						<FormInput handleChange={handleChange} type="password" name="confirmPassword" placeholder="Confirm password" required value={formState.confirmPassword} />
+					</div>
+					<div className="cta-div">
+						<CustomButton type="submit" className="cta-primary">
+							SIGN UP
+						</CustomButton>
+					</div>
 				</form>
 			</div>
-		)
+		);
+	},
+	(prev, next) => {
+		if (isEqual(prev, next)) return true;
+		return false;
 	}
-}
+);
+
 export default SignUp;
+
+
 

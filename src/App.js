@@ -1,4 +1,4 @@
-import { React, Component, useEffect, useRef } from "react";
+import { React, useEffect, useRef } from "react";
 import "./App.scss";
 import Wrapper from "./components/wrapper/wrapper.component";
 // FIREBASE
@@ -12,45 +12,6 @@ import {useDispatch } from "react-redux";
 import { unmountLoader, renderLoader } from "./redux/app/app.slice";
 // UTILS
 import { wait } from "./utils";
-
-// class App extends Component {
-// 	render() {
-// 		console.log("app rendering ...");
-// 		return <Wrapper />;
-// 	}
-// 	unsubscribeFromAuth = null;
-// 	componentDidMount() {}
-
-// 	componentWillUnmount() {
-// 		this.unsubscribeFromAuth();
-// 	}
-// }
-
-// const mapStateToProps = createStructuredSelector({
-// 	currentUser: userSelector,
-// 	app: appSelector,
-// });
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		updateUser: (user) => {
-// 			dispatch(updateUser(user));
-// 		},
-// 		renderWelcome: (_) => {
-// 			dispatch(renderWelcome());
-// 		},
-// 		unmountWelcome: (_) => {
-// 			dispatch(unmountWelcome());
-// 		},
-// 		renderLoader: (_) => {
-// 			dispatch(renderLoader());
-// 		},
-// 		unmountLoader: (_) => {
-// 			dispatch(unmountLoader());
-// 		},
-// 	};
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
 
 
 function useWhyDidYouUpdate(name, props) {
@@ -83,8 +44,6 @@ function useWhyDidYouUpdate(name, props) {
 		previousProps.current = props;
 	});
 }
-
-
 
 let unsubscribeFromAuth;
 let unsubscribeFromSnapshot;
@@ -123,9 +82,7 @@ const App = (props) => {
 					// this.setState({currentUser: userAuth})
 					dispatch(updateUser({ currentUser: userAuth }));
 				}
-				
-				// user = userAuth;
-				// console.log(currentUser);
+
 				//TODO: IMPLEMENT A "WELCOME, USER.DISPLAY_NAME , CLICK HERE TO GO TO ..." POPUP MESSAGE ,  WHICH SHOULD HAPPEN ONLY ONCE (WILL NOT HAPPEN HERE IN THIS BLOCK)
 			});
 		} catch (error) {

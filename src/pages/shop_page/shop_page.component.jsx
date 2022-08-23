@@ -8,41 +8,30 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 // REDUX
 import { collectionsSelector } from "../../redux/store";
 import { createStructuredSelector } from "reselect";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 // FIREBASE
 import { updateCollections } from "../../redux/shop/shop.slice";
 
 const isEqual = require("lodash.isequal");
 
-class ShopPage extends React.Component {
-	render() {
-		// console.log("rendering shop page")
-		const { collections } = this.props;
-		return (
-			<div className="collection-container">
-				{collections.map(({ id, ...otherProps }) => (
-					<ShopCollection key={id} {...otherProps} />
-				))}
-			</div>
-		);
-	}
-	shouldComponentUpdate(nextProps) {
-		if (isEqual(this.props, nextProps)) return false;
-		return true;
-	}
 
-}
+
+const ShopPage = React.memo(({collections}) => {
+	return (
+		<div className="collection-container">
+			{collections.map(({ id, ...otherProps }) => (
+				<ShopCollection key={id} {...otherProps} />
+			))}
+		</div>
+	);
+}, (prev, next) => {
+	if (isEqual(prev.collections, next.collections)) return true;
+	return false;
+})
 
 const mapStateToProps = createStructuredSelector({
 	collections: collectionsSelector,
-});
-const mapDispatchToProps = dispatch => {
-	return {
-		updateCollections: (collection) => {
-			dispatch(updateCollections(collection));
-		}
-	}
-}
+})
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(ShopPage));
+export default connect(mapStateToProps)(ShopPage);
