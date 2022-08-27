@@ -50,6 +50,10 @@ const SignInReducer = (state, action) => {
 			return state;
 	}
 }
+const updateForm = (payload) => ({
+	type: "UPDATE_FORM",
+	payload
+})
 
 
 const SignIn = React.memo(() => {
@@ -57,7 +61,7 @@ const SignIn = React.memo(() => {
 	const { email, password } = formState;
 	const handleChange = (event) => {
 		const { name, value } = event.target;
-		dispatch({ type: "UPDATE_FORM", payload: { [name]: value } });
+		dispatch(updateForm({ [name]: value }));
 	};
 	return (
 		<div className="SIPB auth-body">

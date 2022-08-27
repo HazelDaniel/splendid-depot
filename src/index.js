@@ -10,19 +10,24 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistedStore } from "./redux/store";
 import Loader from "./components/loader/loader.component";
 import { global as GlobalStyle } from "./components/styles/root/root.styles";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	// <React.StrictMode>
 	<>
 		<GlobalStyle />
-		<Provider store={store}>
-			<PersistGate persistor={persistedStore} loading={<Loader />}>
-				<Router>
-					<App />
-				</Router>
-			</PersistGate>
-		</Provider>
+		<QueryClientProvider client={queryClient}>
+			<Provider store={store}>
+				<PersistGate persistor={persistedStore} loading={<Loader />}>
+					<Router>
+						<App />
+					</Router>
+				</PersistGate>
+			</Provider>
+		</QueryClientProvider>
 	</>
 	// {/* </React.StrictMode> */}
 );
