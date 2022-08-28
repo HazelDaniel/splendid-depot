@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useCallback, useReducer } from "react";
 import "./sign_up.styles.scss";
 import { FormInput } from "../form_input/form_input.component";
 import { CustomButton } from "../custom_button/custom_button.component";
@@ -6,19 +6,19 @@ import { createUserProfileDocument } from "../../firebase/firebase.utils";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase.utils";
 import isEqual from "lodash.isequal";
+import { toast } from "react-toastify";
+import { useAuthCreateUserWithEmailAndPassword } from "@react-query-firebase/auth";
 
-
-const handleSubmit = async (email,password,confirmPassword,displayName) => {
+const validateFromClient = (password, confirmPassword) => {
 	if (password !== confirmPassword) {
-		alert("passwords do not match!");
-		return;
+		toast.error("password credentials do not match !");
+		return false;
 	}
-	if (password.length < 6 || confirmPassword.length < 6) {
-		alert("them say make you provide correct password, nor collect oh");
+	if (password.length < 6) {
+		toast.error("password too short, use longer keys");
+		return false;
 	}
-	const { user } = await createUserWithEmailAndPassword(auth, email, password);
-	// console.log(user)
-	const userDocument = await createUserProfileDocument(user, { displayName: displayName });
+	return true;
 };
 
 const InitialState = {
@@ -52,6 +52,16 @@ const SignUp = React.memo(
 	() => {
 		const [formState, dispatch] = useReducer(SignUpReducer, InitialState);
 		const { email, password, confirmPassword, displayName } = formState;
+		const { mutate: signUpAuthMutate } = useAuthCreateUserWithEmailAndPassword(auth, {
+			onSuccess: async data => {
+				toast.success(`success ${data}`);
+				// await createUserProfileDocument(signUpAuthData, { displayName: displayName });
+				//TODO: remember to dispatch a sign in action to store
+			},
+			onError: error => {
+				toast.error(`couldn't sign you up. reason: ${error.message}`);
+			}
+		});
 		const handleChange = (event) => {
 			const { name, value } = event.target;
 			dispatch({ type: "UPDATE_FORM", payload: { [name]: value } });
@@ -66,7 +76,9 @@ const SignUp = React.memo(
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault();
-						await handleSubmit(email, password, confirmPassword, displayName);
+						const isClientValidated = validateFromClient(password, confirmPassword);
+						if (!isClientValidated) return;
+						signUpAuthMutate({ email, password });
 						dispatch({ type: "CLEAR_FORM" });
 					}}
 				>
@@ -92,6 +104,3 @@ const SignUp = React.memo(
 );
 
 export default SignUp;
-
-
-

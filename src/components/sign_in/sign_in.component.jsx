@@ -1,34 +1,16 @@
 import React, { useReducer } from "react";
 import "./sign_in.styles.scss";
+
 import { FormInput } from "../form_input/form_input.component";
 import { CustomButton } from "../custom_button/custom_button.component";
 
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../firebase/firebase.utils";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useAuthSignInWithEmailAndPassword, useAuthSignInWithPopup } from "@react-query-firebase/auth";
+import { toast } from "react-toastify";
 import isEqual from "lodash.isequal";
 
 
-const handleSubmit = async (email,password) => {
-	try {
-		const authWithEmailAndPassword = await signInWithEmailAndPassword(auth, email, password);
-		console.log(authWithEmailAndPassword);
-	} catch (error) {
-		throw error;
-	}
-};
-const signInWithGoogle = () => {
-	const provider = new GoogleAuthProvider();
-	return signInWithPopup(auth, provider);
-}
-const handleGoogleSignIn = async (event) => {
-		event.preventDefault();
-		try {
-			console.log(signInWithGoogle());
-		} catch (error) {
-			throw error;
-		}
-	};
 const InitialState = {
 	email: "",
 	password: "",
@@ -54,11 +36,28 @@ const updateForm = (payload) => ({
 	type: "UPDATE_FORM",
 	payload
 })
+const clearForm = () => ({
+	type: "CLEAR_FORM"
+})
 
 
 const SignIn = React.memo(() => {
 	const [formState, dispatch] = useReducer(SignInReducer, InitialState);
 	const { email, password } = formState;
+	const { mutate: signInAuthMutate, isLoading: signInAuthIsLoading } = useAuthSignInWithEmailAndPassword(auth, {
+		onSuccess: async(data)=> {
+			toast.success(`sign in success ${data}`);
+		},
+		onError:(error)=>{
+			toast.error(`couldn't sign you in. reason: ${error.message}`);
+		}
+	});
+	debugger;
+	const { mutate: popupAuthMutate, isLoading: popupAuthIsLoading } = useAuthSignInWithPopup(auth, {
+		onError: error => {
+			toast.error(`could not open authentication modal. reason: ${error.message}`)
+		}
+	});
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		dispatch(updateForm({ [name]: value }));
@@ -73,8 +72,8 @@ const SignIn = React.memo(() => {
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
-					handleSubmit(email,password);
-					dispatch({ type: "CLEAR_FORM" });
+					signInAuthMutate({ email, password });
+					dispatch(clearForm());
 				}}
 			>
 				<div className="SIPB-inputs-div inputs-div">
@@ -82,10 +81,16 @@ const SignIn = React.memo(() => {
 					<FormInput handleChange={handleChange} type="password" name="password" placeholder="Password" required value={formState.password} />
 				</div>
 				<div className="SIPB-cta-div cta-div">
-					<CustomButton type="submit" className="cta-primary">
+					<CustomButton disabled={signInAuthIsLoading} type="submit" className="cta-primary">
 						SIGN IN
 					</CustomButton>
-					<CustomButton className="cta-secondary" onClick={handleGoogleSignIn}>
+					<CustomButton
+						className="cta-secondary"
+						disabled={popupAuthIsLoading}
+						onClick={popupAuthMutate({
+							provider: new GoogleAuthProvider(),
+						})}
+					>
 						SIGN IN WITH GOOGLE
 					</CustomButton>
 				</div>
