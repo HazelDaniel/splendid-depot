@@ -8,7 +8,7 @@ const CartModalItem = ({ cart }) => {
 			<div className="cart-item-details">
 				<p className="item-name">{cart.name.toUpperCase()}</p>
 				<p className="item-quantity">
-					{cart.quantity} x {cart.price}
+					{cart.quantity} x ${cart.price}
 				</p>
 			</div>
 		</div>

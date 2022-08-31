@@ -52,7 +52,7 @@ const SignIn = React.memo(() => {
 			toast.error(`couldn't sign you in. reason: ${error.message}`);
 		}
 	});
-	debugger;
+	// debugger;
 	const { mutate: popupAuthMutate, isLoading: popupAuthIsLoading } = useAuthSignInWithPopup(auth, {
 		onError: error => {
 			toast.error(`could not open authentication modal. reason: ${error.message}`)
@@ -87,9 +87,7 @@ const SignIn = React.memo(() => {
 					<CustomButton
 						className="cta-secondary"
 						disabled={popupAuthIsLoading}
-						onClick={popupAuthMutate({
-							provider: new GoogleAuthProvider(),
-						})}
+						// onClick={}
 					>
 						SIGN IN WITH GOOGLE
 					</CustomButton>

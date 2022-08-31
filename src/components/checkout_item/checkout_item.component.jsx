@@ -15,7 +15,7 @@ const CheckoutItem = ({cart}) => {
 				<span>{cart.quantity}</span>
 				<button onClick={() => dispatch(addToCart(cart))}>{">"}</button>
 			</div>
-			<p className="checkout-price-text">{cart.price}</p>
+			<p className="checkout-price-text">${cart.price}</p>
 			<button className="checkout-remove-icon" onClick={() => dispatch(clearFromCart(cart))}>
 				&times;
 			</button>

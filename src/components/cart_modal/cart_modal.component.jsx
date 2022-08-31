@@ -11,7 +11,7 @@ import { cartSelector } from "../../redux/store";
 import CartModalItem from "../cart_modal_item/cart_modal_item.component";
 import { nanoid } from "@reduxjs/toolkit";
 import { toggleCartVisibility } from "../../redux/cart/cart.slice";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom/cjs/react-router-dom.min";
 
 
 

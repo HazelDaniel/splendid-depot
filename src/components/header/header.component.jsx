@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { withRouter,Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Logo } from "../logo/logo.component";
 import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
 import {HEADER} from "./header.styles";
@@ -8,8 +8,7 @@ import {HEADER} from "./header.styles";
 import { signOut } from "firebase/auth";
 import { auth, DB, getCollectionsMap } from "../../firebase/firebase.utils";
 
-import { connect, useDispatch, useSelector } from "react-redux";
-import { createStructuredSelector } from "reselect";
+import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../../redux/store";
 import { cartItemsTotalSelector } from "../../redux/store";
 import { collection, onSnapshot } from "firebase/firestore";

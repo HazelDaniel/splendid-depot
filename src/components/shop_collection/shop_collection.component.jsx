@@ -2,16 +2,14 @@ import React from "react";
 import CollectionItem from "../collection_item/collection_item.component";
 import { Link, withRouter, Redirect, useRouteMatch, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
-
 import "./shop_collection.styles.scss";
 
 import { connect } from "react-redux";
 import { URLDeducedCollectionSelector } from "../../redux/store";
 
-
-
-const ShopCollection = React.memo(({ title, routeName, items ,collection}) => {
-		const match = useRouteMatch();
+const ShopCollection = React.memo(
+	({ title, routeName, items, collection, match}) => {
+		// const match = useRouteMatch();
 		const location = useLocation();
 		// console.log("shop collection");
 		if (match.path === `/shop`) {

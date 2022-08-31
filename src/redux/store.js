@@ -87,7 +87,7 @@ export const cartItemsTotalSelector = createSelector([cartItemsTotalSelect], (to
 const cartPricesTotalSelect = (state) => {
 	const total = state.cartReducer.carts
 		.map((cart) => {
-			return +cart.quantity * +cart.price.slice(1);
+			return +cart.quantity * +cart.price;
 		})
 		.reduce((prev, next) => {
 			return (prev + next);

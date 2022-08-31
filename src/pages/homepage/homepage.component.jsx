@@ -3,7 +3,6 @@ import Directory from "../../components/directory/directory.component";
 import "./homepage.styles.scss";
 const isEqual = require("lodash.isequal");
 const Homepage = React.memo(() => {
-	console.log("homepage rendering");
 	return (
 		<div className="home-container">
 			<Directory></Directory>

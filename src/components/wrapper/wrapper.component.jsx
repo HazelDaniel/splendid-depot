@@ -34,8 +34,9 @@ const Wrapper = React.memo(() => {
 		let user = useSelector(userSelector);
 
 		// console.log(app, user);
+	// console.log(user)
 
-		let displayName = user.currentUser ? user.displayName.split(" ") : null;
+		let displayName = user.currentUser ? user?.displayName?.split(" ") : ["test"];
 
 		// console.log("rendering wrapper ");
 		return (

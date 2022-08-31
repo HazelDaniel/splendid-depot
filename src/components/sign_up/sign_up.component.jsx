@@ -55,7 +55,11 @@ const SignUp = React.memo(
 		const { mutate: signUpAuthMutate } = useAuthCreateUserWithEmailAndPassword(auth, {
 			onSuccess: async data => {
 				toast.success(`success ${data}`);
-				// await createUserProfileDocument(signUpAuthData, { displayName: displayName });
+				const userAdditionalData = {
+					displayName
+				}
+				console.log(userAdditionalData);
+				await createUserProfileDocument(data, userAdditionalData);
 				//TODO: remember to dispatch a sign in action to store
 			},
 			onError: error => {

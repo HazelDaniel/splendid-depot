@@ -19,7 +19,7 @@ const CollectionItem = React.memo(
 				</div>
 				<div className="item-details-div">
 					<p className="item-name">{name}</p>
-					<p className="item-price-text">{price}</p>
+					<p className="item-price-text">${price}</p>
 					<button
 						className="add-to-cart-cta"
 						onClick={() => {
