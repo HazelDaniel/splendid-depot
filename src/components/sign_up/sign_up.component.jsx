@@ -61,18 +61,20 @@ const SignUp = React.memo(
 	() => {
 		const [formState, dispatch] = useReducer(SignUpReducer, InitialState);
 		const { email, password, confirmPassword, displayName } = formState;
-		const { currentUser,updateCurrentUser } = useContext(userContext);
+		const { currentUser, updateCurrentUser } = useContext(userContext);
+		console.log(currentUser);
 		const { mutate: signUpAuthMutate } = useAuthCreateUserWithEmailAndPassword(auth, {
 			onSuccess: async ({user}) => {
 				console.log(`success ${user}`);
 				const userAdditionalData = {
-					displayName
-				}
+					displayName,
+					cart: []
+				};
 				await createUserProfileDocument(user, userAdditionalData);
 				updateCurrentUser({
 					...currentUser,
-					displayName,
-					currentUser: user
+					...userAdditionalData,
+					currentUser: user,
 				});
 				//TODO: remember to dispatch a sign in action to store
 			},

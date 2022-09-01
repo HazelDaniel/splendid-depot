@@ -1,4 +1,4 @@
-import { React, useEffect, useRef, createContext, useReducer, useState, memo } from "react";
+import { React, useEffect, useRef, createContext, useReducer, useState, memo, useCallback, useMemo } from "react";
 import "./App.scss";
 import Wrapper from "./components/wrapper/wrapper.component";
 // FIREBASE
@@ -23,15 +23,21 @@ let unsubscribeFromSnapshot;
 export const user = {
 	currentUser: null,
 };
+export const manualAuth = {
+	manualSignedIn: 0,
+	manualSignIn: () => {},
+};
+export const manualSignInContext = createContext(manualAuth);
 export const userContext = createContext({
 	...user,
 	updateCurrentUser: () => {},
 });
-export const userNameContext = createContext({
-	displayName: null,
-	setDisplayName: () => {},
-});
+// export const userNameContext = createContext({
+// 	displayName: null,
+// 	setDisplayName: () => {},
+// });
 const UserProvider = userContext.Provider;
+const ManualSignInProvider = manualSignInContext.Provider;
 
 // const userReducer = (state, action) => {
 // 	switch (action.type) {
@@ -55,6 +61,35 @@ const App = (_) => {
 	const dispatch = useDispatch();
 	const [currentUser, updateCurrentUser] = useState(user);
 	const userProviderValue = { currentUser, updateCurrentUser };
+	const [{manualSignedIn}, manualSignIn] = useState(manualAuth);
+
+	const manualSignInValue = useMemo(()=>({
+		manualSignedIn, manualSignIn
+	}),[manualSignIn,manualSignedIn]);
+
+
+	const checkLastSIgnIn = useCallback(() => (async () => {
+		try {
+			dispatch(renderLoader());
+			const lastSignIn = await checkLastAuthSession();
+			console.log(lastSignIn)
+			const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
+			const { fields } = await userRes.json();
+			console.log(fields);
+			const userData = {
+				id: lastSignIn.uid,
+				...reformUserObject(fields),
+				currentUser: lastSignIn,
+			};
+			// IN THIS BLOCK , WE ALSO WANT TO GET THE CARTS OF THE CURRENT SIGNED IN USER
+			updateCurrentUser(userData);
+		} catch (error) {
+			return error;
+		} finally {
+			dispatch(unmountLoader());
+		}
+	})(),[dispatch]);
+
 	console.log(currentUser);
 	useEffect(() => {
 		// prettier-ignore
@@ -73,32 +108,21 @@ const App = (_) => {
 
 	useEffect(() => {
 		// TODO: DISPATCH AN ACTION THAT RE-TRIGGERS THIS EFFECT FROM THE SIGN IN COMPONENT (AND UPDATE THE DEPENDENCY ARRAY) SO AS NOT TO MAKE EXTRA API REQUEST WHEN SIGNING IN
-		let unsubscribeFromSnapshot;
-		const checkLastSIgnIn = async () => {
-			try {
-				dispatch(renderLoader());
-				const lastSignIn = await checkLastAuthSession();
-				const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
-				const { fields } = await userRes.json();
-				const userData = {
-					id: lastSignIn.uid,
-					...reformUserObject(fields),
-					currentUser: lastSignIn,
-				};
-				updateCurrentUser(userData);
-			} catch (error) {
-				return error;
-			} finally {
-				unsubscribeFromSnapshot && unsubscribeFromSnapshot();
-				dispatch(unmountLoader());
-			}
-		};
 		checkLastSIgnIn();
-	}, [dispatch]);
+	}, [checkLastSIgnIn]);
+
+	useEffect(() => {
+		if (!!manualSignedIn) {
+			console.log("signed in ");
+			checkLastSIgnIn();
+		}
+	}, [manualSignedIn, checkLastSIgnIn]);
 
 	return (
 		<UserProvider value={userProviderValue}>
+			<ManualSignInProvider value={manualSignInValue}>
 			<Wrapper />
+			</ManualSignInProvider>
 		</UserProvider>
 	);
 };
