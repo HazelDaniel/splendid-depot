@@ -30,14 +30,14 @@ const initialDirectoryState = {
 				"https://media.istockphoto.com/photos/fashion-portrait-pretty-sweet-woman-blowing-red-lips-black-hat-picture-id615595706?k=20&m=615595706&s=612x612&w=0&h=cYHsnlTeLI7JecQ56xwF6otI4bsiYAaKBFYAqCpKV6o=",
 			size: "large",
 			id: 4,
-			destination: "women",
+			destination: "womens",
 		},
 		{
 			title: "mens",
 			imageUrl: "https://media.istockphoto.com/photos/macho-man-picture-id1202142519?k=20&m=1202142519&s=612x612&w=0&h=JEzwcn8Ol22l3LIiPGJTNk5uSAW9UQ1OQfA4i0Mopuw=",
 			size: "large",
 			id: 5,
-			destination: "men",
+			destination: "mens",
 		},
 	],
 };

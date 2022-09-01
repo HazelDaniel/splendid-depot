@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import CollectionItem from "../collection_item/collection_item.component";
 import { Link, withRouter, Redirect, useRouteMatch, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
@@ -7,10 +7,13 @@ import "./shop_collection.styles.scss";
 import { connect } from "react-redux";
 import { URLDeducedCollectionSelector } from "../../redux/store";
 
+
 const ShopCollection = React.memo(
-	({ title, routeName, items, collection, match}) => {
+	({ title, routeName, items, collection, match,location }) => {
+
+
 		// const match = useRouteMatch();
-		const location = useLocation();
+		// const location = useLocation();
 		// console.log("shop collection");
 		if (match.path === `/shop`) {
 			// const { title, routeName, location, items } = this.props;
@@ -43,12 +46,12 @@ const ShopCollection = React.memo(
 	},
 	(prev, next) => {
 		if (prev.routeName === next.routeName) return true;
+		// if (prev.match.path === next.match.path) return true;
 		return false;
 	}
 );
 // TODO: REMEMBER TO MEMOIZE
 const mapStateToProps = (state, ownProps) => {
-	console.log(ownProps.match)
 	return {
 		collection: (() => {
 			const collectionCheck = URLDeducedCollectionSelector(ownProps.match.params.collection)(state);

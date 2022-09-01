@@ -9,8 +9,6 @@ const isEqual = require("lodash.isequal");
 const CollectionItem = React.memo(
 	({ ...cartDetails }) => {
 		const dispatch = useDispatch();
-
-
 		const { imageUrl, name, price } = cartDetails;
 		return (
 			<div className="collection-item">

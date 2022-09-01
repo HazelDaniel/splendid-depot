@@ -17,7 +17,8 @@ const isEqual = require("lodash.isequal");
 
 
 
-const ShopPage = React.memo(({collections}) => {
+const ShopPage = React.memo(({ collections }) => {
+
 	return (
 		<div className="collection-container">
 			{collections.map(({ id, ...otherProps }) => (

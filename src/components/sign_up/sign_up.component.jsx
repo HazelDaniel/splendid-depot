@@ -68,7 +68,6 @@ const SignUp = React.memo(
 				const userAdditionalData = {
 					displayName
 				}
-				console.log(userAdditionalData);
 				await createUserProfileDocument(user, userAdditionalData);
 				updateCurrentUser({
 					...currentUser,

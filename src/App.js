@@ -1,9 +1,9 @@
-import { React, useEffect, useRef, createContext, useReducer, useState } from "react";
+import { React, useEffect, useRef, createContext, useReducer, useState, memo } from "react";
 import "./App.scss";
 import Wrapper from "./components/wrapper/wrapper.component";
 // FIREBASE
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, checkLastAuthSession, createUserProfileDocument, DB, projectId } from "./firebase/firebase.utils";
+import { addCollectionAndDocument, auth, checkLastAuthSession, createUserProfileDocument, DB, projectId, SHOP_DATA } from "./firebase/firebase.utils";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 // REDUX
 // import { updateUser } from "./redux/user/user.slice";
@@ -15,6 +15,7 @@ import { reformUserObject, wait } from "./utils";
 import { last } from "lodash";
 import { useQuery } from "react-query";
 import { useFetchUser } from "./hooks/app/app.use_fetch_user";
+import { toast } from "react-toastify";
 
 let unsubscribeFromAuth;
 let unsubscribeFromSnapshot;
@@ -31,7 +32,6 @@ export const userNameContext = createContext({
 	setDisplayName: () => {},
 });
 const UserProvider = userContext.Provider;
-
 
 // const userReducer = (state, action) => {
 // 	switch (action.type) {
@@ -55,60 +55,46 @@ const App = (_) => {
 	const dispatch = useDispatch();
 	const [currentUser, updateCurrentUser] = useState(user);
 	const userProviderValue = { currentUser, updateCurrentUser };
-	// console.log(currentUser);
 	console.log(currentUser);
 	useEffect(() => {
-		if (!(!!(currentUser.currentUser))) return;
-		const listenForUserUpdate = async (currentUser) => {
-			try {
-				dispatch(renderLoader);
-				const userRef = doc(DB, "users", currentUser.id);
-				let userSnapshot = await getDoc(userRef);
-				unsubscribeFromSnapshot = onSnapshot(userRef, () => {
-					const userData = {
-						id: userRef.id,
-						...userSnapshot.data(),
-						currentUser: currentUser.currentUser,
-					};
-					// updateCurrentUser(JSON.parse(JSON.stringify(userData)));
-				});
-			} catch (error) {
-				console.log(error);
-			} finally {
-				dispatch(renderWelcome());
-				await wait(3);
-				dispatch(unmountWelcome());
-			}
+		// prettier-ignore
+		if (!(!!currentUser.currentUser)) return;
+		const listenForUserUpdate = async () => {
+			// TODO: THIS IS A CLIENT SIGN IN FUNCTIONALITY RIGHT HERE, EXPORT IT TO A SINGLE FUNCTION
+			dispatch(renderWelcome());
+			await wait(3);
+			dispatch(unmountWelcome());
 		};
-		listenForUserUpdate(currentUser);
+		listenForUserUpdate();
 		return () => {
-			unsubscribeFromSnapshot &&	unsubscribeFromSnapshot();
+			unsubscribeFromSnapshot && unsubscribeFromSnapshot();
 		};
 	}, [currentUser, dispatch]);
 
 	useEffect(() => {
+		// TODO: DISPATCH AN ACTION THAT RE-TRIGGERS THIS EFFECT FROM THE SIGN IN COMPONENT (AND UPDATE THE DEPENDENCY ARRAY) SO AS NOT TO MAKE EXTRA API REQUEST WHEN SIGNING IN
 		let unsubscribeFromSnapshot;
 		const checkLastSIgnIn = async () => {
 			try {
+				dispatch(renderLoader());
 				const lastSignIn = await checkLastAuthSession();
-				dispatch(renderLoader);
 				const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
 				const { fields } = await userRes.json();
 				const userData = {
 					id: lastSignIn.uid,
-					...(reformUserObject(fields)),
-					currentUser: lastSignIn
-				}
+					...reformUserObject(fields),
+					currentUser: lastSignIn,
+				};
 				updateCurrentUser(userData);
 			} catch (error) {
 				return error;
 			} finally {
-				dispatch(unmountLoader());
 				unsubscribeFromSnapshot && unsubscribeFromSnapshot();
+				dispatch(unmountLoader());
 			}
 		};
-		checkLastSIgnIn()
-	},[dispatch])
+		checkLastSIgnIn();
+	}, [dispatch]);
 
 	return (
 		<UserProvider value={userProviderValue}>

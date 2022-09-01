@@ -31,6 +31,7 @@ const Wrapper = React.memo(
 		const location = useLocation();
 		let app = useSelector(appSelector);
 		const user = useContext(userContext);
+
 		// console.log(app, user);
 		// console.log(user)
 		let displayName = user.currentUser ? user.currentUser.displayName?.split(" ") : null;
