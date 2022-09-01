@@ -48,7 +48,7 @@ const ShopCollection = React.memo(
 );
 // TODO: REMEMBER TO MEMOIZE
 const mapStateToProps = (state, ownProps) => {
-	// console.log(ownProps)
+	console.log(ownProps.match)
 	return {
 		collection: (() => {
 			const collectionCheck = URLDeducedCollectionSelector(ownProps.match.params.collection)(state);

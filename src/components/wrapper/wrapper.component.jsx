@@ -16,7 +16,7 @@ import F04Page from "../../pages/404_page/F04_page.component";
 import Loader from "../loader/loader.component";
 // REDUX
 import { useSelector } from "react-redux";
-import { appSelector, userSelector } from "../../redux/store";
+import { appSelector } from "../../redux/store";
 import AlertPopup from "../popup/alert_popup/alert_popup.component";
 import { userContext } from "../../App";
 const isEqual = require("lodash.isequal");
@@ -33,8 +33,8 @@ const Wrapper = React.memo(
 		const user = useContext(userContext);
 		// console.log(app, user);
 		// console.log(user)
-
-		let displayName = user.currentUser ? user.displayName?.split(" ") : ["test"];
+		let displayName = user.currentUser ? user.currentUser.displayName?.split(" ") : null;
+		// console.log(displayName)
 
 		// console.log("rendering wrapper ");
 		return (

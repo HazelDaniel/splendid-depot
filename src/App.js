@@ -55,9 +55,10 @@ const App = (_) => {
 	const dispatch = useDispatch();
 	const [currentUser, updateCurrentUser] = useState(user);
 	const userProviderValue = { currentUser, updateCurrentUser };
+	// console.log(currentUser);
 	console.log(currentUser);
 	useEffect(() => {
-		if (!(!!(currentUser.currentUser)))return;
+		if (!(!!(currentUser.currentUser))) return;
 		const listenForUserUpdate = async (currentUser) => {
 			try {
 				dispatch(renderLoader);
@@ -90,7 +91,6 @@ const App = (_) => {
 		const checkLastSIgnIn = async () => {
 			try {
 				const lastSignIn = await checkLastAuthSession();
-
 				dispatch(renderLoader);
 				const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
 				const { fields } = await userRes.json();
@@ -99,7 +99,6 @@ const App = (_) => {
 					...(reformUserObject(fields)),
 					currentUser: lastSignIn
 				}
-				console.log(userData);
 				updateCurrentUser(userData);
 			} catch (error) {
 				return error;

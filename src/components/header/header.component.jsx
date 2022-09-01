@@ -26,7 +26,7 @@ const Header = React.memo(() => {
 	const totalSelectedItems = useSelector(cartItemsTotalSelector);
 	const history = useHistory();
 	const dispatch = useDispatch();
-	console.log(user,user.currentUser.currentUser)
+	console.log(user, user.currentUser.currentUser);
 
 	useEffect(() => {
 		const collectionRef = collection(DB, "collections");

@@ -18,7 +18,6 @@ export const reformUserObject = (data) => {
 			})
 			.map(([key, value]) => {
 				const valueChecked = !!+value ? +value : value;
-				console.log(key, valueChecked);
 				return [key, valueChecked];
 			})
 	);
