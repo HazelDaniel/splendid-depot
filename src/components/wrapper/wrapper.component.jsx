@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 // ROUTER
 import { Switch, Route, Redirect, useLocation } from "react-router-dom/cjs/react-router-dom.min";
@@ -18,25 +18,23 @@ import Loader from "../loader/loader.component";
 import { useSelector } from "react-redux";
 import { appSelector, userSelector } from "../../redux/store";
 import AlertPopup from "../popup/alert_popup/alert_popup.component";
+import { userContext } from "../../App";
 const isEqual = require("lodash.isequal");
-
 
 export const areEqual = (currentProps, nextProps) => {
 	if (isEqual(currentProps, nextProps)) return true;
 	return false;
-}
+};
 
-
-
-const Wrapper = React.memo(() => {
+const Wrapper = React.memo(
+	() => {
 		const location = useLocation();
 		let app = useSelector(appSelector);
-		let user = useSelector(userSelector);
-
+		const user = useContext(userContext);
 		// console.log(app, user);
-	// console.log(user)
+		// console.log(user)
 
-		let displayName = user.currentUser ? user?.displayName?.split(" ") : ["test"];
+		let displayName = user.currentUser ? user.displayName?.split(" ") : ["test"];
 
 		// console.log("rendering wrapper ");
 		return (
@@ -49,7 +47,7 @@ const Wrapper = React.memo(() => {
 					<Route exact path="/shop" component={ShopPage} />
 					<Route exact path="/shop/:collection" render={() => <ShopCollection />} />
 					<Route exact path="/checkout" component={CheckoutPage} />
-					<Route exact path="/auth" render={() => (user.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
+					<Route exact path="/auth" render={() => (user.currentUser.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
 					<Route exact path="/*" render={() => <Redirect to="/FourZeroFour" />} />
 				</Switch>
 				{app.displayWelcomeMessage && displayName && location.pathname !== "/FourZeroFour" ? (

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
-import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Logo } from "../logo/logo.component";
 import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
 import {HEADER} from "./header.styles";
@@ -14,18 +14,19 @@ import { cartItemsTotalSelector } from "../../redux/store";
 import { collection, onSnapshot } from "firebase/firestore";
 import { updateCollections } from "../../redux/shop/shop.slice";
 import { renderLoader, unmountLoader } from "../../redux/app/app.slice";
+import { userContext } from "../../App";
+import { user as userInit } from "../../App";
 
 
 
 
 
-
-
-const Header = () => {
-	const user = useSelector(userSelector);
+const Header = React.memo(() => {
+	const user = useContext(userContext);
 	const totalSelectedItems = useSelector(cartItemsTotalSelector);
 	const history = useHistory();
 	const dispatch = useDispatch();
+	console.log(user,user.currentUser.currentUser)
 
 	useEffect(() => {
 		const collectionRef = collection(DB, "collections");
@@ -63,11 +64,12 @@ const Header = () => {
 						SHOP
 					</li>
 					<li className="header-nav-text">CONTACT</li>
-					{user.currentUser ? (
+					{user.currentUser.currentUser ? (
 						<li
 							className="header-nav-text"
 							onClick={async () => {
 								await signOut(auth);
+								user.updateCurrentUser(userInit);
 								history.push(`/auth`);
 							}}
 						>
@@ -91,6 +93,6 @@ const Header = () => {
 			</nav>
 		</HEADER>
 	);
-};
+})
 
 export default Header;

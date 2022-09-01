@@ -8,3 +8,19 @@ export const wait = seconds => {
 		},seconds * 1000)
 	})
 }
+
+
+export const reformUserObject = (data) => {
+	const modifiedData = Object.fromEntries(
+		Object.entries(data)
+			.map(([key, value]) => {
+				return [key, value[value.stringValue ? "stringValue" : value.integerValue ? "integerValue" : "null"]];
+			})
+			.map(([key, value]) => {
+				const valueChecked = !!+value ? +value : value;
+				console.log(key, valueChecked);
+				return [key, valueChecked];
+			})
+	);
+	return modifiedData;
+};

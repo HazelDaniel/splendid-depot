@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useContext, useReducer } from "react";
 import "./sign_up.styles.scss";
 import { FormInput } from "../form_input/form_input.component";
 import { CustomButton } from "../custom_button/custom_button.component";
@@ -8,6 +8,15 @@ import { auth } from "../../firebase/firebase.utils";
 import isEqual from "lodash.isequal";
 import { toast } from "react-toastify";
 import { useAuthCreateUserWithEmailAndPassword } from "@react-query-firebase/auth";
+import { userContext } from "../../App";
+
+// const handleSignUp = async (email, password,displayName)=>{
+// 	try {
+// 		const userAuth = await createUserWithEmailAndPassword(auth, email, password);
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// }
 
 const validateFromClient = (password, confirmPassword) => {
 	if (password !== confirmPassword) {
@@ -52,18 +61,24 @@ const SignUp = React.memo(
 	() => {
 		const [formState, dispatch] = useReducer(SignUpReducer, InitialState);
 		const { email, password, confirmPassword, displayName } = formState;
+		const { currentUser,updateCurrentUser } = useContext(userContext);
 		const { mutate: signUpAuthMutate } = useAuthCreateUserWithEmailAndPassword(auth, {
-			onSuccess: async data => {
-				toast.success(`success ${data}`);
+			onSuccess: async ({user}) => {
+				console.log(`success ${user}`);
 				const userAdditionalData = {
 					displayName
 				}
 				console.log(userAdditionalData);
-				await createUserProfileDocument(data, userAdditionalData);
+				await createUserProfileDocument(user, userAdditionalData);
+				updateCurrentUser({
+					...currentUser,
+					displayName,
+					currentUser: user
+				});
 				//TODO: remember to dispatch a sign in action to store
 			},
 			onError: error => {
-				toast.error(`couldn't sign you up. reason: ${error.message}`);
+				console.error(`couldn't sign you up. reason: ${error.message}`);
 			}
 		});
 		const handleChange = (event) => {
