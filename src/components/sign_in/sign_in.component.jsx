@@ -1,16 +1,29 @@
-import React, { useContext, useReducer } from "react";
+import React, { useCallback, useContext, useReducer } from "react";
 import "./sign_in.styles.scss";
 
 import { FormInput } from "../form_input/form_input.component";
 import { CustomButton } from "../custom_button/custom_button.component";
 
-import { GoogleAuthProvider } from "firebase/auth";
-import { auth } from "../../firebase/firebase.utils";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
 import { useAuthSignInWithEmailAndPassword, useAuthSignInWithPopup } from "@react-query-firebase/auth";
 import { toast } from "react-toastify";
 import isEqual from "lodash.isequal";
-import { manualSignInContext } from "../../App";
+import { manualSignInContext, userContext } from "../../App";
 import { async } from "@firebase/util";
+import { createUserDetails } from "../../utils";
+
+const handleGoogleSignIn = async () => {
+	try {
+		const provider = new GoogleAuthProvider();
+		const googleAuthResult = await signInWithPopup(auth, provider);
+		return googleAuthResult.user;
+	} catch (error) {
+		console.log(error);
+		return error;
+	}
+}
+
 
 const InitialState = {
 	email: "",
@@ -45,29 +58,20 @@ const SignIn = React.memo(
 	() => {
 		const [formState, dispatch] = useReducer(SignInReducer, InitialState);
 		const { email, password } = formState;
+		const { currentUser, updateCurrentUser } = useContext(userContext);
 		const { manualSignedIn, manualSignIn } = useContext(manualSignInContext);
+		const loginManually = useCallback(() => manualSignIn({
+			manualSignedIn: manualSignedIn + 1,
+		}), [manualSignIn, manualSignedIn]);
 		const { mutate: signInAuthMutate, isLoading: signInAuthIsLoading } = useAuthSignInWithEmailAndPassword(auth, {
-			onSuccess: async (data) => {
-				toast.success(`sign in success ${data}`);
-				manualSignIn({
-					manualSignedIn: manualSignedIn+1,
-				});
+			onSuccess: async ({user}) => {
+				toast.success(`sign in success ${user}`);
+				// NOTE: WE ARE LOGGING IN MANUALLY BECAUSE WE DO NOT WANT TO CREATE USER DATA FOR THE USER ON SIGN IN WITH E&P. IT ALREADY EXISTS SO WE ARE ONLY READING IT
+				loginManually();
 			},
 			onError: (error) => {
 				toast.error(`couldn't sign you in. reason: ${error.message}`);
 			},
-		});
-		// debugger;
-		const { mutate: popupAuthMutate, isLoading: popupAuthIsLoading } = useAuthSignInWithPopup(auth, {
-			onError: (error) => {
-				toast.error(`could not open authentication modal. reason: ${error.message}`);
-			},
-			onSuccess: async ({user}) => {
-				manualSignIn({
-					manualSignedIn: manualSignedIn + 1,
-				});
-			},
-			
 		});
 		const handleChange = (event) => {
 			const { name, value } = event.target;
@@ -95,11 +99,13 @@ const SignIn = React.memo(
 						<CustomButton disabled={signInAuthIsLoading} type="submit" className="cta-primary">
 							SIGN IN
 						</CustomButton>
-						<CustomButton className="cta-secondary" disabled={popupAuthIsLoading} onClick={(e) => {
+						<CustomButton className="cta-secondary"  onClick={async (e) => {
 							e.preventDefault();
-							popupAuthMutate({
-								provider: GoogleAuthProvider,
-							})
+							const googleAuthResult = await handleGoogleSignIn();
+							if (!!googleAuthResult.emailVerified) {
+								const { displayName } = googleAuthResult;
+								await createUserDetails(googleAuthResult, [currentUser, updateCurrentUser], {displayName});
+							};
 						}}>
 							SIGN IN WITH GOOGLE
 						</CustomButton>

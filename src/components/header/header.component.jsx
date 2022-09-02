@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { Link, Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Logo } from "../logo/logo.component";
@@ -18,7 +18,22 @@ import { userContext } from "../../App";
 import { user as userInit } from "../../App";
 
 
-
+const detectScrollAndStyle = ({current:element}) => {
+	if (!element) return;
+	var oldScrollY = window.scrollY;
+	window.onscroll = function (e) {
+		if (oldScrollY < window.scrollY) {
+			// DOWN
+			element.style.backgroundColor = `var(--BodyColor)`;
+			// element.style.visibility = `hidden`;
+		} else {
+			// UP
+			// element.style.visibility = `visible`;
+			element.style.backgroundColor = `transparent`;
+		}
+		oldScrollY = window.scrollY;
+	};
+}
 
 
 const Header = React.memo(() => {
@@ -26,7 +41,9 @@ const Header = React.memo(() => {
 	const totalSelectedItems = useSelector(cartItemsTotalSelector);
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const headerRef = useRef(null);
 	// console.log(user, user.currentUser.currentUser);
+	console.log("header rendering ")
 
 	useEffect(() => {
 		const collectionRef = collection(DB, "collections");
@@ -45,9 +62,12 @@ const Header = React.memo(() => {
 		return () => {
 			unSubscribeFromSnapshot();
 		}
-	},[dispatch])
+	}, [dispatch])
+	useEffect(() => {
+		detectScrollAndStyle(headerRef);
+	},[])
 	return (
-		<HEADER>
+		<HEADER ref={headerRef}>
 			<div className="logo-div">
 				<Link to="/">
 					<Logo></Logo>

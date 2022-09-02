@@ -1,3 +1,5 @@
+import { createUserProfileDocument } from "./firebase/firebase.utils";
+
 export const publicUrl = process.env.PUBLIC_URL;
 
 // ASYNC LOGICS
@@ -9,6 +11,7 @@ export const wait = (seconds) => {
 	});
 };
 
+// CONVERSION AND NORMALIZATION
 export const reformUserObject = (data) => {
 	const modifiedData = Object.fromEntries(
 		Object.entries(data)
@@ -21,4 +24,23 @@ export const reformUserObject = (data) => {
 			})
 	);
 	return modifiedData;
+};
+
+
+
+// AUTHENTICATION
+export const createUserDetails = async (userCred, [contextValue, contextUpdater], ...additionalDetails) => {
+	const [userExtraData] = additionalDetails;
+
+	const userAdditionalData = {
+		...userExtraData,
+		cart: [],
+	};
+	console.log(userAdditionalData)
+	await createUserProfileDocument(userCred, userAdditionalData);
+	contextUpdater({
+		...contextValue,
+		...userExtraData,
+		currentUser: userCred,
+	});
 };

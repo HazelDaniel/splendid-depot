@@ -8,7 +8,9 @@ import { auth } from "../../firebase/firebase.utils";
 import isEqual from "lodash.isequal";
 import { toast } from "react-toastify";
 import { useAuthCreateUserWithEmailAndPassword } from "@react-query-firebase/auth";
-import { userContext } from "../../App";
+import { user, userContext } from "../../App";
+import { updateUser } from "../../redux/user/user.slice";
+import { createUserDetails } from "../../utils";
 
 // const handleSignUp = async (email, password,displayName)=>{
 // 	try {
@@ -57,6 +59,8 @@ const SignUpReducer = (state, action) => {
 	}
 };
 
+
+
 const SignUp = React.memo(
 	() => {
 		const [formState, dispatch] = useReducer(SignUpReducer, InitialState);
@@ -66,17 +70,7 @@ const SignUp = React.memo(
 		const { mutate: signUpAuthMutate } = useAuthCreateUserWithEmailAndPassword(auth, {
 			onSuccess: async ({user}) => {
 				console.log(`success ${user}`);
-				const userAdditionalData = {
-					displayName,
-					cart: []
-				};
-				await createUserProfileDocument(user, userAdditionalData);
-				updateCurrentUser({
-					...currentUser,
-					...userAdditionalData,
-					currentUser: user,
-				});
-				//TODO: remember to dispatch a sign in action to store
+				await createUserDetails(user, [currentUser, updateCurrentUser], { displayName });
 			},
 			onError: error => {
 				console.error(`couldn't sign you up. reason: ${error.message}`);

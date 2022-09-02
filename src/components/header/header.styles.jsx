@@ -6,10 +6,12 @@ export const HEADER = styled.header`
 	${makeRowFlex}
 	align-items: flex-start;
 	justify-content: space-between;
-	height: 10rem;
+	height: 11rem;
+	padding-top: 3rem;
 	position: fixed;
 	z-index: 2;
 	// margin-bottom: 2rem;
+	transition: background-color ease-in .7s;
 
 	.logo-div {
 		${makeFullHeightBlock}
@@ -105,7 +107,7 @@ export const HEADER = styled.header`
 
 			span {
 				${makeAbsoluteDiv}
-				top: -4%;
+				top: -15%;
 				left: 40%;
 				font-weight: 700;
 				font-size: 1.2rem;

@@ -32,30 +32,8 @@ export const userContext = createContext({
 	...user,
 	updateCurrentUser: () => {},
 });
-// export const userNameContext = createContext({
-// 	displayName: null,
-// 	setDisplayName: () => {},
-// });
 const UserProvider = userContext.Provider;
 const ManualSignInProvider = manualSignInContext.Provider;
-
-// const userReducer = (state, action) => {
-// 	switch (action.type) {
-// 		case `SET_CURRENT_USER`:
-// 			return {
-// 				...state,
-// 				...action.payload
-// 			}
-// 		default:
-// 			return state
-// 	}
-// }
-// const setCurrentUser = (payload) => {
-// 	return {
-// 		type: `SET_CURRENT_USER`,
-// 		payload
-// 	}
-// }
 
 const App = (_) => {
 	const dispatch = useDispatch();
@@ -96,6 +74,7 @@ const App = (_) => {
 		if (!(!!currentUser.currentUser)) return;
 		const listenForUserUpdate = async () => {
 			// TODO: THIS IS A CLIENT SIGN IN FUNCTIONALITY RIGHT HERE, EXPORT IT TO A SINGLE FUNCTION
+			//TODO: remember to dispatch a sign in action to store instead of rendering and unmounting welcome message
 			dispatch(renderWelcome());
 			await wait(3);
 			dispatch(unmountWelcome());
@@ -111,9 +90,11 @@ const App = (_) => {
 		checkLastSIgnIn();
 	}, [checkLastSIgnIn]);
 
+
+
 	useEffect(() => {
 		if (!!manualSignedIn) {
-			console.log("signed in ");
+			console.log("signed in on client");
 			checkLastSIgnIn();
 		}
 	}, [manualSignedIn, checkLastSIgnIn]);
