@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 // COMPONENTS
 import "./cart_modal.styles.scss";
@@ -12,11 +12,15 @@ import CartModalItem from "../cart_modal_item/cart_modal_item.component";
 import { nanoid } from "@reduxjs/toolkit";
 import { toggleCartVisibility } from "../../redux/cart/cart.slice";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom/cjs/react-router-dom.min";
+import { cartContext, userContext } from "../../App";
 
 
 
 const CartModal = () => {
 	const cart = useSelector(cartSelector);
+	const { currentUser } = useContext(userContext);
+	const { currentUser: user } = currentUser;
+	const { clientCartState } = useContext(cartContext);
 	// console.log("rendering cart modal.")
 	const history = useHistory();
 	const dispatch = useDispatch();
@@ -31,7 +35,7 @@ const CartModal = () => {
 				</button>
 			</div>
 			<div className="cart-items-body">
-				{cart.carts.map((cartItem) => (
+				{clientCartState.carts.map((cartItem) => (
 					<CartModalItem cart={cartItem} key={nanoid()} />
 				))}
 			</div>
@@ -39,7 +43,11 @@ const CartModal = () => {
 				className="cart-modal-cta"
 				onClick={() => {
 					toggleCartVisibility();
-					history.push(`/checkout`);
+					if (user) {
+						history.push(`/checkout`);
+					} else {
+						alert("you have to sign in first")
+					}
 				}}
 			>
 				GO TO CHECKOUT

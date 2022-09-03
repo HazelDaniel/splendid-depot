@@ -8,14 +8,13 @@ import {HEADER} from "./header.styles";
 import { signOut } from "firebase/auth";
 import { auth, DB, getCollectionsMap } from "../../firebase/firebase.utils";
 
-import { useDispatch, useSelector } from "react-redux";
-import { userSelector } from "../../redux/store";
-import { cartItemsTotalSelector } from "../../redux/store";
+import { useDispatch } from "react-redux";
 import { collection, onSnapshot } from "firebase/firestore";
 import { updateCollections } from "../../redux/shop/shop.slice";
 import { renderLoader, unmountLoader } from "../../redux/app/app.slice";
-import { userContext } from "../../App";
+import { cartContext, userContext } from "../../App";
 import { user as userInit } from "../../App";
+import { __emptyCart } from "../../App.utils";
 
 
 const detectScrollAndStyle = ({current:element}) => {
@@ -38,12 +37,13 @@ const detectScrollAndStyle = ({current:element}) => {
 
 const Header = React.memo(() => {
 	const user = useContext(userContext);
-	const totalSelectedItems = useSelector(cartItemsTotalSelector);
+	const { clientCartState,clientCartDispatch } = useContext(cartContext);
+
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const headerRef = useRef(null);
 	// console.log(user, user.currentUser.currentUser);
-	console.log("header rendering ")
+	console.log("header rendering ");
 
 	useEffect(() => {
 		const collectionRef = collection(DB, "collections");
@@ -88,6 +88,7 @@ const Header = React.memo(() => {
 						<li
 							className="header-nav-text"
 							onClick={async () => {
+								clientCartDispatch(__emptyCart());
 								await signOut(auth);
 								user.updateCurrentUser(userInit);
 								history.push(`/auth`);
@@ -108,7 +109,7 @@ const Header = React.memo(() => {
 				</ul>
 				<div className="shopping-icon-div">
 					<CartIcon></CartIcon>
-					<span>{totalSelectedItems}</span>
+					<span>{clientCartState.carts.length}</span>
 				</div>
 			</nav>
 		</HEADER>

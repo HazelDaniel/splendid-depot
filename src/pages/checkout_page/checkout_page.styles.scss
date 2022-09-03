@@ -177,10 +177,12 @@
 	}
 
 	.checkout-footer {
+		position: relative;
 		margin-top: 3rem;
 		height: 8rem;
 		@include makeFullWidthBlock();
 		@include makeColFlexStart();
+		// background-color: red;
 		align-items: flex-end;
 
 		.checkout-summary-text {
@@ -191,6 +193,27 @@
 			font-weight: 200;
 			color: $homeNavTextColor;
 			padding-right: 4rem;
+		}
+
+		.cart-update-btn {
+			background-color: blue;
+			@include makeAbsoluteBottomLeftDiv();
+			border: unset;
+			background-color: $accentColor;
+			color: $lightBGColor;
+			font-size: 1rem;
+			text-transform: capitalize;
+			font-weight: 600;
+			font-family: montserrat;
+			width: 10rem;
+			height: 3rem;
+			@include makeRowFlexCenter();
+			overflow: hidden;
+			margin-top: 2rem;
+			cursor: pointer;
+			filter: blur(.5rem);
+			left: 10%;
+			// border: .1rem solid $cartModalBorderColor;
 		}
 
 		// .checkout-cta-btn {
@@ -217,7 +240,8 @@
 
 		// }
 	}
-	.checkout-text-warning{
+
+	.checkout-text-warning {
 		color: red;
 		@include makeFullWidthBlock();
 		text-align: center;

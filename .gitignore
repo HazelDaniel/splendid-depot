@@ -25,7 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 
 TODO.txt
-project-ideas.txt
+plan.txt
 google_auth_tutorial.txt
 **/firebase.utils.js
 css_loaders.html

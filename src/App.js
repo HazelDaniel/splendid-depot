@@ -3,8 +3,7 @@ import "./App.scss";
 import Wrapper from "./components/wrapper/wrapper.component";
 // FIREBASE
 import { onAuthStateChanged } from "firebase/auth";
-import { addCollectionAndDocument, auth, checkLastAuthSession, createUserProfileDocument, DB, projectId, SHOP_DATA } from "./firebase/firebase.utils";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { addCollectionAndDocument, auth, checkLastAuthSession, projectId, SHOP_DATA } from "./firebase/firebase.utils";
 // REDUX
 // import { updateUser } from "./redux/user/user.slice";
 import { renderWelcome, unmountWelcome } from "./redux/app/app.slice";
@@ -16,8 +15,8 @@ import { last } from "lodash";
 import { useQuery } from "react-query";
 import { useFetchUser } from "./hooks/app/app.use_fetch_user";
 import { toast } from "react-toastify";
+import { clientCartInitial, clientCartReducer } from "./App.utils";
 
-let unsubscribeFromAuth;
 let unsubscribeFromSnapshot;
 
 export const user = {
@@ -27,6 +26,7 @@ export const manualAuth = {
 	manualSignedIn: 0,
 	manualSignIn: () => {},
 };
+export const cartContext = createContext(clientCartInitial);
 export const manualSignInContext = createContext(manualAuth);
 export const userContext = createContext({
 	...user,
@@ -34,12 +34,16 @@ export const userContext = createContext({
 });
 const UserProvider = userContext.Provider;
 const ManualSignInProvider = manualSignInContext.Provider;
+const ClientCartProvider = cartContext.Provider;
 
 const App = (_) => {
 	const dispatch = useDispatch();
 	const [currentUser, updateCurrentUser] = useState(user);
+	const [clientCartState, clientCartDispatch] = useReducer(clientCartReducer, clientCartInitial);
+	console.log(clientCartState)
+	const clientCartProviderValue = { clientCartState, clientCartDispatch };
 	const userProviderValue = { currentUser, updateCurrentUser };
-	const [{manualSignedIn}, manualSignIn] = useState(manualAuth);
+	const [{ manualSignedIn }, manualSignIn] = useState(manualAuth);
 
 	const manualSignInValue = useMemo(()=>({
 		manualSignedIn, manualSignIn
@@ -59,6 +63,7 @@ const App = (_) => {
 				...reformUserObject(fields),
 				currentUser: lastSignIn,
 			};
+			console.log(userData)
 			// IN THIS BLOCK , WE ALSO WANT TO GET THE CARTS OF THE CURRENT SIGNED IN USER
 			updateCurrentUser(userData);
 		} catch (error) {
@@ -101,9 +106,11 @@ const App = (_) => {
 
 	return (
 		<UserProvider value={userProviderValue}>
-			<ManualSignInProvider value={manualSignInValue}>
-			<Wrapper />
-			</ManualSignInProvider>
+			<ClientCartProvider value={clientCartProviderValue}>
+				<ManualSignInProvider value={manualSignInValue}>
+					<Wrapper />
+				</ManualSignInProvider>
+			</ClientCartProvider>
 		</UserProvider>
 	);
 };

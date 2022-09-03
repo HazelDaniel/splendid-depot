@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 
 // REDUX
-import {useDispatch } from "react-redux";
-import { addToCart } from "../../redux/cart/cart.slice";
+import { cartContext, userContext } from "../../App";
+import { __addToCart } from "../../App.utils";
 
 const isEqual = require("lodash.isequal");
 
 const CollectionItem = React.memo(
 	({ ...cartDetails }) => {
-		const dispatch = useDispatch();
+		const { clientCartDispatch } = useContext(cartContext);
+		const { currentUser } = useContext(userContext);
+		const { currentUser: user } = currentUser;
+		// console.log(user)
 		const { imageUrl, name, price } = cartDetails;
 		return (
 			<div className="collection-item">
@@ -21,7 +24,12 @@ const CollectionItem = React.memo(
 					<button
 						className="add-to-cart-cta"
 						onClick={() => {
-							dispatch(addToCart(cartDetails));
+							if (!!user) {
+								clientCartDispatch(__addToCart(cartDetails));
+							} else {
+								// TODO: IMPLEMENT A TOAST FOR THIS FUNCTIONALITY
+								alert("you have to sign in first ")
+							}
 						}}
 					>
 						ADD TO CART

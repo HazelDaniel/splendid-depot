@@ -3,10 +3,8 @@ import "../../../sass_modules/_variables.scss";
 
 import { connect } from "react-redux";
 import { toggleCartVisibility } from "../../../redux/cart/cart.slice";
-import { cartSelector } from "../../../redux/store";
-import { createStructuredSelector } from "reselect";
 
-const CartIcon = ({ toggleCartVisibility, cart }) => {
+const CartIcon = ({ toggleCartVisibility }) => {
 	return (
 		<svg
 			onClick={() => {
@@ -50,8 +48,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 	};
 };
-const mapStateToProps = createStructuredSelector({
-	cart: cartSelector,
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartIcon);
+
+export default connect(null, mapDispatchToProps)(CartIcon);
