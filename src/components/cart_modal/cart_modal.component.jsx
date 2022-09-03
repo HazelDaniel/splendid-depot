@@ -13,8 +13,12 @@ import { nanoid } from "@reduxjs/toolkit";
 import { toggleCartVisibility } from "../../redux/cart/cart.slice";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom/cjs/react-router-dom.min";
 import { cartContext, userContext } from "../../App";
+import { projectId } from "../../firebase/firebase.utils";
 
 
+const updateUser = (id) => {
+	return fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${id}`);
+}
 
 const CartModal = () => {
 	const cart = useSelector(cartSelector);

@@ -1,5 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import "./checkout_page.styles.scss";
+import UpdateCartButton from "../../components/update_cart_button/update_cart_button.component";
 
 
 
@@ -10,6 +11,7 @@ import StripeButton from "../../components/stripe_button/stripe_button.component
 
 //GLOBAL STATE
 import { cartContext } from "../../App";
+
 
 
 const cartPricesTotal = (carts) => {
@@ -24,7 +26,7 @@ const cartPricesTotal = (carts) => {
 };
 
 export const CheckoutPage = ({ subTotal }) => {
-	const { clientCartState } = useContext(cartContext);
+	const { clientCartState , clientCartDispatch} = useContext(cartContext);
 	console.log(clientCartState)
 	const computedPricesTotal = useCallback(() => cartPricesTotal(clientCartState.carts), [clientCartState]);
 	return (
@@ -47,7 +49,7 @@ export const CheckoutPage = ({ subTotal }) => {
 				<p className="checkout-summary-text">TOTAL: ${computedPricesTotal()}</p>
 
 				<StripeButton price={computedPricesTotal()} />
-				<button className="cart-update-btn">UPDATE CART</button>
+				<UpdateCartButton clientCartDispatch={clientCartDispatch} clientCartState={clientCartState} $showDisabled = {true}  />
 			</div>
 
 			<p className="checkout-text-warning">

@@ -1,3 +1,4 @@
+import isEqual from "lodash.isequal";
 import { createUserProfileDocument } from "./firebase/firebase.utils";
 
 export const publicUrl = process.env.PUBLIC_URL;
@@ -26,6 +27,19 @@ export const reformUserObject = (data) => {
 	return modifiedData;
 };
 
+export const checkForArraysAndReform = (data) => {
+	console.log(data)
+	const modifiedData = Object.fromEntries(
+		Object.entries(data).map(([key, value]) => {
+			const valueChecked = !!value.values ? value.values.map(obj => reformUserObject(obj.mapValue.fields)) :key==="carts" && isEqual(value,{})?[]: value;
+
+			return [key,valueChecked]
+		})
+	)
+	console.log(modifiedData)
+	return modifiedData;
+}
+
 
 
 // AUTHENTICATION
@@ -34,7 +48,7 @@ export const createUserDetails = async (userCred, [contextValue, contextUpdater]
 
 	const userAdditionalData = {
 		...userExtraData,
-		cart: [],
+		carts: [],
 	};
 	console.log(userAdditionalData)
 	await createUserProfileDocument(userCred, userAdditionalData);

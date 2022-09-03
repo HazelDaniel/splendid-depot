@@ -2,7 +2,6 @@ import { React, useEffect, useRef, createContext, useReducer, useState, memo, us
 import "./App.scss";
 import Wrapper from "./components/wrapper/wrapper.component";
 // FIREBASE
-import { onAuthStateChanged } from "firebase/auth";
 import { addCollectionAndDocument, auth, checkLastAuthSession, projectId, SHOP_DATA } from "./firebase/firebase.utils";
 // REDUX
 // import { updateUser } from "./redux/user/user.slice";
@@ -10,12 +9,11 @@ import { renderWelcome, unmountWelcome } from "./redux/app/app.slice";
 import { useDispatch } from "react-redux";
 import { unmountLoader, renderLoader } from "./redux/app/app.slice";
 // UTILS
-import { reformUserObject, wait } from "./utils";
-import { last } from "lodash";
+import { checkForArraysAndReform, reformUserObject, wait } from "./utils";
 import { useQuery } from "react-query";
 import { useFetchUser } from "./hooks/app/app.use_fetch_user";
 import { toast } from "react-toastify";
-import { clientCartInitial, clientCartReducer } from "./App.utils";
+import { clientCartInitial, clientCartReducer, currentDBcart, __syncCart } from "./App.utils";
 
 let unsubscribeFromSnapshot;
 
@@ -57,10 +55,16 @@ const App = (_) => {
 			console.log(lastSignIn)
 			const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
 			const { fields } = await userRes.json();
-			console.log(fields);
+			console.log(fields)
+			const reformedUserWithCart = checkForArraysAndReform(reformUserObject(fields));
+			console.log(reformedUserWithCart)
+			// console.log(fields);
+			clientCartDispatch(__syncCart(reformedUserWithCart));
+			currentDBcart.carts = reformedUserWithCart.carts;
+			console.log(currentDBcart)
 			const userData = {
 				id: lastSignIn.uid,
-				...reformUserObject(fields),
+				...reformedUserWithCart,
 				currentUser: lastSignIn,
 			};
 			console.log(userData)
