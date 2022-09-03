@@ -1,8 +1,6 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import "./checkout_page.styles.scss";
 import UpdateCartButton from "../../components/update_cart_button/update_cart_button.component";
-
-
 
 // COMPONENTS
 import CheckoutItem from "../../components/checkout_item/checkout_item.component";
@@ -10,13 +8,17 @@ import StripeButton from "../../components/stripe_button/stripe_button.component
 // import CartModal from "../../components/cart_modal/cart_modal.component";
 
 //GLOBAL STATE
-import { cartContext } from "../../App";
-
-
+import { cartContext, userContext } from "../../App";
+import { DB, projectId } from "../../firebase/firebase.utils";
+import { useMutation } from "react-query";
+import { async } from "@firebase/util";
+import { currentDBcart, __stopCartUpload, __uploadCart } from "../../App.utils";
+import { doc, updateDoc } from "firebase/firestore";
 
 const cartPricesTotal = (carts) => {
-	console.log(carts)
-	const total = carts.map((cart) => {
+	console.log(carts);
+	const total = carts
+		.map((cart) => {
 			return +cart.quantity * +cart.price;
 		})
 		.reduce((prev, next) => {
@@ -25,10 +27,32 @@ const cartPricesTotal = (carts) => {
 	return total.toFixed(2);
 };
 
-export const CheckoutPage = ({ subTotal }) => {
-	const { clientCartState , clientCartDispatch} = useContext(cartContext);
-	console.log(clientCartState)
+export const CheckoutPage = () => {
+	const { clientCartState, clientCartDispatch } = useContext(cartContext);
+	const { currentUser } = useContext(userContext);
 	const computedPricesTotal = useCallback(() => cartPricesTotal(clientCartState.carts), [clientCartState]);
+
+	useEffect(() => {
+		if (!clientCartState.shouldCartUpload) return;
+		const uploadCartToDB = async () => {
+			const { id, currentUser: user, ...otherProps } = currentUser;
+			// console.log(id)
+			const { carts } = clientCartState;
+			const data = {
+				...otherProps,
+				carts,
+			};
+			const userRef = doc(DB, "users", id);
+			console.log("UPLOADING CART TO DB");
+
+			await updateDoc(userRef, data);
+			currentDBcart.carts = carts;
+			clientCartDispatch(__stopCartUpload());
+		};
+		uploadCartToDB();
+	}, [clientCartState, currentUser, clientCartDispatch]);
+
+	console.log(clientCartState);
 	return (
 		<div className="checkout-wrapper">
 			<ul className="checkout-body">
@@ -49,7 +73,7 @@ export const CheckoutPage = ({ subTotal }) => {
 				<p className="checkout-summary-text">TOTAL: ${computedPricesTotal()}</p>
 
 				<StripeButton price={computedPricesTotal()} />
-				<UpdateCartButton clientCartDispatch={clientCartDispatch} clientCartState={clientCartState} $showDisabled = {true}  />
+				<UpdateCartButton clientCartDispatch={clientCartDispatch} clientCartState={clientCartState} $showDisabled={clientCartState.shouldCartUpload} />
 			</div>
 
 			<p className="checkout-text-warning">
@@ -60,7 +84,4 @@ export const CheckoutPage = ({ subTotal }) => {
 	);
 };
 
-
-
-
-export default (CheckoutPage);
+export default CheckoutPage;

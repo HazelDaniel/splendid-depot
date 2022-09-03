@@ -5,7 +5,8 @@ const cartActionTypes = {
 	clearFromCart: "CLEAR_FROM_CART",
 	uploadCart: "UPLOAD_CART",
 	emptyCart: "EMPTY_CART",
-	syncCart: "SYNC_CART"
+	syncCart: "SYNC_CART",
+	stopCartUpload: "STOP_CART_UPLOAD"
 }
 const checkAndAddITem = (state, item) => {
 	const itemExists = !!state.carts.find((cart) => cart.id === item.id);
@@ -54,13 +55,20 @@ const syncCart = (state, dbCart) => {
 	};
 }
 
+const stopCartUpload = (state) => {
+	return {
+		...state,
+		shouldCartUpload: false,
+	};
+};
+
 export const currentDBcart = {
 	carts: [],
 };
 const uploadCart = (updatedClientCartState) => {
+	console.log(currentDBcart.carts, updatedClientCartState.carts);
 	if (isEqual(currentDBcart.carts, updatedClientCartState.carts)) throw new Error("cart is already up to date");
-	console.log("UPLOADING CART TO DB",currentDBcart);
-	currentDBcart.carts = updatedClientCartState.carts;
+	// currentDBcart.carts = updatedClientCartState.carts;
 	return {
 		...updatedClientCartState,
 		shouldCartUpload: true,
@@ -84,8 +92,10 @@ export const clientCartReducer = (state, action) => {
 		case cartActionTypes.emptyCart:
 			return emptyCart(state);
 		case cartActionTypes.syncCart:
-			console.log(action.payload)
+			console.log(action.payload);
 			return syncCart(state, action.payload);
+		case cartActionTypes.stopCartUpload:
+			return stopCartUpload(state);
 		default:
 			return state;
 	}
@@ -124,5 +134,10 @@ export const __syncCart = (payload) => {
 export const __emptyCart = () => {
 	return {
 		type: cartActionTypes.emptyCart,
+	}
+}
+export const __stopCartUpload = () => {
+	return {
+		type: cartActionTypes.stopCartUpload,
 	}
 }

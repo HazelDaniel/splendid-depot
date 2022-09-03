@@ -1,11 +1,19 @@
 
-import { __uploadCart } from "../../App.utils";
+import { useContext } from "react";
+import { userContext } from "../../App";
+import {  __uploadCart } from "../../App.utils";
 import { UpdateCartButtonStyled } from "./update_cart_button.styles";
 
-export const UpdateCartButton = ({clientCartDispatch,clientCartState,$showDisabled}) => {
+export const UpdateCartButton = ({ clientCartDispatch, clientCartState, $showDisabled }) => {
+	const { currentUser: {currentUser} } = useContext(userContext);
+	console.log(currentUser);
 	return (
 		<UpdateCartButtonStyled disabled={$showDisabled} $showDisabled ={$showDisabled} onClick={() => {
-					clientCartDispatch(__uploadCart(clientCartState));
+			if (!!currentUser) {
+				clientCartDispatch(__uploadCart(clientCartState));
+			} else {
+				alert("could not update cart , you were not signed in")
+			}
 		}}
 		>UPDATE CART</UpdateCartButtonStyled>
 	)
