@@ -10,6 +10,8 @@ import { wait } from "../../utils";
 import { connect } from "react-redux";
 import { renderPaymentPopup,unmountPaymentPopup } from "../../redux/app/app.slice";
 
+import axios from "axios";
+
 
 
 
@@ -23,7 +25,23 @@ const StripeButton = ({ price,showPaymentAlert,hidePaymentAlert }) => {
 	const priceForStripe = price * 100;
 	const publishableKey = `pk_test_51LUFcYATwSVQxsAFogaEa5bjZBTkmvXqlxGR1RxqCyoGT9bP3JrZB2R3pjGTrbD2v2VaJUut15U6BjsmNsJIx6pN00TkTQ6muu`;
 	const onToken = token => {
-		// console.log(token);
+		const endpoint = process.env.PORT ? process.env.PORT + "/payment" : "http://localhost:5555/payment";
+		axios({
+			url: `${endpoint}`,
+			method: "post",
+			data: {
+				amount: priceForStripe,
+				token
+			}
+		}).then(res => {
+			return res.data;
+		}).then(res => {
+			console.log(res);
+		}).catch(err => {
+			alert(err.message);
+			console.log(err)
+		})
+
 		showAndHide(showPaymentAlert, hidePaymentAlert, 3);
 		return token;
 	}
