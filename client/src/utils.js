@@ -28,7 +28,6 @@ export const reformUserObject = (data) => {
 };
 
 export const checkForArraysAndReform = (data) => {
-	console.log(data)
 	const modifiedData = Object.fromEntries(
 		Object.entries(data).map(([key, value]) => {
 			const valueChecked = !!value.values ? value.values.map(obj => reformUserObject(obj.mapValue.fields)) :key==="carts" && isEqual(value,{})?[]: value;
@@ -36,7 +35,6 @@ export const checkForArraysAndReform = (data) => {
 			return [key,valueChecked]
 		})
 	)
-	console.log(modifiedData)
 	return modifiedData;
 }
 
@@ -50,11 +48,19 @@ export const createUserDetails = async (userCred, [contextValue, contextUpdater]
 		...userExtraData,
 		carts: [],
 	};
-	console.log(userAdditionalData)
 	await createUserProfileDocument(userCred, userAdditionalData);
 	contextUpdater({
 		...contextValue,
 		...userExtraData,
 		currentUser: userCred,
 	});
+};
+
+
+
+// MANUAL TOAST DISPLAY IMPLEMENTATION
+export const showAndHide = async (action, reverse, seconds) => {
+	action();
+	await wait(seconds);
+	reverse();
 };

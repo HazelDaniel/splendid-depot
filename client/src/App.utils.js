@@ -48,7 +48,6 @@ const emptyCart = (state) => {
 };
 
 const syncCart = (state, dbCart) => {
-	console.log(dbCart)
 	return {
 		...state,
 		carts: dbCart.carts,
@@ -66,7 +65,6 @@ export const currentDBcart = {
 	carts: [],
 };
 const uploadCart = (updatedClientCartState) => {
-	console.log(currentDBcart.carts, updatedClientCartState.carts);
 	if (isEqual(currentDBcart.carts, updatedClientCartState.carts)) throw new Error("cart is already up to date");
 	// currentDBcart.carts = updatedClientCartState.carts;
 	return {
@@ -92,7 +90,6 @@ export const clientCartReducer = (state, action) => {
 		case cartActionTypes.emptyCart:
 			return emptyCart(state);
 		case cartActionTypes.syncCart:
-			console.log(action.payload);
 			return syncCart(state, action.payload);
 		case cartActionTypes.stopCartUpload:
 			return stopCartUpload(state);

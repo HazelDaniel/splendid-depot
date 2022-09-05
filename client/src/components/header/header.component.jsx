@@ -43,7 +43,6 @@ const Header = React.memo(() => {
 	const dispatch = useDispatch();
 	const headerRef = useRef(null);
 	// console.log(user, user.currentUser.currentUser);
-	console.log("header rendering ");
 
 	useEffect(() => {
 		const collectionRef = collection(DB, "collections");

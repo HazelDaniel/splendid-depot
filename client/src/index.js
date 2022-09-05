@@ -11,6 +11,7 @@ import { persistedStore } from "./redux/store";
 import Loader from "./components/loader/loader.component";
 import { global as GlobalStyle } from "./components/styles/root/root.styles";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
 
 const queryClient = new QueryClient();
 

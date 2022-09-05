@@ -6,7 +6,6 @@ import { UpdateCartButtonStyled } from "./update_cart_button.styles";
 
 export const UpdateCartButton = ({ clientCartDispatch, clientCartState, $showDisabled }) => {
 	const { currentUser: {currentUser} } = useContext(userContext);
-	console.log(currentUser);
 	return (
 		<UpdateCartButtonStyled disabled={$showDisabled} $showDisabled ={$showDisabled} onClick={() => {
 			if (!!currentUser) {

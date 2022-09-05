@@ -43,7 +43,7 @@ export const CheckoutPage = () => {
 				carts,
 			};
 			const userRef = doc(DB, "users", id);
-			console.log("UPLOADING CART TO DB");
+			console.log("UPLOADING CART TO DB ...");
 
 			await updateDoc(userRef, data);
 			currentDBcart.carts = carts;
@@ -52,7 +52,7 @@ export const CheckoutPage = () => {
 		uploadCartToDB();
 	}, [clientCartState, currentUser, clientCartDispatch]);
 
-	console.log(clientCartState);
+	// console.log(clientCartState);
 	return (
 		<div className="checkout-wrapper">
 			<ul className="checkout-body">

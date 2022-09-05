@@ -12,7 +12,6 @@ import { unmountLoader, renderLoader } from "./redux/app/app.slice";
 import { checkForArraysAndReform, reformUserObject, wait } from "./utils";
 import { useQuery } from "react-query";
 import { useFetchUser } from "./hooks/app/app.use_fetch_user";
-import { toast } from "react-toastify";
 import { clientCartInitial, clientCartReducer, currentDBcart, __syncCart } from "./App.utils";
 
 let unsubscribeFromSnapshot;
@@ -38,57 +37,63 @@ const App = (_) => {
 	const dispatch = useDispatch();
 	const [currentUser, updateCurrentUser] = useState(user);
 	const [clientCartState, clientCartDispatch] = useReducer(clientCartReducer, clientCartInitial);
-	console.log(clientCartState)
+	console.log(clientCartState);
 	const clientCartProviderValue = { clientCartState, clientCartDispatch };
 	const userProviderValue = { currentUser, updateCurrentUser };
 	const [{ manualSignedIn }, manualSignIn] = useState(manualAuth);
 
-	const manualSignInValue = useMemo(()=>({
-		manualSignedIn, manualSignIn
-	}),[manualSignIn,manualSignedIn]);
+	const manualSignInValue = useMemo(
+		() => ({
+			manualSignedIn,
+			manualSignIn,
+		}),
+		[manualSignIn, manualSignedIn]
+	);
 
-
-	const checkLastSIgnIn = useCallback(() => (async () => {
-		try {
-			dispatch(renderLoader());
-			const lastSignIn = await checkLastAuthSession();
-			console.log(lastSignIn)
-			const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
-			const { fields } = await userRes.json();
-			console.log(fields)
-			const reformedUserWithCart = checkForArraysAndReform(reformUserObject(fields));
-			console.log(reformedUserWithCart)
-			// console.log(fields);
-			clientCartDispatch(__syncCart(reformedUserWithCart));
-			currentDBcart.carts = reformedUserWithCart.carts;
-			console.log(currentDBcart)
-			const userData = {
-				id: lastSignIn.uid,
-				...reformedUserWithCart,
-				currentUser: lastSignIn,
-			};
-			console.log(userData)
-			// IN THIS BLOCK , WE ALSO WANT TO GET THE CARTS OF THE CURRENT SIGNED IN USER
-			updateCurrentUser(userData);
-		} catch (error) {
-			return error;
-		} finally {
-			dispatch(unmountLoader());
-		}
-	})(),[dispatch]);
+	const checkLastSIgnIn = useCallback(
+		() =>
+			(async () => {
+				try {
+					dispatch(renderLoader());
+					const lastSignIn = await checkLastAuthSession();
+					console.log("checking last auth session ...", lastSignIn);
+					const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
+					const { fields } = await userRes.json();
+					const reformedUserWithCart = checkForArraysAndReform(reformUserObject(fields));
+					// console.log(fields);
+					clientCartDispatch(__syncCart(reformedUserWithCart));
+					currentDBcart.carts = reformedUserWithCart.carts;
+					console.log(currentDBcart);
+					const userData = {
+						id: lastSignIn.uid,
+						...reformedUserWithCart,
+						currentUser: lastSignIn,
+					};
+					// IN THIS BLOCK , WE ALSO WANT TO GET THE CARTS OF THE CURRENT SIGNED IN USER
+					updateCurrentUser(userData);
+				} catch (error) {
+					return error;
+				} finally {
+					dispatch(unmountLoader());
+				}
+			})(),
+		[dispatch]
+	);
 
 	console.log(currentUser);
 	useEffect(() => {
+
 		// prettier-ignore
 		if (!(!!currentUser.currentUser)) return;
-		const listenForUserUpdate = async () => {
+		const checkUserIsWelcome = async () => {
 			// TODO: THIS IS A CLIENT SIGN IN FUNCTIONALITY RIGHT HERE, EXPORT IT TO A SINGLE FUNCTION
 			//TODO: remember to dispatch a sign in action to store instead of rendering and unmounting welcome message
 			dispatch(renderWelcome());
 			await wait(3);
 			dispatch(unmountWelcome());
+			// toast("welcome")
 		};
-		listenForUserUpdate();
+		checkUserIsWelcome();
 		return () => {
 			unsubscribeFromSnapshot && unsubscribeFromSnapshot();
 		};
@@ -96,16 +101,18 @@ const App = (_) => {
 
 	useEffect(() => {
 		// TODO: DISPATCH AN ACTION THAT RE-TRIGGERS THIS EFFECT FROM THE SIGN IN COMPONENT (AND UPDATE THE DEPENDENCY ARRAY) SO AS NOT TO MAKE EXTRA API REQUEST WHEN SIGNING IN
-		checkLastSIgnIn();
+		(async ()=>{
+			await checkLastSIgnIn();
+		})();
 	}, [checkLastSIgnIn]);
 
-
-
 	useEffect(() => {
-		if (!!manualSignedIn) {
-			console.log("signed in on client");
-			checkLastSIgnIn();
-		}
+		(async()=>{
+			if (!!manualSignedIn) {
+				console.log("manually signed in on client");
+				await checkLastSIgnIn();
+			}
+		})();
 	}, [manualSignedIn, checkLastSIgnIn]);
 
 	return (

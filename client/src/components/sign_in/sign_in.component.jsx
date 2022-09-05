@@ -10,7 +10,6 @@ import { useAuthSignInWithEmailAndPassword, useAuthSignInWithPopup } from "@reac
 import { toast } from "react-toastify";
 import isEqual from "lodash.isequal";
 import { manualSignInContext, userContext } from "../../App";
-import { async } from "@firebase/util";
 import { createUserDetails } from "../../utils";
 
 const handleGoogleSignIn = async () => {
@@ -63,6 +62,11 @@ const SignIn = React.memo(
 		const loginManually = useCallback(() => manualSignIn({
 			manualSignedIn: manualSignedIn + 1,
 		}), [manualSignIn, manualSignedIn]);
+		// const loginAndShowState = useCallback(() => (async () => {
+		// 	loginManually();
+
+		// })(), [loginManually])
+		
 		const { mutate: signInAuthMutate, isLoading: signInAuthIsLoading } = useAuthSignInWithEmailAndPassword(auth, {
 			onSuccess: async ({user}) => {
 				toast.success(`sign in success ${user}`);
@@ -101,11 +105,16 @@ const SignIn = React.memo(
 						</CustomButton>
 						<CustomButton className="cta-secondary"  onClick={async (e) => {
 							e.preventDefault();
-							const googleAuthResult = await handleGoogleSignIn();
-							if (!!googleAuthResult.emailVerified) {
-								const { displayName } = googleAuthResult;
-								await createUserDetails(googleAuthResult, [currentUser, updateCurrentUser], {displayName});
-							};
+							try {
+								const googleAuthResult = await handleGoogleSignIn();
+								if (!!googleAuthResult.emailVerified) {
+									const { displayName } = googleAuthResult;
+									await createUserDetails(googleAuthResult, [currentUser, updateCurrentUser], { displayName });
+									loginManually();
+								}
+							} catch(error) {
+								alert(error.message)
+							}
 						}}>
 							SIGN IN WITH GOOGLE
 						</CustomButton>

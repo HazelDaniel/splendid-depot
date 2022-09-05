@@ -8,7 +8,7 @@ import { auth } from "../../firebase/firebase.utils";
 import isEqual from "lodash.isequal";
 import { toast } from "react-toastify";
 import { useAuthCreateUserWithEmailAndPassword } from "@react-query-firebase/auth";
-import { user, userContext } from "../../App";
+import { manualSignInContext, user, userContext } from "../../App";
 import { updateUser } from "../../redux/user/user.slice";
 import { createUserDetails } from "../../utils";
 
@@ -66,11 +66,19 @@ const SignUp = React.memo(
 		const [formState, dispatch] = useReducer(SignUpReducer, InitialState);
 		const { email, password, confirmPassword, displayName } = formState;
 		const { currentUser, updateCurrentUser } = useContext(userContext);
-		console.log(currentUser);
+		const { manualSignedIn, manualSignIn } = useContext(manualSignInContext);
+		const loginManually = useCallback(
+			() =>
+				manualSignIn({
+					manualSignedIn: manualSignedIn + 1,
+				}),
+			[manualSignIn, manualSignedIn]
+		);
 		const { mutate: signUpAuthMutate } = useAuthCreateUserWithEmailAndPassword(auth, {
 			onSuccess: async ({user}) => {
-				console.log(`success ${user}`);
+				console.log(` sign up success ${user}`);
 				await createUserDetails(user, [currentUser, updateCurrentUser], { displayName });
+				loginManually();
 			},
 			onError: error => {
 				console.error(`couldn't sign you up. reason: ${error.message}`);

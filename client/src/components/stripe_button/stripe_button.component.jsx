@@ -3,7 +3,7 @@ import StripeCheckout from "react-stripe-checkout";
 import "./stripe_button.styles.scss";
 
 // UTILS
-import { wait } from "../../utils";
+import { showAndHide, wait } from "../../utils";
 
 
 // REDUX
@@ -15,11 +15,7 @@ import axios from "axios";
 
 
 
-const showAndHide = async (action,reverse,seconds) => {
-	action();
-	await wait(seconds);
-	reverse();
-}
+
 
 const StripeButton = ({ price,showPaymentAlert,hidePaymentAlert }) => {
 	const priceForStripe = price * 100;
@@ -37,12 +33,12 @@ const StripeButton = ({ price,showPaymentAlert,hidePaymentAlert }) => {
 			return res.data;
 		}).then(res => {
 			console.log(res);
+			showAndHide(showPaymentAlert, hidePaymentAlert, 3);
 		}).catch(err => {
 			alert(err.message);
 			console.log(err)
 		})
 
-		showAndHide(showPaymentAlert, hidePaymentAlert, 3);
 		return token;
 	}
 	return (
