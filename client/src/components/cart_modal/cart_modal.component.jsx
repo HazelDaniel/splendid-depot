@@ -2,36 +2,29 @@ import React, { useContext } from "react";
 
 // COMPONENTS
 import "./cart_modal.styles.scss";
-
-// MISC
-
-// REDUX
-import { useDispatch, useSelector } from "react-redux";
-import { cartSelector } from "../../redux/store";
 import CartModalItem from "../cart_modal_item/cart_modal_item.component";
+
+// ROUTING
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
+// UTILS
 import { nanoid } from "@reduxjs/toolkit";
-import { toggleCartVisibility } from "../../redux/cart/cart.slice";
-import { useHistory, useLocation, useRouteMatch } from "react-router-dom/cjs/react-router-dom.min";
+
+// GLOBAL STATE
 import { cartContext } from "../../App";
 
 
 
 
-const CartModal = () => {
-	const cart = useSelector(cartSelector);
+const CartModal = React.forwardRef(({toggleCartModal},ref) => {
 	const { clientCartState } = useContext(cartContext);
 	// console.log("rendering cart modal.")
 	const history = useHistory();
-	const dispatch = useDispatch();
 	// console.log(history)
 	return (
-		<div className={`cart-modal ${cart.cartVisible ? "" : "hidden"}`}>
+		<div ref={ref} className={`cart-modal hidden`}>
 			<div className="cart-cancel-btn-div">
-				<button
-					onClick={() => dispatch(toggleCartVisibility())}
-				>
-					X
-				</button>
+				<button onClick={toggleCartModal}>X</button>
 			</div>
 			<div className="cart-items-body">
 				{clientCartState.carts.map((cartItem) => (
@@ -41,7 +34,7 @@ const CartModal = () => {
 			<button
 				className="cart-modal-cta"
 				onClick={() => {
-					toggleCartVisibility();
+					toggleCartModal();
 					history.push(`/checkout`);
 				}}
 			>
@@ -49,6 +42,6 @@ const CartModal = () => {
 			</button>
 		</div>
 	);
-}
+});
 
 export default CartModal;

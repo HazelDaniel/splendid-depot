@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useRef } from "react";
 
 // ROUTER
-import { Switch, Route, Redirect, useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 // COMPONENTS
 import "./wrapper.styles.scss";
@@ -14,57 +14,64 @@ import CartModal from "../cart_modal/cart_modal.component";
 import ShopCollection from "../shop_collection/shop_collection.component";
 import F04Page from "../../pages/404_page/F04_page.component";
 import Loader from "../loader/loader.component";
-// REDUX
-import { useSelector } from "react-redux";
-import { appSelector } from "../../redux/store";
 import AlertPopup from "../popup/alert_popup/alert_popup.component";
-import { userContext } from "../../App";
+
+// GLOBAL STATE
+import { AppContext, userContext } from "../../App";
+
 const isEqual = require("lodash.isequal");
 
 export const areEqual = (currentProps, nextProps) => {
 	if (isEqual(currentProps, nextProps)) return true;
 	return false;
 };
+const handleCartModalToggle = ({ current }) => {
+	current.classList.toggle("hidden");
+}
 
 const Wrapper = React.memo(
-	() => {
-		const location = useLocation();
-		let app = useSelector(appSelector);
-		const user = useContext(userContext);
+	({location}) => {
+		let { appState } = useContext(AppContext);
+		const { currentUser } = useContext(userContext);
+		const cartModal = useRef(null);
+
+		const toggleCartModal = useCallback(() => handleCartModalToggle(cartModal), []);
+
+		// console.log(user)
 
 		// console.log(app, user);
 		// console.log(user)
-		let displayName = user.currentUser ? user.currentUser.displayName?.split(" ") : null;
+		let displayName = currentUser.displayName ? currentUser.displayName?.split(" ") : null;
 		// console.log(displayName)
+		// console.log(
+		// 	"wrapper rendering"
+		// )
 
-		// console.log("rendering wrapper ");
 		return (
 			<div className={`wrapper ${location.pathname === "/auth" ? "auth" : ""}`}>
-				<Header />
-				<CartModal />
+				<Header toggleCartModal={toggleCartModal} />
+				<CartModal ref={cartModal} toggleCartModal={toggleCartModal} />
 				<Switch>
 					<Route exact path="/" component={Homepage} />
 					<Route exact path="/FourZeroFour" component={F04Page} />
 					<Route exact path="/shop" component={ShopPage} />
 					<Route exact path="/shop/:collection" render={() => <ShopCollection />} />
 					<Route exact path="/checkout" component={CheckoutPage} />
-					<Route exact path="/auth" render={() => (user.currentUser.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
+					<Route exact path="/auth" render={() => (currentUser.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
 					<Route exact path="/*" render={() => <Redirect to="/FourZeroFour" />} />
 				</Switch>
-				{app.displayWelcomeMessage && displayName && location.pathname !== "/FourZeroFour" ? (
+				{appState.displayWelcomeMessage && displayName && location.pathname !== "/FourZeroFour" ? (
 					<AlertPopup alertClass={`success-popup`} alertMessage={`WELCOME ${Array.isArray(displayName) ? displayName[displayName.length - 1] : displayName}!`} />
 				) : null}
 
-				{app.displayPaymentMessage ? <AlertPopup alertClass={`success-popup`} alertMessage={`Transaction Successful!`} /> : null}
-				{app.isLoading ? <Loader /> : null}
+				{appState.displayPaymentMessage ? <AlertPopup alertClass={`success-popup`} alertMessage={`Transaction Successful!`} /> : null}
+				{appState.isLoading ? <Loader /> : null}
 			</div>
 		);
 	},
 	(prevProps, nextProps) => {
-		if (prevProps === nextProps) {
-			return true; // props are equal
-		}
+		if (isEqual(prevProps,nextProps)) return true;
 		return false; // props are not equal -> update the component
 	}
 );
-export default Wrapper;
+export default withRouter(Wrapper);

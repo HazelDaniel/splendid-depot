@@ -12,11 +12,11 @@ import { cartContext, userContext } from "../../App";
 import { DB, projectId } from "../../firebase/firebase.utils";
 import { useMutation } from "react-query";
 import { async } from "@firebase/util";
-import { currentDBcart, __stopCartUpload, __uploadCart } from "../../App.utils";
+import { currentDBcart, __stopCartUpload, __uploadCart } from "../../reducers/cart.reducer";
 import { doc, updateDoc } from "firebase/firestore";
 
 const cartPricesTotal = (carts) => {
-	console.log(carts);
+	// console.log(carts);
 	const total = carts
 		.map((cart) => {
 			return +cart.quantity * +cart.price;
@@ -43,7 +43,7 @@ export const CheckoutPage = () => {
 				carts,
 			};
 			const userRef = doc(DB, "users", id);
-			console.log("UPLOADING CART TO DB ...");
+			// console.log("UPLOADING CART TO DB ...");
 
 			await updateDoc(userRef, data);
 			currentDBcart.carts = carts;

@@ -76,7 +76,7 @@ const SignUp = React.memo(
 		);
 		const { mutate: signUpAuthMutate } = useAuthCreateUserWithEmailAndPassword(auth, {
 			onSuccess: async ({user}) => {
-				console.log(` sign up success ${user}`);
+				// console.log(` sign up success ${user}`);
 				await createUserDetails(user, [currentUser, updateCurrentUser], { displayName });
 				loginManually();
 			},

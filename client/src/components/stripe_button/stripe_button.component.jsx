@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import "./stripe_button.styles.scss";
 
 // UTILS
-import { showAndHide, wait } from "../../utils";
+import { showAndHide } from "../../utils";
 
 
 // REDUX
@@ -11,13 +11,16 @@ import { connect } from "react-redux";
 import { renderPaymentPopup,unmountPaymentPopup } from "../../redux/app/app.slice";
 
 import axios from "axios";
+import { AppContext } from "../../App";
+import { __renderPaymentPopup } from "../../reducers/app.reducer";
 
 
 
 
 
 
-const StripeButton = ({ price,showPaymentAlert,hidePaymentAlert }) => {
+const StripeButton = ({ price }) => {
+	const { appDispatch } = useContext(AppContext);
 	const priceForStripe = price * 100;
 	const publishableKey = `pk_test_51LUFcYATwSVQxsAFogaEa5bjZBTkmvXqlxGR1RxqCyoGT9bP3JrZB2R3pjGTrbD2v2VaJUut15U6BjsmNsJIx6pN00TkTQ6muu`;
 	const onToken = token => {
@@ -32,8 +35,8 @@ const StripeButton = ({ price,showPaymentAlert,hidePaymentAlert }) => {
 		}).then(res => {
 			return res.data;
 		}).then(res => {
-			console.log(res);
-			showAndHide(showPaymentAlert, hidePaymentAlert, 3);
+			// console.log(res);
+			showAndHide(appDispatch,__renderPaymentPopup, unmountPaymentPopup, 3);
 		}).catch(err => {
 			alert(err.message);
 			console.log(err)
@@ -79,20 +82,10 @@ const StripeButton = ({ price,showPaymentAlert,hidePaymentAlert }) => {
 				</span>
 			</button>
 			</StripeCheckout>
-			
 
 	)
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		showPaymentAlert: () => {
-			dispatch(renderPaymentPopup());
-		},
-		hidePaymentAlert: () => {
-			dispatch(unmountPaymentPopup());
-		},
-	};
-};
 
-export default connect(null, mapDispatchToProps)(StripeButton);
+
+export default StripeButton;

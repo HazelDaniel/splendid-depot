@@ -1,7 +1,7 @@
 
 import { useContext } from "react";
 import { userContext } from "../../App";
-import {  __uploadCart } from "../../App.utils";
+import {  __uploadCart } from "../../reducers/cart.reducer";
 import { UpdateCartButtonStyled } from "./update_cart_button.styles";
 
 export const UpdateCartButton = ({ clientCartDispatch, clientCartState, $showDisabled }) => {

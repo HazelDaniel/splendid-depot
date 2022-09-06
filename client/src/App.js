@@ -2,17 +2,12 @@ import { React, useEffect, useRef, createContext, useReducer, useState, memo, us
 import "./App.scss";
 import Wrapper from "./components/wrapper/wrapper.component";
 // FIREBASE
-import { addCollectionAndDocument, auth, checkLastAuthSession, projectId, SHOP_DATA } from "./firebase/firebase.utils";
-// REDUX
-// import { updateUser } from "./redux/user/user.slice";
-import { renderWelcome, unmountWelcome } from "./redux/app/app.slice";
-import { useDispatch } from "react-redux";
-import { unmountLoader, renderLoader } from "./redux/app/app.slice";
+import { addCollectionAndDocument, checkLastAuthSession, projectId, SHOP_DATA } from "./firebase/firebase.utils";
 // UTILS
 import { checkForArraysAndReform, reformUserObject, wait } from "./utils";
-import { useQuery } from "react-query";
-import { useFetchUser } from "./hooks/app/app.use_fetch_user";
-import { clientCartInitial, clientCartReducer, currentDBcart, __syncCart } from "./App.utils";
+import { clientCartInitial, clientCartReducer, currentDBcart, __syncCart } from "./reducers/cart.reducer";
+import { appReducer, initialAppState, __renderLoader, __renderWelcome, __unmountLoader, __unmountWelcome } from "./reducers/app.reducer";
+import { initialShopState, shopReducer } from "./reducers/shop.reducer";
 
 let unsubscribeFromSnapshot;
 
@@ -29,19 +24,35 @@ export const userContext = createContext({
 	...user,
 	updateCurrentUser: () => {},
 });
+export const AppContext = createContext(initialAppState);
+export const ShopContext = createContext(initialShopState);
+
 const UserProvider = userContext.Provider;
 const ManualSignInProvider = manualSignInContext.Provider;
 const ClientCartProvider = cartContext.Provider;
+const AppProvider = AppContext.Provider;
+const ShopProvider = ShopContext.Provider;
 
+
+const contextSelector = (callback, state) => {
+	return callback(state);
+}
 const App = (_) => {
-	const dispatch = useDispatch();
+	// CONTEXT STATES
 	const [currentUser, updateCurrentUser] = useState(user);
 	const [clientCartState, clientCartDispatch] = useReducer(clientCartReducer, clientCartInitial);
-	console.log(clientCartState);
-	const clientCartProviderValue = { clientCartState, clientCartDispatch };
-	const userProviderValue = { currentUser, updateCurrentUser };
 	const [{ manualSignedIn }, manualSignIn] = useState(manualAuth);
+	const [appState, appDispatch] = useReducer(appReducer, initialAppState);
+	const [shopState, shopDispatch] = useReducer(shopReducer, initialShopState);
 
+	// CONTEXT SELECTORS
+	const shopSelector = useCallback((callback) => contextSelector(callback, shopState), [shopState]);
+
+	// CONTEXT PROVIDER VALUES
+	const clientCartProviderValue = useMemo(() => ({ clientCartState, clientCartDispatch }), [clientCartState]);
+	const userProviderValue = useMemo(() => ({ currentUser, updateCurrentUser }), [currentUser]);
+	const appProviderValue = useMemo(() => ({ appState, appDispatch }), [appState]);
+	const shopProviderValue = useMemo(() => ({ shopState, shopDispatch,shopSelector }), [shopState,shopSelector]);
 	const manualSignInValue = useMemo(
 		() => ({
 			manualSignedIn,
@@ -50,20 +61,21 @@ const App = (_) => {
 		[manualSignIn, manualSignedIn]
 	);
 
+
 	const checkLastSIgnIn = useCallback(
 		() =>
 			(async () => {
 				try {
-					dispatch(renderLoader());
+					appDispatch(__renderLoader());
 					const lastSignIn = await checkLastAuthSession();
-					console.log("checking last auth session ...", lastSignIn);
+					// console.log("checking last auth session ...", lastSignIn);
 					const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
 					const { fields } = await userRes.json();
 					const reformedUserWithCart = checkForArraysAndReform(reformUserObject(fields));
 					// console.log(fields);
 					clientCartDispatch(__syncCart(reformedUserWithCart));
 					currentDBcart.carts = reformedUserWithCart.carts;
-					console.log(currentDBcart);
+					// console.log(currentDBcart);
 					const userData = {
 						id: lastSignIn.uid,
 						...reformedUserWithCart,
@@ -74,42 +86,41 @@ const App = (_) => {
 				} catch (error) {
 					return error;
 				} finally {
-					dispatch(unmountLoader());
+					appDispatch(__unmountLoader());
 				}
 			})(),
-		[dispatch]
+		[appDispatch]
 	);
 
-	console.log(currentUser);
+	// console.log(currentUser);
 	useEffect(() => {
-
 		// prettier-ignore
 		if (!(!!currentUser.currentUser)) return;
 		const checkUserIsWelcome = async () => {
 			// TODO: THIS IS A CLIENT SIGN IN FUNCTIONALITY RIGHT HERE, EXPORT IT TO A SINGLE FUNCTION
 			//TODO: remember to dispatch a sign in action to store instead of rendering and unmounting welcome message
-			dispatch(renderWelcome());
+			appDispatch(__renderWelcome());
 			await wait(3);
-			dispatch(unmountWelcome());
+			appDispatch(__unmountWelcome());
 			// toast("welcome")
 		};
 		checkUserIsWelcome();
 		return () => {
 			unsubscribeFromSnapshot && unsubscribeFromSnapshot();
 		};
-	}, [currentUser, dispatch]);
+	}, [currentUser, appDispatch]);
 
 	useEffect(() => {
 		// TODO: DISPATCH AN ACTION THAT RE-TRIGGERS THIS EFFECT FROM THE SIGN IN COMPONENT (AND UPDATE THE DEPENDENCY ARRAY) SO AS NOT TO MAKE EXTRA API REQUEST WHEN SIGNING IN
-		(async ()=>{
+		(async () => {
 			await checkLastSIgnIn();
 		})();
 	}, [checkLastSIgnIn]);
 
 	useEffect(() => {
-		(async()=>{
+		(async () => {
 			if (!!manualSignedIn) {
-				console.log("manually signed in on client");
+				// console.log("manually signed in on client");
 				await checkLastSIgnIn();
 			}
 		})();
@@ -117,11 +128,15 @@ const App = (_) => {
 
 	return (
 		<UserProvider value={userProviderValue}>
-			<ClientCartProvider value={clientCartProviderValue}>
-				<ManualSignInProvider value={manualSignInValue}>
-					<Wrapper />
-				</ManualSignInProvider>
-			</ClientCartProvider>
+			<ShopProvider value={shopProviderValue}>
+				<ClientCartProvider value={clientCartProviderValue}>
+					<ManualSignInProvider value={manualSignInValue}>
+						<AppProvider value={appProviderValue}>
+							<Wrapper />
+						</AppProvider>
+					</ManualSignInProvider>
+				</ClientCartProvider>
+			</ShopProvider>
 		</UserProvider>
 	);
 };

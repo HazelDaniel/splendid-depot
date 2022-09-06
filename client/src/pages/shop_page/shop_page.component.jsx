@@ -1,38 +1,39 @@
-import React from "react";
+import React, { useCallback } from "react";
 import "./shop_page.styles.scss";
 
 import ShopCollection from "../../components/shop_collection/shop_collection.component";
+import { WithCollections } from "../../HOCs/with_collections/with_collections.component";
+import isEqual from "lodash.isequal";
 
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
-// REDUX
-import { collectionsSelector } from "../../redux/store";
-import { createStructuredSelector } from "reselect";
-import { connect, useDispatch, useSelector } from "react-redux";
 
-// FIREBASE
-import { updateCollections } from "../../redux/shop/shop.slice";
 
-const isEqual = require("lodash.isequal");
+// GLOBAL STATE
 
+const collectionsToArray = (collections) => {
+	if (!collections) return [];
+	const convertedCollections = Object.entries(collections).map(([key, value]) => value);
+	return convertedCollections;
+}
 
 
 const ShopPage = React.memo(({ collections }) => {
+	// console.log("shop rendering");
+	const convertedCollections = useCallback(() => collectionsToArray(collections), [collections]);
+	// console.log(convertedCollections(), "from shop ");	
 
 	return (
 		<div className="collection-container">
-			{collections.map(({ id, ...otherProps }) => (
+			{convertedCollections().map(({ id, ...otherProps }) => (
 				<ShopCollection key={id} {...otherProps} />
 			))}
 		</div>
 	);
 }, (prev, next) => {
-	if (isEqual(prev.collections, next.collections)) return true;
+	if (isEqual(prev, next)) return true;
 	return false;
-})
+});
 
-const mapStateToProps = createStructuredSelector({
-	collections: collectionsSelector,
-})
 
-export default connect(mapStateToProps)(ShopPage);
+
+export default WithCollections(ShopPage);

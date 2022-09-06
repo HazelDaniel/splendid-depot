@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 // REDUX
 import { cartContext } from "../../App";
-import { __addToCart } from "../../App.utils";
+import { __addToCart } from "../../reducers/cart.reducer";
 
 const isEqual = require("lodash.isequal");
 

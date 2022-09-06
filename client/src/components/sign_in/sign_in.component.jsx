@@ -4,9 +4,9 @@ import "./sign_in.styles.scss";
 import { FormInput } from "../form_input/form_input.component";
 import { CustomButton } from "../custom_button/custom_button.component";
 
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
-import { useAuthSignInWithEmailAndPassword, useAuthSignInWithPopup } from "@react-query-firebase/auth";
+import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { auth } from "../../firebase/firebase.utils";
+import { useAuthSignInWithEmailAndPassword } from "@react-query-firebase/auth";
 import { toast } from "react-toastify";
 import isEqual from "lodash.isequal";
 import { manualSignInContext, userContext } from "../../App";
@@ -15,7 +15,7 @@ import { createUserDetails } from "../../utils";
 const handleGoogleSignIn = async () => {
 	try {
 		const provider = new GoogleAuthProvider();
-		const googleAuthResult = await signInWithPopup(auth, provider);
+		const googleAuthResult = await signInWithRedirect(auth, provider);
 		return googleAuthResult.user;
 	} catch (error) {
 		console.log(error);

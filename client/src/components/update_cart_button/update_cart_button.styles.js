@@ -19,7 +19,7 @@ export const UpdateCartButtonStyled = styled.button`
 	cursor: pointer;
 	filter: ${({ $showDisabled }) => {
 		// prettier-ignore
-		console.log($showDisabled);
+		// console.log($showDisabled);
 		return $showDisabled ? `blur(0.5rem)` : `none`;
 	}};
 	left: 10%;

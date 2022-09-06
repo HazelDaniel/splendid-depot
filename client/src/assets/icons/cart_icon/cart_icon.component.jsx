@@ -1,14 +1,14 @@
+import isEqual from "lodash.isequal";
 import React from "react";
 import "../../../sass_modules/_variables.scss";
 
-import { connect } from "react-redux";
-import { toggleCartVisibility } from "../../../redux/cart/cart.slice";
 
-const CartIcon = ({ toggleCartVisibility }) => {
+
+const CartIcon = React.memo(({ toggleCartModal }) => {
 	return (
 		<svg
 			onClick={() => {
-				toggleCartVisibility();
+				toggleCartModal();
 			}}
 			width="43px"
 			height="42.999996px"
@@ -39,15 +39,11 @@ const CartIcon = ({ toggleCartVisibility }) => {
 			</g>
 		</svg>
 	);
-};
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		toggleCartVisibility: () => {
-			dispatch(toggleCartVisibility());
-		},
-	};
-};
+}, (prev,next) => {
+	if (isEqual(prev, next)) return true;
+	return false;
+});
 
 
-export default connect(null, mapDispatchToProps)(CartIcon);
+
+export default CartIcon;

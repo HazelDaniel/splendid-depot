@@ -59,8 +59,8 @@ export const createUserDetails = async (userCred, [contextValue, contextUpdater]
 
 
 // MANUAL TOAST DISPLAY IMPLEMENTATION
-export const showAndHide = async (action, reverse, seconds) => {
-	action();
+export const showAndHide = async (handler,showAction,hideAction,seconds) => {
+	handler(showAction());
 	await wait(seconds);
-	reverse();
+	handler(hideAction());
 };

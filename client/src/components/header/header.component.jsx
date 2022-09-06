@@ -11,10 +11,12 @@ import { auth, DB, getCollectionsMap } from "../../firebase/firebase.utils";
 import { useDispatch } from "react-redux";
 import { collection, onSnapshot } from "firebase/firestore";
 import { updateCollections } from "../../redux/shop/shop.slice";
-import { renderLoader, unmountLoader } from "../../redux/app/app.slice";
-import { cartContext, userContext } from "../../App";
+import { AppContext, cartContext, ShopContext, userContext } from "../../App";
 import { user as userInit } from "../../App";
-import { __emptyCart } from "../../App.utils";
+import { __emptyCart } from "../../reducers/cart.reducer";
+import { __renderLoader, __unmountLoader } from "../../reducers/app.reducer";
+import { __updateCollections } from "../../reducers/shop.reducer";
+import { wait } from "../../utils";
 
 
 const detectScrollAndStyle = ({current:element}) => {
@@ -35,33 +37,34 @@ const detectScrollAndStyle = ({current:element}) => {
 }
 
 
-const Header = React.memo(() => {
+const Header = React.memo(({toggleCartModal}) => {
 	const user = useContext(userContext);
-	const { clientCartState,clientCartDispatch } = useContext(cartContext);
+	const { clientCartState, clientCartDispatch } = useContext(cartContext);
+	const { appDispatch } = useContext(AppContext);
+	const { shopDispatch } = useContext(ShopContext);
 
 	const history = useHistory();
-	const dispatch = useDispatch();
 	const headerRef = useRef(null);
 	// console.log(user, user.currentUser.currentUser);
 
 	useEffect(() => {
 		const collectionRef = collection(DB, "collections");
 		const unSubscribeFromSnapshot = onSnapshot(collectionRef, async () => {
-			dispatch(renderLoader());
+			appDispatch(__renderLoader());
 			try {
 				const collections = await getCollectionsMap(collectionRef);
-				dispatch(updateCollections(collections));
+				shopDispatch(__updateCollections(collections));
 			} catch (error) {
 				console.log(error);
 			} finally {
-				dispatch(unmountLoader());
+				appDispatch(__unmountLoader());
 			}
 		});
 
 		return () => {
 			unSubscribeFromSnapshot();
 		}
-	}, [dispatch])
+	}, [appDispatch,shopDispatch])
 	useEffect(() => {
 		detectScrollAndStyle(headerRef);
 	},[])
@@ -107,7 +110,7 @@ const Header = React.memo(() => {
 					)}
 				</ul>
 				<div className="shopping-icon-div">
-					<CartIcon></CartIcon>
+					<CartIcon toggleCartModal={toggleCartModal}/>
 					<span>{clientCartState.carts.length}</span>
 				</div>
 			</nav>
