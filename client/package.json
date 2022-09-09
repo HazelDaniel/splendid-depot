@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@react-query-firebase/auth": "^1.0.0-dev.2",
+    "@react-query-firebase/database": "^1.0.0-dev.2",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -50,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
   }
 }

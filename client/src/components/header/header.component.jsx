@@ -16,7 +16,12 @@ import { user as userInit } from "../../App";
 import { __emptyCart } from "../../reducers/cart.reducer";
 import { __renderLoader, __unmountLoader } from "../../reducers/app.reducer";
 import { __updateCollections } from "../../reducers/shop.reducer";
-import { wait } from "../../utils";
+import {checkForArraysAndReform, reformUserObject, wait} from "../../utils";
+import {useFetchCollections} from "../../hooks/shop/use_fetch_collection";
+
+
+
+import {useDatabaseSnapshot, useDatabaseValue} from "@react-query-firebase/database";
 
 
 const detectScrollAndStyle = ({current:element}) => {
@@ -37,34 +42,58 @@ const detectScrollAndStyle = ({current:element}) => {
 }
 
 
+const collectionsRef = collection(DB, "collections");
+
+
 const Header = React.memo(({toggleCartModal}) => {
 	const user = useContext(userContext);
 	const { clientCartState, clientCartDispatch } = useContext(cartContext);
 	const { appDispatch } = useContext(AppContext);
 	const { shopDispatch } = useContext(ShopContext);
+	const {isLoading,isSuccess,data,isError,error} = useFetchCollections();
 
 	const history = useHistory();
 	const headerRef = useRef(null);
 	// console.log(user, user.currentUser.currentUser);
-
-	useEffect(() => {
-		const collectionRef = collection(DB, "collections");
-		const unSubscribeFromSnapshot = onSnapshot(collectionRef, async () => {
-			appDispatch(__renderLoader());
-			try {
-				const collections = await getCollectionsMap(collectionRef);
-				shopDispatch(__updateCollections(collections));
-			} catch (error) {
-				console.log(error);
-			} finally {
-				appDispatch(__unmountLoader());
+	
+	useEffect(()=>{
+		(async _ =>{
+			if(isSuccess) {
+				const res = await data.json();
+				console.log(res)
+				const collections = res.documents.map(entry => entry.fields).map(col=>checkForArraysAndReform((reformUserObject((col)))));
+				const convertedCollections = collections.reduce((acc, current) => {
+					acc[current.title.toLowerCase()] = current;
+					return acc;
+				}, {});
+				console.log(convertedCollections)
+				shopDispatch(__updateCollections(convertedCollections));
 			}
-		});
+			if(isError) alert(error.message);
+		})()
+	},[isSuccess,isError])
 
-		return () => {
-			unSubscribeFromSnapshot();
-		}
-	}, [appDispatch,shopDispatch])
+
+	// useEffect(() => {
+	// 	const collectionRef = collection(DB, "collections");
+	// 	const unSubscribeFromSnapshot = onSnapshot(collectionRef, async () => {
+	// 		appDispatch(__renderLoader());
+	// 		try {
+	// 			const collections = await getCollectionsMap(collectionRef);
+	// 			shopDispatch(__updateCollections(collections));
+	// 		} catch (error) {
+	// 			console.log(error);
+	// 		} finally {
+	// 			appDispatch(__unmountLoader());
+	// 		}
+	// 	});
+	//
+	// 	return () => {
+	// 		unSubscribeFromSnapshot();
+	// 	}
+	// }, [appDispatch,shopDispatch])
+	
+	
 	useEffect(() => {
 		detectScrollAndStyle(headerRef);
 	},[])

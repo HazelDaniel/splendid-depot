@@ -11,9 +11,16 @@ import { persistedStore } from "./redux/store";
 import Loader from "./components/loader/loader.component";
 import { global as GlobalStyle } from "./components/styles/root/root.styles";
 import { QueryClient, QueryClientProvider } from "react-query";
+import {ReactQueryDevtools} from "react-query/devtools";
 import { ToastContainer } from "react-toastify";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions:{
+		queries:{
+			refetchOnWindowFocus: false
+		}
+	}
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -27,7 +34,8 @@ root.render(
 						<App />
 					</Router>
 				</PersistGate>
-			</Provider>
+			</Provider>]
+			<ReactQueryDevtools initialIsOpen={false}/>
 		</QueryClientProvider>
 	</>
 	// {/* </React.StrictMode> */}

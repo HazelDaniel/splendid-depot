@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useRef } from "react";
 
+
 // ROUTER
 import { Switch, Route, Redirect, withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
@@ -18,6 +19,7 @@ import AlertPopup from "../popup/alert_popup/alert_popup.component";
 
 // GLOBAL STATE
 import { AppContext, userContext } from "../../App";
+import {useIsFetching} from "react-query";
 
 const isEqual = require("lodash.isequal");
 
@@ -34,6 +36,7 @@ const Wrapper = React.memo(
 		let { appState } = useContext(AppContext);
 		const { currentUser } = useContext(userContext);
 		const cartModal = useRef(null);
+		const isLoading = useIsFetching({predicate: query=>query.state.status === "loading"});
 
 		const toggleCartModal = useCallback(() => handleCartModalToggle(cartModal), []);
 
@@ -65,7 +68,7 @@ const Wrapper = React.memo(
 				) : null}
 
 				{appState.displayPaymentMessage ? <AlertPopup alertClass={`success-popup`} alertMessage={`Transaction Successful!`} /> : null}
-				{appState.isLoading ? <Loader /> : null}
+				{!!isLoading ? <Loader /> : null}
 			</div>
 		);
 	},
