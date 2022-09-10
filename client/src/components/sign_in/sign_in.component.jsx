@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import isEqual from "lodash.isequal";
 import { manualSignInContext, userContext } from "../../App";
 import { createUserDetails } from "../../utils";
+import {AuthBodyStyled, AuthHeadingDivStyled} from "../../pages/auth_page/auth_page.styles";
+import {CustomButtonStyled} from "../custom_button/custom_button.styles";
 
 const handleGoogleSignIn = async () => {
 	try {
@@ -82,11 +84,11 @@ const SignIn = React.memo(
 			dispatch(updateForm({ [name]: value }));
 		};
 		return (
-			<div className="SIPB auth-body">
-				<div className="SIPB-heading-div heading-div">
+			<AuthBodyStyled >
+				<AuthHeadingDivStyled className="SIPB-heading-div heading-div">
 					<p className="title">I already have an account</p>
 					<p className="subtitle">sign in with your email and password</p>
-				</div>
+				</AuthHeadingDivStyled>
 
 				<form
 					onSubmit={(e) => {
@@ -95,15 +97,15 @@ const SignIn = React.memo(
 						dispatch(clearForm());
 					}}
 				>
-					<div className="SIPB-inputs-div inputs-div">
+					<div className="inputs-div">
 						<FormInput handleChange={handleChange} type="email" name="email" placeholder="Email" required value={formState.email} />
 						<FormInput handleChange={handleChange} type="password" name="password" placeholder="Password" required value={formState.password} />
 					</div>
-					<div className="SIPB-cta-div cta-div">
-						<CustomButton disabled={signInAuthIsLoading} type="submit" className="cta-primary">
+					<div className="cta-div">
+						<CustomButtonStyled disabled={signInAuthIsLoading} type="submit" $group='primary'>
 							SIGN IN
-						</CustomButton>
-						<CustomButton className="cta-secondary"  onClick={async (e) => {
+						</CustomButtonStyled>
+						<CustomButtonStyled $group= 'secondary'  onClick={async (e) => {
 							e.preventDefault();
 							try {
 								const googleAuthResult = await handleGoogleSignIn();
@@ -117,10 +119,10 @@ const SignIn = React.memo(
 							}
 						}}>
 							SIGN IN WITH GOOGLE
-						</CustomButton>
+						</CustomButtonStyled>
 					</div>
 				</form>
-			</div>
+			</AuthBodyStyled>
 		);
 	},
 	(prev, next) => {

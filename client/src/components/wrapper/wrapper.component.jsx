@@ -5,7 +5,7 @@ import React, { useCallback, useContext, useRef } from "react";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 // COMPONENTS
-import "./wrapper.styles.scss";
+import {WrapperStyled} from "./wrapper.styles";
 import Header from "../header/header.component";
 import Homepage from "../../pages/homepage/homepage.component";
 import ShopPage from "../../pages/shop_page/shop_page.component";
@@ -15,8 +15,8 @@ import CartModal from "../cart_modal/cart_modal.component";
 import ShopCollection from "../shop_collection/shop_collection.component";
 import F04Page from "../../pages/404_page/F04_page.component";
 import Loader from "../loader/loader.component";
-import AlertPopup from "../popup/alert_popup/alert_popup.component";
 
+import AlertPopup from "../popup/alert_popup/alert_popup.component";
 // GLOBAL STATE
 import { AppContext, userContext } from "../../App";
 import {useIsFetching} from "react-query";
@@ -31,17 +31,14 @@ const handleCartModalToggle = ({ current }) => {
 	current.classList.toggle("hidden");
 }
 
-const Wrapper = React.memo(
-	({location}) => {
+const Wrapper = ({location}) => {
 		let { appState } = useContext(AppContext);
 		const { currentUser } = useContext(userContext);
 		const cartModal = useRef(null);
 		const isLoading = useIsFetching({predicate: query=>query.state.status === "loading"});
 
 		const toggleCartModal = useCallback(() => handleCartModalToggle(cartModal), []);
-
-		// console.log(user)
-
+		
 		// console.log(app, user);
 		// console.log(user)
 		let displayName = currentUser.displayName ? currentUser.displayName?.split(" ") : null;
@@ -51,7 +48,7 @@ const Wrapper = React.memo(
 		// )
 
 		return (
-			<div className={`wrapper ${location.pathname === "/auth" ? "auth" : ""}`}>
+			<WrapperStyled $bgColor ={location.pathname === `/auth`? `auth-color`: `home-color`}>
 				<Header toggleCartModal={toggleCartModal} />
 				<CartModal ref={cartModal} toggleCartModal={toggleCartModal} />
 				<Switch>
@@ -69,12 +66,7 @@ const Wrapper = React.memo(
 
 				{appState.displayPaymentMessage ? <AlertPopup alertClass={`success-popup`} alertMessage={`Transaction Successful!`} /> : null}
 				{!!isLoading ? <Loader /> : null}
-			</div>
+			</WrapperStyled>
 		);
-	},
-	(prevProps, nextProps) => {
-		if (isEqual(prevProps,nextProps)) return true;
-		return false; // props are not equal -> update the component
 	}
-);
 export default withRouter(Wrapper);

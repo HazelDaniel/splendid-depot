@@ -66,7 +66,6 @@ const Header = React.memo(({toggleCartModal}) => {
 					acc[current.title.toLowerCase()] = current;
 					return acc;
 				}, {});
-				console.log(convertedCollections)
 				shopDispatch(__updateCollections(convertedCollections));
 			}
 			if(isError) alert(error.message);

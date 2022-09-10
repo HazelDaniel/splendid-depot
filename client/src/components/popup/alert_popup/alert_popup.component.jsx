@@ -1,12 +1,13 @@
 import isEqual from "lodash.isequal";
 import React from "react";
-import "./alert_popup.styles.scss";
+import "./alert_popup.styles";
+import {AlertPopupStyled} from "./alert_popup.styles";
 
 const AlertPopup = React.memo(({ alertMessage, alertClass }) => {
 	return (
-		<div className={`${alertClass} alert-popup`}>
-			<p className="popup-text">{alertMessage}</p>
-		</div>
+		<AlertPopupStyled $alertClass = {alertClass}>
+			<p>{alertMessage}</p>
+		</AlertPopupStyled>
 	);
 }, (prev, next) => {
 	if (isEqual(prev,next)) return true;

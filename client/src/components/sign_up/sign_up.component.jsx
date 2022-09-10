@@ -11,6 +11,8 @@ import { useAuthCreateUserWithEmailAndPassword } from "@react-query-firebase/aut
 import { manualSignInContext, user, userContext } from "../../App";
 import { updateUser } from "../../redux/user/user.slice";
 import { createUserDetails } from "../../utils";
+import {CustomButtonStyled} from "../custom_button/custom_button.styles";
+import {AuthBodyStyled, AuthHeadingDivStyled} from "../../pages/auth_page/auth_page.styles";
 
 // const handleSignUp = async (email, password,displayName)=>{
 // 	try {
@@ -89,11 +91,11 @@ const SignUp = React.memo(
 			dispatch({ type: "UPDATE_FORM", payload: { [name]: value } });
 		};
 		return (
-			<div className="SUPB auth-body">
-				<div className="heading-div">
+			<AuthBodyStyled className="SUPB">
+				<AuthHeadingDivStyled className="heading-div">
 					<p className="title">I already have an account</p>
 					<p className="subtitle">sign in with your email and password</p>
-				</div>
+				</AuthHeadingDivStyled>
 
 				<form
 					onSubmit={async (e) => {
@@ -111,12 +113,12 @@ const SignUp = React.memo(
 						<FormInput handleChange={handleChange} type="password" name="confirmPassword" placeholder="Confirm password" required value={formState.confirmPassword} />
 					</div>
 					<div className="cta-div">
-						<CustomButton type="submit" className="cta-primary">
+						<CustomButtonStyled type="submit" $group='primary'>
 							SIGN UP
-						</CustomButton>
+						</CustomButtonStyled>
 					</div>
 				</form>
-			</div>
+			</AuthBodyStyled>
 		);
 	},
 	(prev, next) => {

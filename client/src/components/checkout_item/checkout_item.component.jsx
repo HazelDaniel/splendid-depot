@@ -1,14 +1,14 @@
-import "./checkout_item.styles.scss";
 
 //REDUX
 import { useContext } from "react";
 import { cartContext } from "../../App";
 import { __addToCart, __clearFromCart, __removeFromCart } from "../../reducers/cart.reducer";
+import {CheckoutItemStyled} from "./checkout_item.styles";
 
 const CheckoutItem = ({cart}) => {
 	const { clientCartDispatch } = useContext(cartContext);
 	return (
-		<li className="checkout-content-div">
+		<CheckoutItemStyled>
 			<img src={cart.imageUrl} alt=""></img>
 			<p className="checkout-description-text">{cart.name}</p>
 			<div className="checkout-QTY-cta">
@@ -20,7 +20,7 @@ const CheckoutItem = ({cart}) => {
 			<button className="checkout-remove-icon" onClick={() => clientCartDispatch(__clearFromCart(cart))}>
 				&times;
 			</button>
-		</li>
+		</CheckoutItemStyled>
 	);
 }
 

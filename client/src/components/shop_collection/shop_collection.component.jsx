@@ -8,6 +8,7 @@ import "./shop_collection.styles.scss";
 import { WithCollections } from "../../HOCs/with_collections/with_collections.component";
 import { URLDeducedCollectionSelector } from "../../reducers/shop.reducer";
 import isEqual from "lodash.isequal";
+import Redirect from "react-router-dom/es/Redirect";
 
 const ShopCollection = React.memo(
 	({ title, routeName, items, match, location, shopSelector }) => {
@@ -20,7 +21,7 @@ const ShopCollection = React.memo(
 				<div className="collection-preview-body">
 					<div className="collection-title-div">
 						<p className="collection-title">
-							<Link to={`${location.pathname}${routeName}`}>{title.toUpperCase()}</Link>
+							<Link to={`${location.pathname}/${routeName}`}>{title.toUpperCase()}</Link>
 						</p>
 					</div>
 					{items.slice(0, 4).map(({ id, ...otherProps }) => (
@@ -30,8 +31,7 @@ const ShopCollection = React.memo(
 			);
 		}
 		// HANDLE 404 ON SHOP COLLECTION
-		if (!collection) return;
-		// <Redirect to={`/FourZeroFour`} />;
+		if (!collection) return <Redirect to={`/FourZeroFour`} />;
 
 		return (
 			<div className="collection-body">

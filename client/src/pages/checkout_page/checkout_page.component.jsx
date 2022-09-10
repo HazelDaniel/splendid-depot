@@ -1,19 +1,23 @@
 import React, { useCallback, useContext, useEffect } from "react";
-import "./checkout_page.styles.scss";
 import UpdateCartButton from "../../components/update_cart_button/update_cart_button.component";
 
 // COMPONENTS
 import CheckoutItem from "../../components/checkout_item/checkout_item.component";
 import StripeButton from "../../components/stripe_button/stripe_button.component";
-// import CartModal from "../../components/cart_modal/cart_modal.component";
 
 //GLOBAL STATE
 import { cartContext, userContext } from "../../App";
-import { DB, projectId } from "../../firebase/firebase.utils";
-import { useMutation } from "react-query";
-import { async } from "@firebase/util";
-import { currentDBcart, __stopCartUpload, __uploadCart } from "../../reducers/cart.reducer";
+import { DB } from "../../firebase/firebase.utils";
+
+import { currentDBcart, __stopCartUpload } from "../../reducers/cart.reducer";
 import { doc, updateDoc } from "firebase/firestore";
+import {
+	CheckoutBodyStyled,
+	CheckoutFooterStyled,
+	CheckoutTitleDivStyled,
+	CheckoutTitlesStyled,
+	CheckoutTitleStyled, CheckoutWrapperStyled
+} from "./checkout_page.styles";
 
 const cartPricesTotal = (carts) => {
 	// console.log(carts);
@@ -54,33 +58,33 @@ export const CheckoutPage = () => {
 
 	// console.log(clientCartState);
 	return (
-		<div className="checkout-wrapper">
-			<ul className="checkout-body">
-				<li className="checkout-title-div">
-					<ul className="checkout-titles">
-						<li className="checkout-title">Product</li>
-						<li className="checkout-title">Description</li>
-						<li className="checkout-title">Quantity</li>
-						<li className="checkout-title">Price</li>
-						<li className="checkout-title">Remove</li>
-					</ul>
-				</li>
+		<CheckoutWrapperStyled >
+			<CheckoutBodyStyled >
+				<CheckoutTitleDivStyled >
+					<CheckoutTitlesStyled>
+						<CheckoutTitleStyled >Product</CheckoutTitleStyled>
+						<CheckoutTitleStyled>Description</CheckoutTitleStyled>
+						<CheckoutTitleStyled>Quantity</CheckoutTitleStyled>
+						<CheckoutTitleStyled>Price</CheckoutTitleStyled>
+						<CheckoutTitleStyled>Remove</CheckoutTitleStyled>
+					</CheckoutTitlesStyled>
+				</CheckoutTitleDivStyled>
 				{clientCartState.carts.map((cart) => {
 					return <CheckoutItem key={cart.id} cart={cart} />;
 				})}
-			</ul>
-			<div className="checkout-footer">
+			</CheckoutBodyStyled>
+			<CheckoutFooterStyled >
 				<p className="checkout-summary-text">TOTAL: ${computedPricesTotal()}</p>
 
 				<StripeButton price={computedPricesTotal()} />
 				<UpdateCartButton clientCartDispatch={clientCartDispatch} clientCartState={clientCartState} $showDisabled={clientCartState.shouldCartUpload} />
-			</div>
+			</CheckoutFooterStyled>
 
 			<p className="checkout-text-warning">
 				Please use the following details for your test payment info: <br />
 				**card number: 5555 5555 5555 4444 **exp: any future date **cvv: 000
 			</p>
-		</div>
+		</CheckoutWrapperStyled>
 	);
 };
 

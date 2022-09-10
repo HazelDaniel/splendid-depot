@@ -8,6 +8,7 @@ import { checkForArraysAndReform, reformUserObject, wait } from "./utils";
 import { clientCartInitial, clientCartReducer, currentDBcart, __syncCart } from "./reducers/cart.reducer";
 import { appReducer, initialAppState, __renderLoader, __renderWelcome, __unmountLoader, __unmountWelcome } from "./reducers/app.reducer";
 import { initialShopState, shopReducer } from "./reducers/shop.reducer";
+import {useFetchUser} from "./hooks/app/app.use_fetch_user";
 
 let unsubscribeFromSnapshot;
 
@@ -53,6 +54,7 @@ const App = (_) => {
 	const userProviderValue = useMemo(() => ({ currentUser, updateCurrentUser }), [currentUser]);
 	const appProviderValue = useMemo(() => ({ appState, appDispatch }), [appState]);
 	const shopProviderValue = useMemo(() => ({ shopState, shopDispatch,shopSelector }), [shopState,shopSelector]);
+	const [lastAuth,setLastAuth] = useState(null);
 	const manualSignInValue = useMemo(
 		() => ({
 			manualSignedIn,
@@ -60,71 +62,71 @@ const App = (_) => {
 		}),
 		[manualSignIn, manualSignedIn]
 	);
+	const checkLastSignedIn = useCallback(()=> (async _ => {
+		try{
+			const lastAuthed = await checkLastAuthSession();
+			setLastAuth(lastAuthed);
+		}catch (err){
+			setLastAuth(err);
+		}
+	})(),[]);
+	
+	useEffect(()=>{
+		//checking for the last auth session only when the app mounts (to determine whether user was previously logged in)
+		checkLastSignedIn();
+	},[]);
+	
+	
+	const {data:checkedData,error:checkedError,isSuccess:checkedIsSuccessful,isError:checkedIsErrored} = useFetchUser(lastAuth?.uid);
+	
 
-
-	const checkLastSIgnIn = useCallback(
+	const fetchAuthedUserDetails = useCallback(
 		() =>
 			(async () => {
-				try {
-					appDispatch(__renderLoader());
-					const lastSignIn = await checkLastAuthSession();
-					// console.log("checking last auth session ...", lastSignIn);
-					const userRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${lastSignIn.uid}`);
-					const { fields } = await userRes.json();
+				if(checkedIsSuccessful){
+					// console.log("fetching user auth details")
+					const res = await checkedData.json();
+					const {fields} = res;
 					const reformedUserWithCart = checkForArraysAndReform(reformUserObject(fields));
-					// console.log(fields);
 					clientCartDispatch(__syncCart(reformedUserWithCart));
 					currentDBcart.carts = reformedUserWithCart.carts;
-					// console.log(currentDBcart);
 					const userData = {
-						id: lastSignIn.uid,
+						id: lastAuth.uid,
 						...reformedUserWithCart,
-						currentUser: lastSignIn,
+						currentUser: lastAuth,
 					};
-					// IN THIS BLOCK , WE ALSO WANT TO GET THE CARTS OF THE CURRENT SIGNED IN USER
 					updateCurrentUser(userData);
-				} catch (error) {
-					return error;
-				} finally {
-					appDispatch(__unmountLoader());
 				}
 			})(),
-		[appDispatch]
+		[checkedIsSuccessful]
 	);
 
-	// console.log(currentUser);
 	useEffect(() => {
+		//welcome message if the user exists
 		// prettier-ignore
 		if (!(!!currentUser.currentUser)) return;
 		const checkUserIsWelcome = async () => {
-			// TODO: THIS IS A CLIENT SIGN IN FUNCTIONALITY RIGHT HERE, EXPORT IT TO A SINGLE FUNCTION
-			//TODO: remember to dispatch a sign in action to store instead of rendering and unmounting welcome message
 			appDispatch(__renderWelcome());
 			await wait(3);
 			appDispatch(__unmountWelcome());
-			// toast("welcome")
 		};
-		checkUserIsWelcome();
-		return () => {
-			unsubscribeFromSnapshot && unsubscribeFromSnapshot();
-		};
+		(async _ =>checkUserIsWelcome())();
 	}, [currentUser, appDispatch]);
 
 	useEffect(() => {
-		// TODO: DISPATCH AN ACTION THAT RE-TRIGGERS THIS EFFECT FROM THE SIGN IN COMPONENT (AND UPDATE THE DEPENDENCY ARRAY) SO AS NOT TO MAKE EXTRA API REQUEST WHEN SIGNING IN
+		
 		(async () => {
-			await checkLastSIgnIn();
+			await fetchAuthedUserDetails();
 		})();
-	}, [checkLastSIgnIn]);
+	}, [fetchAuthedUserDetails]);
 
 	useEffect(() => {
 		(async () => {
 			if (!!manualSignedIn) {
-				// console.log("manually signed in on client");
-				await checkLastSIgnIn();
+				await fetchAuthedUserDetails();
 			}
 		})();
-	}, [manualSignedIn, checkLastSIgnIn]);
+	}, [manualSignedIn, fetchAuthedUserDetails]);
 
 	return (
 		<UserProvider value={userProviderValue}>

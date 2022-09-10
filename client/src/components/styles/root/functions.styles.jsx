@@ -5,44 +5,44 @@ export const makeFlex = css`
 	align-items: center;
 `;
 export const makeFlexCenter = css`
-	${makeFlex}
+	${makeFlex};
 	justify-content: center;
 `;
 export const makeFlexEnd = css`
-	${makeFlex}
+	${makeFlex};
 	justify-content: flex-end;
 `;
 
 export const makeRowFlex = css`
-	${makeFlex}
+	${makeFlex};
 	flex-direction: row;
 `;
 export const makeRowFlexStart = css`
-	${makeRowFlex}
+	${makeRowFlex};
 	justify-content: flex-start;
 `;
 export const makeRowFlexCenter = css`
-	${makeRowFlex}
+	${makeRowFlex};
 	justify-content: center;
 `;
 export const makeRowFlexEnd = css`
-	${makeRowFlex}
+	${makeRowFlex};
 	justify-content: flex-end;
 `;
 export const makeColFlex = css`
-	${makeFlex}
+	${makeFlex};
 	flex-direction: column;
 `;
 export const makeColFlexStart = css`
-	${makeColFlex}
+	${makeColFlex};
 	justify-content: flex-start;
 `;
 export const makeColFlexCenter = css`
-	${makeColFlex}
+	${makeColFlex};
 	justify-content: center;
 `;
 export const makeColFlexEnd = css`
-	${makeColFlex}
+	${makeColFlex};
 	justify-content: flex-end;
 `;
 
@@ -55,34 +55,34 @@ export const makeFullHeightBlock = css`
 	height: 100%;
 `;
 export const makeFullSizeBlock = css`
-	${makeFullWidthBlock}
-	${makeFullHeightBlock}
+	${makeFullWidthBlock};
+	${makeFullHeightBlock};
 `;
 export const makeAbsoluteDiv = css`
 	position: absolute;
 	content: "";
 `;
 export const makeAbsoluteTopDiv = css`
-	${makeAbsoluteDiv}
+	${makeAbsoluteDiv};
 	top: 0;
 `;
 export const makeAbsoluteTopRightDiv = css`
-	${makeAbsoluteTopDiv}
+	${makeAbsoluteTopDiv};
 	right: 0;
 `;
 export const makeAbsoluteTopLeftDiv = css`
-	${makeAbsoluteTopDiv}
+	${makeAbsoluteTopDiv};
 	left: 0;
 `;
 export const makeAbsoluteBottomDiv = css`
-	${makeAbsoluteDiv}
+	${makeAbsoluteDiv};
 	bottom: 0;
 `;
 export const makeAbsoluteBottomRightDiv = css`
-	${makeAbsoluteBottomDiv}
+	${makeAbsoluteBottomDiv};
 	right: 0;
 `;
 export const makeAbsoluteBottomLeftDiv = css`
-	${makeAbsoluteBottomDiv}
+	${makeAbsoluteBottomDiv};
 	left: 0;
 `;
