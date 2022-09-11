@@ -2,13 +2,14 @@ import React from "react";
 import CollectionItem from "../collection_item/collection_item.component";
 import { Link, withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
-import "./shop_collection.styles.scss";
+// import "./shop_collection.styles.scss";
 
 // import { URLDeducedCollectionSelector } from "../../redux/store";
 import { WithCollections } from "../../HOCs/with_collections/with_collections.component";
 import { URLDeducedCollectionSelector } from "../../reducers/shop.reducer";
 import isEqual from "lodash.isequal";
 import Redirect from "react-router-dom/es/Redirect";
+import {CollectionBodyStyled, CollectionTitleDivStyled} from "./shop_collection.styles";
 
 const ShopCollection = React.memo(
 	({ title, routeName, items, match, location, shopSelector }) => {
@@ -18,30 +19,30 @@ const ShopCollection = React.memo(
 		if (match.path === `/shop`) {
 			// const { title, routeName, location, items } = this.props;
 			return (
-				<div className="collection-preview-body">
-					<div className="collection-title-div">
+				<CollectionBodyStyled $ispreview={true}>
+					<CollectionTitleDivStyled $isPreview={true}>
 						<p className="collection-title">
 							<Link to={`${location.pathname}/${routeName}`}>{title.toUpperCase()}</Link>
 						</p>
-					</div>
+					</CollectionTitleDivStyled>
 					{items.slice(0, 4).map(({ id, ...otherProps }) => (
-						<CollectionItem key={id} id={id} {...otherProps} />
+						<CollectionItem $isPreview={true} key={id} id={id} {...otherProps} />
 					))}
-				</div>
+				</CollectionBodyStyled>
 			);
 		}
 		// HANDLE 404 ON SHOP COLLECTION
 		if (!collection) return <Redirect to={`/FourZeroFour`} />;
 
 		return (
-			<div className="collection-body">
-				<div className="collection-title-div ctd">
+			<CollectionBodyStyled $isPreview={false}>
+				<CollectionTitleDivStyled isPreview={false}>
 					<p className="collection-title">{collection.title.toUpperCase()}</p>
-				</div>
+				</CollectionTitleDivStyled>
 				{collection.items.map(({ id, ...otherProps }) => (
-					<CollectionItem key={id} id={id} {...otherProps} />
+					<CollectionItem $isPreview={false} key={id} id={id} {...otherProps} />
 				))}
-			</div>
+			</CollectionBodyStyled>
 		);
 	},
 	(prev, next) => {

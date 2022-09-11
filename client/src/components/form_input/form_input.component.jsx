@@ -1,7 +1,8 @@
-import "./form_input.styles.scss";
+import {FormInputStyled} from "./form_input.styles";
+
 
 export const FormInput = ({ handleChange, ...otherProps }) => {
 	return (
-		<input className="form-input" {...otherProps} onChange={handleChange} />
+		<FormInputStyled {...otherProps} onChange={handleChange} />
 	)
 };

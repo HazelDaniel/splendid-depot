@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import "./shop_page.styles.scss";
 
 import ShopCollection from "../../components/shop_collection/shop_collection.component";
 import { WithCollections } from "../../HOCs/with_collections/with_collections.component";
 import isEqual from "lodash.isequal";
+import {ShopContainerStyled} from "./shop_page.styles";
 
 
 
@@ -23,11 +23,11 @@ const ShopPage = React.memo(({ collections }) => {
 	// console.log(convertedCollections(), "from shop ");	
 
 	return (
-		<div className="collection-container">
+		<ShopContainerStyled >
 			{convertedCollections().map(({ id, ...otherProps }) => (
 				<ShopCollection key={id} {...otherProps} />
 			))}
-		</div>
+		</ShopContainerStyled>
 	);
 }, (prev, next) => {
 	if (isEqual(prev, next)) return true;

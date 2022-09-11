@@ -1,17 +1,22 @@
-import "./cart_modal_item.styles.scss";
+import {
+	CartItemDetailsStyled,
+	CartModalItemImageStyled,
+	CartModalItemName,
+	CartModalItemStyled
+} from "./cart_modal_item.styles";
 
 const CartModalItem = ({ cart }) => {
 	// console.log(cart)
 	return (
-		<div className="cart-item">
-			<img src={cart.imageUrl} alt=""/>
-			<div className="cart-item-details">
-				<p className="item-name">{cart.name.toUpperCase()}</p>
+		<CartModalItemStyled >
+			<CartModalItemImageStyled src={cart.imageUrl} alt=""/>
+			<CartItemDetailsStyled >
+				<CartModalItemName >{cart.name.toUpperCase()}</CartModalItemName>
 				<p className="item-quantity">
 					{cart.quantity} x ${cart.price}
 				</p>
-			</div>
-		</div>
+			</CartItemDetailsStyled>
+		</CartModalItemStyled>
 	);
 };
 

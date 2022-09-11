@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useReducer } from "react";
-import "./sign_in.styles.scss";
 
 import { FormInput } from "../form_input/form_input.component";
 import { CustomButton } from "../custom_button/custom_button.component";

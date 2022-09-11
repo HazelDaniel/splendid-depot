@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import StripeCheckout from "react-stripe-checkout";
-import "./stripe_button.styles.scss";
 
 // UTILS
 import { showAndHide } from "../../utils";
@@ -13,6 +12,7 @@ import { renderPaymentPopup,unmountPaymentPopup } from "../../redux/app/app.slic
 import axios from "axios";
 import { AppContext } from "../../App";
 import { __renderPaymentPopup } from "../../reducers/app.reducer";
+import {CheckoutCTAButtonStyled} from "../update_cart_button/update_cart_button.styles";
 
 
 
@@ -58,7 +58,7 @@ const StripeButton = ({ price }) => {
 			token={onToken}
 			stripeKey={publishableKey}
 		>
-			<button className="checkout-cta-btn">
+			<CheckoutCTAButtonStyled $use="payment" className="checkout-cta-btn">
 				Pay Now
 				<span>
 					<svg width="23px" height="14.374878px" viewBox="0 0 23 14.374878" version="1.1" xmlnsXlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
@@ -80,7 +80,7 @@ const StripeButton = ({ price }) => {
 		</g>
 	</svg>
 				</span>
-			</button>
+			</CheckoutCTAButtonStyled>
 			</StripeCheckout>
 
 	)

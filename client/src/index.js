@@ -18,10 +18,10 @@ const queryClient = new QueryClient({
 	defaultOptions:{
 		queries:{
 			refetchOnWindowFocus: false,
-			retry: (failureCount,error)=>{
-				console.log(error);
-				return 1;
-			}
+			// retry: (failureCount,error)=>{
+			// 	console.log(error);
+			// 	return 0;
+			// }
 		}
 	}
 });
@@ -39,7 +39,7 @@ root.render(
 					</Router>
 				</PersistGate>
 			</Provider>]
-			<ReactQueryDevtools initialIsOpen={false}/>
+			{/*<ReactQueryDevtools initialIsOpen={false}/>*/}
 		</QueryClientProvider>
 	</>
 	// {/* </React.StrictMode> */}

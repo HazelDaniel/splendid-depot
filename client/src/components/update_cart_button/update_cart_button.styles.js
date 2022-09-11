@@ -2,25 +2,74 @@ import styled from "styled-components";
 import { colors } from "../styles/root/variables.styles";
 import { makeAbsoluteBottomLeftDiv, makeRowFlexCenter } from "../styles/root/functions.styles";
 
-export const UpdateCartButtonStyled = styled.button`
-	${makeAbsoluteBottomLeftDiv}
-	border: unset;
+export const CheckoutCTAButtonStyled = styled.button`
+	${makeAbsoluteBottomLeftDiv};
+	position: ${({$use})=>{
+	  switch($use){
+	    case `update`:
+			return `absolute`;
+	    case `payment`:
+			return `initial`;
+	  }
+	}};
+  border: ${({$use})=>{
+    switch($use){
+      case `update`:
+        return `.1rem solid ${colors.$checkoutModalHeroColor}`;
+      case `payment`:
+        return `none`;
+    }
+  }};
+	bottom: ${({$use})=>{
+	switch($use){
+	  case `update`:
+	    return `0`;
+	  case `payment`:
+	    return ``;
+	}
+	}};
+	left: ${({$use})=>{
+	switch($use){
+	  case `update`:
+	    return `10%`;
+	  case `payment`:
+	    return ``;
+	}
+	}};
+	//border: unset;
 	background-color: ${colors.$accentColor};
 	color: ${colors.$lightBGColor};
-	font-size: 1rem;
+	font-size: 1.2rem;
 	text-transform: capitalize;
-	font-weight: 600;
+	font-weight: 700;
 	font-family: montserrat;
 	width: 10rem;
 	height: 3rem;
-	${makeRowFlexCenter}
+	${makeRowFlexCenter};
 	overflow: hidden;
 	margin-top: 2rem;
 	cursor: pointer;
 	filter: ${({ $showDisabled }) => {
-		// prettier-ignore
-		// console.log($showDisabled);
-		return $showDisabled ? `blur(0.5rem)` : `none`;
+	// prettier-ignore
+	return $showDisabled ? `blur(0.5rem)` : `none`;
 	}};
-	left: 10%;
+	box-shadow: ${({$use})=>{
+	switch($use){
+	  case `update`:
+	    return `none`;
+	  case `payment`:
+	    return `.1rem .2rem .4rem ${colors.$checkoutCTAShadowColor}`;
+	}
+	}};
+	&.checkout-cta-btn{
+		span {
+		  height: 50%;
+		  margin-left: .5rem;
+		  transform: scaleY(.9);
+		
+		  svg {
+		    height: 100%;
+		  }
+		}
+	}
 `;

@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 
 // COMPONENTS
-import "./cart_modal.styles.scss";
 import CartModalItem from "../cart_modal_item/cart_modal_item.component";
 
 // ROUTING
@@ -12,6 +11,7 @@ import { nanoid } from "@reduxjs/toolkit";
 
 // GLOBAL STATE
 import { cartContext } from "../../App";
+import {CartCancelButtonStyled, CartItemsBodyStyled, CartModalCTAStyled, CartModalStyled} from "./cart_modal.styles";
 
 
 
@@ -22,25 +22,24 @@ const CartModal = React.forwardRef(({toggleCartModal},ref) => {
 	const history = useHistory();
 	// console.log(history)
 	return (
-		<div ref={ref} className={`cart-modal hidden`}>
-			<div className="cart-cancel-btn-div">
+		<CartModalStyled ref={ref} className="cart-modal hidden">
+			<CartCancelButtonStyled >
 				<button onClick={toggleCartModal}>X</button>
-			</div>
-			<div className="cart-items-body">
+			</CartCancelButtonStyled>
+			<CartItemsBodyStyled >
 				{clientCartState.carts.map((cartItem) => (
 					<CartModalItem cart={cartItem} key={nanoid()} />
 				))}
-			</div>
-			<button
-				className="cart-modal-cta"
+			</CartItemsBodyStyled>
+			<CartModalCTAStyled
 				onClick={() => {
 					toggleCartModal();
 					history.push(`/checkout`);
 				}}
 			>
 				GO TO CHECKOUT
-			</button>
-		</div>
+			</CartModalCTAStyled>
+		</CartModalStyled>
 	);
 });
 

@@ -1,0 +1,20 @@
+import styled from "styled-components";
+import {makeFullWidthBlock} from "../styles/root/functions.styles";
+import {colors} from "../styles/root/variables.styles";
+
+
+export const FormInputStyled = styled.input`
+  height: 5rem;
+  ${makeFullWidthBlock};
+
+  &:focus {
+    &::placeholder {
+    @include makeFullWidthBlock();
+      all: unset;
+      color: ${colors.$authTextColor};
+      transform: translate(-4%, -60%) scale(.9);
+      transition: transform .2s ease-in;
+      left: 0;
+    }
+  }
+`;

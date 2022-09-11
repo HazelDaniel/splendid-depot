@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { projectId } from "../../firebase/firebase.utils";
-
+import axios from "axios";
 
 
 // export const useFetchUser = (id) => useQuery(["user",id],()=>fetchUser(id));
@@ -9,7 +9,7 @@ import { projectId } from "../../firebase/firebase.utils";
 
 const fetchUser = ({queryKey}) => {
 	console.log(queryKey)
-	return fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${queryKey[1]}`).catch(err=>{
+	return axios.get(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${queryKey[1]}`).catch(err=>{
 		throw err;
 	})
 };

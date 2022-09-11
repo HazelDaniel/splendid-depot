@@ -85,8 +85,9 @@ const App = (_) => {
 			(async () => {
 				if(checkedIsSuccessful){
 					// console.log("fetching user auth details")
-					const res = await checkedData.json();
-					const {fields} = res;
+					console.log(checkedData);
+					
+					const {fields} = checkedData.data;
 					const reformedUserWithCart = checkForArraysAndReform(reformUserObject(fields));
 					clientCartDispatch(__syncCart(reformedUserWithCart));
 					currentDBcart.carts = reformedUserWithCart.carts;
@@ -142,5 +143,7 @@ const App = (_) => {
 		</UserProvider>
 	);
 };
+
+//TODO: THERE IS A BUG WHEN FETCHING THE USER AUTH THAT THROWS AN ERROR SAYING THE .json data has already been read;
 
 export default App;

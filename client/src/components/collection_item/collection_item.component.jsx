@@ -3,20 +3,22 @@ import React, { useContext } from "react";
 // REDUX
 import { cartContext } from "../../App";
 import { __addToCart } from "../../reducers/cart.reducer";
+import {CollectionItemStyled, ItemDetailsDivStyled, ItemImageDivStyled} from "./collection_item.styles";
 
 const isEqual = require("lodash.isequal");
 
 const CollectionItem = React.memo(
-	({ ...cartDetails }) => {
+	({ $isPreview, ...cartDetails }) => {
+		console.log($isPreview)
 		const { clientCartDispatch } = useContext(cartContext);
 		// console.log(user)
 		const { imageUrl, name, price } = cartDetails;
 		return (
-			<div className="collection-item">
-				<div className="item-image-div">
+			<CollectionItemStyled $isPreview={$isPreview}>
+				<ItemImageDivStyled >
 					<img src={imageUrl} alt="" className="item-image"></img>
-				</div>
-				<div className="item-details-div">
+				</ItemImageDivStyled>
+				<ItemDetailsDivStyled>
 					<p className="item-name">{name}</p>
 					<p className="item-price-text">${price}</p>
 					<button
@@ -27,8 +29,8 @@ const CollectionItem = React.memo(
 					>
 						ADD TO CART
 					</button>
-				</div>
-			</div>
+				</ItemDetailsDivStyled>
+			</CollectionItemStyled>
 		);
 	},
 	(prev, next) => {

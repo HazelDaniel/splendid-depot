@@ -1,10 +1,10 @@
 import React from "react";
-import "./F04_page.styles.scss";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import {FO4WrapperStyled} from "./FO4_page.styles";
 
-const F04Page = ({ location }) => {
+const F04Page = () => {
 	return (
-		<div className="F04-wrapper">
+		<FO4WrapperStyled className="F04-wrapper">
 			<div className="F04-div">
 				<svg width="101.03479px" height="59.477123px" viewBox="0 0 101.03479 59.477123" version="1.1" xmlnsXlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 					<g id="404">
@@ -23,7 +23,7 @@ const F04Page = ({ location }) => {
 				</svg>
 			</div>
 			<p className="F04-message">THE PAGE YOU REQUESTED EITHER DOES NOT EXIST <br/> OR IS A BROKEN LINK</p>
-		</div>
+		</FO4WrapperStyled>
 	)
 }
 
