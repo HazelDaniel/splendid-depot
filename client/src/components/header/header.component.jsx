@@ -57,19 +57,18 @@ const Header = React.memo(({toggleCartModal}) => {
 	// console.log(user, user.currentUser.currentUser);
 	
 	useEffect(()=>{
-		(async _ =>{
-			if(isSuccess) {
-				const res = await data.json();
-				console.log(res)
-				const collections = res.documents.map(entry => entry.fields).map(col=>checkForArraysAndReform((reformUserObject((col)))));
-				const convertedCollections = collections.reduce((acc, current) => {
-					acc[current.title.toLowerCase()] = current;
-					return acc;
-				}, {});
-				shopDispatch(__updateCollections(convertedCollections));
-			}
-			if(isError) alert(error.message);
-		})()
+		if(isSuccess) {
+			const res = data.data;
+			console.log(res)
+			const collections = res.documents.map(entry => entry.fields).map(col=>checkForArraysAndReform((reformUserObject((col)))));
+			const convertedCollections = collections.reduce((acc, current) => {
+				acc[current.title.toLowerCase()] = current;
+				return acc;
+			}, {});
+			shopDispatch(__updateCollections(convertedCollections));
+		}
+		if(isError) alert(error.message);
+
 	},[isSuccess,isError])
 
 

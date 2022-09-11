@@ -10,3 +10,4 @@ export const AuthPage = function () {
 		</AuthWrapperStyled>
 	);
 }
+export default  AuthPage;

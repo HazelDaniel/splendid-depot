@@ -136,14 +136,5 @@ export const ItemDetailsDivStyled = styled.div`
     color: ${colors.$collectionPriceTextColor};
     padding-bottom: 3rem;
   }
-
-  .add-to-cart-cta {
-    border: none;
-    height: 3.5rem;
-    min-height: 3rem;
-    width: 10rem;
-    background-color: ${colors.$accentColor};
-    font-weight: bolder;
-    color: ${colors.$lightCTATextColor};
-  }
+  
 `;

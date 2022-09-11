@@ -1,8 +1,10 @@
 import React from "react";
 import "./loader.styles.scss";
-const Loader = props => {
+import {useIsFetching} from "react-query";
+const Loader = () => {
+	const isLoading = useIsFetching({predicate: query=>query.state.status === "loading"});
 	return (
-		<div className="loader-div">
+		<div className={`loader-div ${!isLoading?"hidden": ""}`}>
 			<div className="loader">
 				<div className="square" ></div>
 				<div className="square"></div>

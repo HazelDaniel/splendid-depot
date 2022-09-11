@@ -21,6 +21,9 @@ import AlertPopup from "../popup/alert_popup/alert_popup.component";
 import { AppContext, userContext } from "../../App";
 import {useIsFetching} from "react-query";
 
+
+
+
 const isEqual = require("lodash.isequal");
 
 export const areEqual = (currentProps, nextProps) => {
@@ -31,42 +34,33 @@ const handleCartModalToggle = ({ current }) => {
 	current.classList.toggle("hidden");
 }
 
-const Wrapper = ({location}) => {
-		let { appState } = useContext(AppContext);
-		const { currentUser } = useContext(userContext);
-		const cartModal = useRef(null);
-		const isLoading = useIsFetching({predicate: query=>query.state.status === "loading"});
-
-		const toggleCartModal = useCallback(() => handleCartModalToggle(cartModal), []);
-		
-		// console.log(app, user);
-		// console.log(user)
-		let displayName = currentUser.displayName ? currentUser.displayName?.split(" ") : null;
-		// console.log(displayName)
-		// console.log(
-		// 	"wrapper rendering"
-		// )
-
-		return (
-			<WrapperStyled $bgColor ={location.pathname === `/auth`? `auth-color`: `home-color`}>
-				<Header toggleCartModal={toggleCartModal} />
-				<CartModal ref={cartModal} toggleCartModal={toggleCartModal} />
-				<Switch>
-					<Route exact path="/" component={Homepage} />
-					<Route exact path="/FourZeroFour" component={F04Page} />
-					<Route exact path="/shop" component={ShopPage} />
-					<Route exact path="/shop/:collection" render={() => <ShopCollection />} />
-					<Route exact path="/checkout" component={CheckoutPage} />
-					<Route exact path="/auth" render={() => (currentUser.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
-					<Route exact path="/*" render={() => <Redirect to="/FourZeroFour" />} />
-				</Switch>
-				{appState.displayWelcomeMessage && displayName && location.pathname !== "/FourZeroFour" ? (
-					<AlertPopup alertClass={`success-popup`} alertMessage={`WELCOME ${Array.isArray(displayName) ? displayName[displayName.length - 1] : displayName}!`} />
-				) : null}
-
-				{appState.displayPaymentMessage ? <AlertPopup alertClass={`success-popup`} alertMessage={`Transaction Successful!`} /> : null}
-				{!!isLoading ? <Loader /> : null}
-			</WrapperStyled>
-		);
-	}
+const Wrapper = React.memo(({location}) => {
+	const { currentUser } = useContext(userContext);
+	const cartModal = useRef(null);
+	
+	console.log("wrapper rendering")
+	const toggleCartModal = useCallback(() => handleCartModalToggle(cartModal), []);
+	let displayName = currentUser.displayName ? currentUser.displayName?.split(" ") : null;
+	return (
+		<WrapperStyled $bgColor ={location.pathname === `/auth`? `auth-color`: `home-color`}>
+			<Header toggleCartModal={toggleCartModal} />
+			<CartModal ref={cartModal} toggleCartModal={toggleCartModal} />
+			<Switch>
+				<Route exact path="/" component={Homepage} />
+				<Route exact path="/FourZeroFour" component={F04Page} />
+				<Route exact path="/shop" component={ShopPage} />
+				<Route exact path="/shop/:collection" render={() => <ShopCollection />} />
+				<Route exact path="/checkout" component={CheckoutPage} />
+				<Route exact path="/auth" render={() => (currentUser.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
+				<Route exact path="/*" render={() => <Redirect to="/FourZeroFour" />} />
+			</Switch>
+			
+			<AlertPopup displayName={displayName} />;
+			<Loader/>
+		</WrapperStyled>
+	);
+},(prev,next)=>{
+	if(isEqual(prev,next)) return true;
+	return false;
+})
 export default withRouter(Wrapper);

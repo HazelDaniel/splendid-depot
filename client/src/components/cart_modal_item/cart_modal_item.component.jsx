@@ -4,9 +4,11 @@ import {
 	CartModalItemName,
 	CartModalItemStyled
 } from "./cart_modal_item.styles";
+import {memo} from "react";
+import isEqual from "lodash.isequal";
 
-const CartModalItem = ({ cart }) => {
-	// console.log(cart)
+const CartModalItem = memo(({ cart }) => {
+	console.log("modal item rendering")
 	return (
 		<CartModalItemStyled >
 			<CartModalItemImageStyled src={cart.imageUrl} alt=""/>
@@ -18,6 +20,9 @@ const CartModalItem = ({ cart }) => {
 			</CartItemDetailsStyled>
 		</CartModalItemStyled>
 	);
-};
+},(prev,next)=>{
+	if(isEqual(prev,next)) return true;
+	return false;
+});
 
 export default CartModalItem;

@@ -28,7 +28,7 @@ const CartModal = React.forwardRef(({toggleCartModal},ref) => {
 			</CartCancelButtonStyled>
 			<CartItemsBodyStyled >
 				{clientCartState.carts.map((cartItem) => (
-					<CartModalItem cart={cartItem} key={nanoid()} />
+					<CartModalItem cart={cartItem} key={cartItem.id} />
 				))}
 			</CartItemsBodyStyled>
 			<CartModalCTAStyled

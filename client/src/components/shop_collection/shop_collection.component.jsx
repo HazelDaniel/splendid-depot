@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext, useMemo} from "react";
 import CollectionItem from "../collection_item/collection_item.component";
 import { Link, withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
@@ -10,11 +10,12 @@ import { URLDeducedCollectionSelector } from "../../reducers/shop.reducer";
 import isEqual from "lodash.isequal";
 import Redirect from "react-router-dom/es/Redirect";
 import {CollectionBodyStyled, CollectionTitleDivStyled} from "./shop_collection.styles";
+import {cartContext} from "../../App";
 
 const ShopCollection = React.memo(
 	({ title, routeName, items, match, location, shopSelector }) => {
 		const collection = shopSelector(URLDeducedCollectionSelector(match.params.collection));
-		console.log("rendering collection");
+		
 
 		if (match.path === `/shop`) {
 			// const { title, routeName, location, items } = this.props;
@@ -32,7 +33,7 @@ const ShopCollection = React.memo(
 			);
 		}
 		// HANDLE 404 ON SHOP COLLECTION
-		if (!collection) return <Redirect to={`/FourZeroFour`} />;
+		if (!collection) return;
 
 		return (
 			<CollectionBodyStyled $isPreview={false}>
@@ -40,7 +41,7 @@ const ShopCollection = React.memo(
 					<p className="collection-title">{collection.title.toUpperCase()}</p>
 				</CollectionTitleDivStyled>
 				{collection.items.map(({ id, ...otherProps }) => (
-					<CollectionItem $isPreview={false} key={id} id={id} {...otherProps} />
+					<CollectionItem  $isPreview={false} key={id} id={id} {...otherProps} />
 				))}
 			</CollectionBodyStyled>
 		);

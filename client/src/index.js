@@ -18,10 +18,10 @@ const queryClient = new QueryClient({
 	defaultOptions:{
 		queries:{
 			refetchOnWindowFocus: false,
-			// retry: (failureCount,error)=>{
-			// 	console.log(error);
-			// 	return 0;
-			// }
+			retry: (failureCount,error)=>{
+				console.log(error);
+				return 1;
+			}
 		}
 	}
 });

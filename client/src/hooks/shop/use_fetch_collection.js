@@ -5,12 +5,13 @@
 
 
 import {projectId} from "../../firebase/firebase.utils";
-import {useQuery} from "react-query";
+import {useQuery} from "react-query"
+import axios from "axios";
 import isEqual from "lodash.isequal";
 import {reformUserObject,checkForArraysAndReform} from "../../utils";
 
  const fetchCollections = ({queryKey}) => {
-	return fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${queryKey}`).catch(err=>{
+	return axios.get(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${queryKey}`).catch(err=>{
 		throw err;
 	})
 };

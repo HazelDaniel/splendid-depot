@@ -1,34 +1,25 @@
-import React, { useContext } from "react";
+import React from "react";
 
-// REDUX
-import { cartContext } from "../../App";
-import { __addToCart } from "../../reducers/cart.reducer";
+
+//COMPONENTS AND STYLED
 import {CollectionItemStyled, ItemDetailsDivStyled, ItemImageDivStyled} from "./collection_item.styles";
+import AddToCartButton from "../add_to_cart_button/add_to_cart_button.component";
 
 const isEqual = require("lodash.isequal");
 
 const CollectionItem = React.memo(
 	({ $isPreview, ...cartDetails }) => {
-		console.log($isPreview)
-		const { clientCartDispatch } = useContext(cartContext);
-		// console.log(user)
+		console.log('collection item rendering')
 		const { imageUrl, name, price } = cartDetails;
 		return (
 			<CollectionItemStyled $isPreview={$isPreview}>
-				<ItemImageDivStyled >
+				<ItemImageDivStyled>
 					<img src={imageUrl} alt="" className="item-image"></img>
 				</ItemImageDivStyled>
 				<ItemDetailsDivStyled>
 					<p className="item-name">{name}</p>
 					<p className="item-price-text">${price}</p>
-					<button
-						className="add-to-cart-cta"
-						onClick={() => {
-							clientCartDispatch(__addToCart(cartDetails));
-						}}
-					>
-						ADD TO CART
-					</button>
+					<AddToCartButton item={cartDetails} />
 				</ItemDetailsDivStyled>
 			</CollectionItemStyled>
 		);

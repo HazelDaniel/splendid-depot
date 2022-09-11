@@ -1,12 +1,12 @@
 import React from "react";
 import Directory from "../../components/directory/directory.component";
-import "./homepage.styles.scss";
+import {HomePageStyled} from "./homepage.styles";
 const isEqual = require("lodash.isequal");
 const Homepage = React.memo(() => {
 	return (
-		<div className="home-container">
+		<HomePageStyled>
 			<Directory></Directory>
-		</div>
+		</HomePageStyled>
 	);
 }, (prevProps, nextProps) => {
 	if (isEqual(prevProps,nextProps)) return true;

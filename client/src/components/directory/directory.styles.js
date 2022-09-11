@@ -9,27 +9,20 @@ import {colors} from "../styles/root/variables.styles";
 
 const _useConditionalMediaQuery = ({$size})=>{
 	if($size === `big`) return css`
-      //@media only screen and (max-width: 860px) {
-      //  grid-column: 1 / span 12;
-      //}
+      @media only screen and (max-width: 860px) {
+        grid-column: 1 / span 12;
+      }
 	`;
 }
-export const DirectoryStyled = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
+
 
 export const CategoriesStyled = styled.div`
   width: 85%;
-  // background-color: red;
   height: max-content;
   min-height: inherit;
-  // margin: auto;
   margin: 4rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(40rem));
   grid-template-rows: repeat(2, 1fr);
   grid-gap: 2rem;
   grid-auto-flow: dense;

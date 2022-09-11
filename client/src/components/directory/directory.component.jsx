@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import MenuItem from "../menu_item/menu_item.component";
-import "./directory.styles.scss";
+import {CategoriesStyled} from "./directory.styles";
 
 const initialDirectoryState = {
 	sections: [
@@ -46,11 +46,11 @@ const initialDirectoryState = {
 const Directory = () => {
 	const [{sections},] = useState(initialDirectoryState);
 	return (
-		<div className="categories">
+		<CategoriesStyled >
 			{sections.map(({ id, ...otherSectionProps }) => (
 				<MenuItem key={id} {...otherSectionProps} />
 				))}
-		</div>
+		</CategoriesStyled>
 	);
 
 }
