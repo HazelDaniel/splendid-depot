@@ -21,7 +21,8 @@ const queryClient = new QueryClient({
 			retry: (failureCount,error)=>{
 				console.log(error);
 				return 1;
-			}
+			},
+			keepPreviousData: true
 		}
 	}
 });
@@ -38,7 +39,7 @@ root.render(
 						<App />
 					</Router>
 				</PersistGate>
-			</Provider>]
+			</Provider>
 			{/*<ReactQueryDevtools initialIsOpen={false}/>*/}
 		</QueryClientProvider>
 	</>

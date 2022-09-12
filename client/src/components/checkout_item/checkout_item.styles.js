@@ -29,6 +29,9 @@ export const CheckoutItemStyled = styled.li`
     font-size: 1.2rem;
     ${makeAbsoluteDiv};
     left: 48%;
+    color: ${({theme})=>{
+		return theme.$QTcountColor;
+    }};
 
     span {
       height: 100%;
@@ -40,6 +43,9 @@ export const CheckoutItemStyled = styled.li`
       ${_cta};
       font-size: 2rem;
       font-weight: 600;
+      color: ${({theme})=>{
+        return theme.$QTcountColor;
+      }};
 
     }
 
@@ -48,6 +54,9 @@ export const CheckoutItemStyled = styled.li`
   p {
 
     width: 8rem;
+    color: ${({theme})=>{
+      return theme.$QTcountColor;
+    }};
   }
 
   .checkout-description-text {
@@ -66,6 +75,8 @@ export const CheckoutItemStyled = styled.li`
     ${_cta};
     right: 14%;
     font-size: 3rem;
+    filter: drop-shadow(.1rem .1rem .2rem black);
+
 
   }
 `;

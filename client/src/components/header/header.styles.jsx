@@ -14,7 +14,7 @@ export const HEADER = styled.header`
 	transition: background-color ease-in .7s;
 
 	.logo-div {
-		${makeFullHeightBlock}
+		${makeFullHeightBlock};
 		margin: 1rem 2rem;
 
 		@media only screen and (max-width: 860px) {
@@ -67,7 +67,9 @@ export const HEADER = styled.header`
 					font-size: 2rem;
 				}
 
-				color: ${colors.$homeNavTextColor};
+				color:${({theme})=>{
+                  return theme.$homeNavTextColor;
+                }};
 				margin-right: 4rem;
 
 				@media only screen and (max-width: 450px) {
@@ -76,11 +78,13 @@ export const HEADER = styled.header`
 
 				&.active {
 					&::before {
-						${makeAbsoluteBottomDiv}
+						${makeAbsoluteBottomDiv};
 						width: 1rem;
 						height: 1rem;
 						border-radius: 50%;
-						background-color: ${colors.$accentColor};
+						background-color: ${({theme})=>{
+                          return theme.$accentColor;
+                        }};
 						left: 45%;
 						bottom: -25%;
 					}
@@ -101,16 +105,21 @@ export const HEADER = styled.header`
 				height: 100%;
 
 				path {
-					fill: ${colors.$homeNavTextColor};
+					fill:${({theme})=>{
+                      return theme.$homeNavTextColor;
+                    }};
 				}
 			}
 
 			span {
-				${makeAbsoluteDiv}
+				${makeAbsoluteDiv};
 				top: -15%;
 				left: 40%;
 				font-weight: 700;
 				font-size: 1.2rem;
+			  color: ${({theme})=>{
+                return theme.$homeNavTextColor;
+              }};
 
 				@media only screen and (max-width: 860px) {
 					top: -30%;

@@ -38,9 +38,13 @@ const _baseItemStyled = css`
   ${makeColFlexStart};
 
   &:hover {
-    background-color: ${colors.$lightBGColor};
+    background-color: ${({theme})=>{
+      return theme.$lightBGColor;
+    }};
     transform: scaleY(1.05) translateX(2rem);
-    box-shadow: .2rem .2rem 1rem ${colors.$checkoutCTAShadowColor};
+    box-shadow: .2rem .2rem 1rem ${({theme})=>{
+      return theme.$checkoutCTAShadowColor;
+    }};
 
     @media only screen and (max-width: 680px) {
       transform: scaleY(1.02) translateX(2rem);
@@ -64,9 +68,13 @@ const _useConditionalMediaQuery = ({$isPreview})=>{
         max-width: 25rem;
       }
       &:hover {
-        background-color: ${colors.$lightBGColor};
+        background-color: ${({theme})=>{
+          return theme.$lightBGColor;
+        }};
         transform: scaleY(1.05) translateX(2rem) !important;
-        box-shadow: .2rem .2rem 1rem ${colors.$checkoutCTAShadowColor};
+        box-shadow: .2rem .2rem 1rem ${({theme})=>{
+          return theme.$checkoutCTAShadowColor;
+        }};
 
         @media only screen and (max-width: 680px) {
           transform: scaleY(1.02) translateX(2rem) !important;
@@ -91,7 +99,9 @@ export const CollectionItemStyled = styled.div`
 export const ItemImageDivStyled = styled.div`
   ${makeFullHeightBlock};
   height: 50%;
-  background-color: ${colors.$lightBGColor};
+  background-color: ${({theme})=>{
+    return theme.$lightBGColor;
+  }};
   overflow: hidden;
 
   img {
@@ -118,7 +128,9 @@ export const ItemDetailsDivStyled = styled.div`
   .item-name {
     text-transform: uppercase;
     font-size: 2rem;
-    color: ${colors.$homeNavTextColor};
+    color: ${({theme})=>{
+      return theme.$homeNavTextColor;
+    }};
     padding-bottom: 2rem;
 
     @media only screen and (max-width: 680px) {
@@ -133,7 +145,9 @@ export const ItemDetailsDivStyled = styled.div`
 
   .item-price-text {
     font-size: 1.8rem;
-    color: ${colors.$collectionPriceTextColor};
+    color: ${({theme})=>{
+      return theme.$collectionPriceTextColor;
+    }};
     padding-bottom: 3rem;
   }
   

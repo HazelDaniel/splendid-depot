@@ -34,7 +34,9 @@ export const FO4WrapperStyled = styled.div`
     height: max-content;
     font-size: 2rem;
     font-weight: 900;
-    color: ${colors.$accentColor};
+    color: ${({theme})=>{
+      return theme.$accentColor;
+    }};
 
   }
 `;

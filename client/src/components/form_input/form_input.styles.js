@@ -11,7 +11,9 @@ export const FormInputStyled = styled.input`
     &::placeholder {
     @include makeFullWidthBlock();
       all: unset;
-      color: ${colors.$authTextColor};
+      color: ${({theme})=>{
+        return theme.$authTextColor;
+      }};
       transform: translate(-4%, -60%) scale(.9);
       transition: transform .2s ease-in;
       left: 0;

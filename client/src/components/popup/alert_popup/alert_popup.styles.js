@@ -59,7 +59,9 @@ export const AlertPopupStyled = styled.div`
 	visibility: visible;
 	
 	p {
-	  color: ${colors.$lightBGColor};
+	  color: ${({theme})=>{
+        return theme.$lightBGColor;
+      }};
 	  text-transform: uppercase;
 	  font-size: 1.6rem;
 	  font-weight: 700;

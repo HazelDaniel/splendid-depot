@@ -5,12 +5,12 @@ import {makeColFlexStart} from "../styles/root/functions.styles";
 
 export const WrapperStyled = styled.div`
 	padding: 0 3rem 6rem 3rem;
-	background-color: ${({$bgColor})=>{
+	background-color: ${({$bgColor,theme})=>{
 		switch ($bgColor){
 		  case `home-color`:
-			  return `${colors.$BodyColor}`;
+			  return `${theme.$BodyColor}`;
 		  case `auth-color`:
-			  return `${colors.$lightBGColor}`;
+			  return `${theme.$lightBGColor}`;
 		}
 	}};
 	width: 100%;

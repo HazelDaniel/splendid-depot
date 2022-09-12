@@ -6,7 +6,11 @@ export const AddToCartButtonStyled = styled.button`
   height: 3.5rem;
   min-height: 3rem;
   width: 10rem;
-  background-color: ${colors.$accentColor};
+  background-color: ${({theme})=>{
+    return theme.$accentColor;
+  }};
   font-weight: bolder;
-  color: ${colors.$lightCTATextColor};
+  color: ${({theme})=>{
+    return theme.$lightCTATextColor;
+  }};
 `;

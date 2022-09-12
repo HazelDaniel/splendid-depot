@@ -11,7 +11,9 @@ import {
 import {default as CheckoutItem} from "../../components/checkout_item/checkout_item.component";
 
 export const _checkoutDiv = css`
-  border-bottom: .2rem solid ${colors.$authTextColor};
+  border-bottom: .2rem solid ${({theme})=>{
+      return theme.$authTextColor;
+  }};
   padding: 1rem 0;
   overflow: hidden;
   
@@ -110,15 +112,21 @@ export const CheckoutFooterStyled = styled.div`
       font-size: 2.5rem;
       font-family: montserrat;
       font-weight: 200;
-      color: ${colors.$homeNavTextColor};
+      color: ${({theme})=>{
+          return theme.$homeNavTextColor;
+      }};
       padding-right: 4rem;
     }
 
     .cart-update-btn {
       ${makeAbsoluteBottomLeftDiv};
       border: unset;
-      background-color: ${colors.$accentColor};
-      color: ${colors.$lightBGColor};
+      background-color: ${({theme})=>{
+          return theme.$accentColor;
+      }};
+      color: ${({theme})=>{
+          return theme.$lightBGColor;
+      }};
       font-size: 1rem;
       text-transform: capitalize;
       font-weight: 600;
@@ -155,7 +163,9 @@ export const CheckoutTitlesStyled = styled.ul`
 `;
 export const CheckoutTitleStyled = styled.li`
   font-size: 2rem;
-  color: ${colors.$homeNavTextColor};
+  color: ${({theme})=>{
+      return theme.$homeNavTextColor;
+  }};
 `;
 export const CheckoutTitleDivStyled = styled.li`
   ${makeFullWidthBlock}

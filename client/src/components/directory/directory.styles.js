@@ -131,7 +131,9 @@ export const CategoryStyled = styled.div`
         top: 0;
         left: 0;
 	  ${makeFullSizeBlock};
-        background-color: ${colors.$checkoutModalShadowColor};
+        background-color: ${({theme})=>{
+			return theme.$checkoutModalShadowColor;
+        }};
         transition: all .2s ease-in-out;
       }
     }
@@ -141,7 +143,9 @@ export const CategoryStyled = styled.div`
     position: relative;
     height: 12rem;
     width: 15rem;
-    background-color: ${colors.$blurColor};
+    background-color: ${({theme})=>{
+      return theme.$blurColor;
+    }};
     backdrop-filter: blur(.5rem);
     border: .2rem solid transparent;
     border-radius: .2rem;
@@ -152,7 +156,9 @@ export const CategoryStyled = styled.div`
       font-size: 2rem;
       height: 50%;
 	${makeColFlexCenter};
-      color: ${colors.$lightBGColor};
+      color: ${({theme})=>{
+        return theme.$lightBGColor;
+      }};
     }
 
     .content-cta {
@@ -163,8 +169,12 @@ export const CategoryStyled = styled.div`
       border: none;
 
       &:hover {
-        background-color: ${colors.$darkCTABackgroundColor};
-        color: ${colors.$lightCTATextColor};
+        background-color: ${({theme})=>{
+          return theme.$darkCTABackgroundColor;
+        }};
+        color: ${({theme})=>{
+          return theme.$lightCTATextColor;
+        }};
         transition: all .2s ease-in;
       }
     }

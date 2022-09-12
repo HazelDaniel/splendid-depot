@@ -18,19 +18,20 @@ import { __renderLoader, __unmountLoader } from "../../reducers/app.reducer";
 import { __updateCollections } from "../../reducers/shop.reducer";
 import {checkForArraysAndReform, reformUserObject, wait} from "../../utils";
 import {useFetchCollections} from "../../hooks/shop/use_fetch_collection";
-
+import {withTheme} from "styled-components";
 
 
 import {useDatabaseSnapshot, useDatabaseValue} from "@react-query-firebase/database";
+import {useTheme} from "styled-components";
 
 
-const detectScrollAndStyle = ({current:element}) => {
+const detectScrollAndStyle = ({current:element},color) => {
 	if (!element) return;
 	var oldScrollY = window.scrollY;
 	window.onscroll = function (e) {
 		if (oldScrollY < window.scrollY) {
 			// DOWN
-			element.style.backgroundColor = `var(--BodyColor)`;
+			element.style.backgroundColor = color;
 			// element.style.visibility = `hidden`;
 		} else {
 			// UP
@@ -45,10 +46,10 @@ const detectScrollAndStyle = ({current:element}) => {
 const collectionsRef = collection(DB, "collections");
 
 
-const Header = React.memo(({toggleCartModal}) => {
+const Header = React.memo(({toggleCartModal,theme}) => {
 	const user = useContext(userContext);
 	const { clientCartState, clientCartDispatch } = useContext(cartContext);
-	const { appDispatch } = useContext(AppContext);
+	// const {themeState} = useContext()
 	const { shopDispatch } = useContext(ShopContext);
 	const {isLoading,isSuccess,data,isError,error} = useFetchCollections();
 
@@ -70,31 +71,12 @@ const Header = React.memo(({toggleCartModal}) => {
 		if(isError) alert(error.message);
 
 	},[isSuccess,isError])
-
-
-	// useEffect(() => {
-	// 	const collectionRef = collection(DB, "collections");
-	// 	const unSubscribeFromSnapshot = onSnapshot(collectionRef, async () => {
-	// 		appDispatch(__renderLoader());
-	// 		try {
-	// 			const collections = await getCollectionsMap(collectionRef);
-	// 			shopDispatch(__updateCollections(collections));
-	// 		} catch (error) {
-	// 			console.log(error);
-	// 		} finally {
-	// 			appDispatch(__unmountLoader());
-	// 		}
-	// 	});
-	//
-	// 	return () => {
-	// 		unSubscribeFromSnapshot();
-	// 	}
-	// }, [appDispatch,shopDispatch])
+	
 	
 	
 	useEffect(() => {
-		detectScrollAndStyle(headerRef);
-	},[])
+		detectScrollAndStyle(headerRef,theme.$BodyColor);
+	},[]);
 	return (
 		<HEADER ref={headerRef}>
 			<div className="logo-div">
@@ -145,4 +127,4 @@ const Header = React.memo(({toggleCartModal}) => {
 	);
 })
 
-export default Header;
+export default withTheme(Header);

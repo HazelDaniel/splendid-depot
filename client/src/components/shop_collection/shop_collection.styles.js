@@ -23,9 +23,13 @@ const _previewMediaQuery = css`
     }
 
     &:hover {
-      background-color: ${colors.$lightBGColor};
+      background-color: ${({theme})=>{
+        return theme.$lightBGColor;
+      }};
       transform: scaleY(1.05) translateX(2rem) !important;
-      box-shadow: .2rem .2rem 1rem ${colors.$checkoutCTAShadowColor};
+      box-shadow: .2rem .2rem 1rem ${({theme})=>{
+        return theme.$checkoutCTAShadowColor;
+      }};
 
       @media only screen and (max-width: 680px) {
         transform: scaleY(1.02) translateX(2rem) !important;
@@ -49,7 +53,9 @@ export const CollectionTitleDivStyled = styled.div`
 	.collection-title {
 		position: relative;
 		font-size: 3.5rem;
-		color: ${colors.$homeNavTextColor};
+		color: ${({theme})=>{
+          return theme.$homeNavTextColor;
+        }};
 		a {
 			all: inherit;
 			cursor: pointer;
@@ -61,7 +67,7 @@ export const CollectionTitleDivStyled = styled.div`
 			left: 25%;
 			height: 0.4rem;
 			width: 50%;
-			background-color: ${({$isPreview}) => ($isPreview ?  "none" : colors.$accentColor)};
+			background-color: ${({$isPreview,theme}) => ($isPreview ?  "none" : theme.$accentColor)};
 		}
 	}
 `;

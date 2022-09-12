@@ -12,10 +12,10 @@ export const CheckoutCTAButtonStyled = styled.button`
 			return `initial`;
 	  }
 	}};
-  border: ${({$use})=>{
+  border: ${({$use,theme})=>{
     switch($use){
       case `update`:
-        return `.1rem solid ${colors.$checkoutModalHeroColor}`;
+        return `.1rem solid ${theme.$checkoutModalHeroColor}`;
       case `payment`:
         return `none`;
     }
@@ -37,8 +37,12 @@ export const CheckoutCTAButtonStyled = styled.button`
 	}
 	}};
 	//border: unset;
-	background-color: ${colors.$accentColor};
-	color: ${colors.$lightBGColor};
+	background-color: ${({theme})=>{
+      return theme.$accentColor;
+    }};
+	color: ${({theme})=>{
+      return theme.$authPrimaryCTAColor;
+    }};
 	font-size: 1.2rem;
 	text-transform: capitalize;
 	font-weight: 700;
@@ -53,12 +57,12 @@ export const CheckoutCTAButtonStyled = styled.button`
 	// prettier-ignore
 	return $showDisabled ? `blur(0.5rem)` : `none`;
 	}};
-	box-shadow: ${({$use})=>{
+	box-shadow: ${({$use,theme})=>{
 	switch($use){
 	  case `update`:
 	    return `none`;
 	  case `payment`:
-	    return `.1rem .2rem .4rem ${colors.$checkoutCTAShadowColor}`;
+	    return `.1rem .2rem .4rem ${theme.$checkoutCTAShadowColor}`;
 	}
 	}};
 	&.checkout-cta-btn{

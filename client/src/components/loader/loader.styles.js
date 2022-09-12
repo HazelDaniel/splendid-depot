@@ -46,7 +46,9 @@ const _delay = ($delayValue) =>css`
 `;
 
 export const LoaderStyled = styled.div`
-  background-color: ${colors.$checkoutModalShadowColor};
+  background-color: ${({theme})=>{
+    return theme.$checkoutModalShadowColor;
+  }};
   position: fixed;
   height: 100vh;
   ${makeFullWidthBlock};
@@ -61,7 +63,9 @@ export const LoaderStyled = styled.div`
   }
 
   .square {
-    background: ${colors.$accentColor};
+    background: ${({theme})=>{
+      return theme.$accentColor;
+    }};
     width: ${_animationVars.$squarew};
     height: ${_animationVars.$squareh};
     float: left;

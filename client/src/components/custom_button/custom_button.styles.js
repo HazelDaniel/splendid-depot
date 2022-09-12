@@ -6,10 +6,14 @@ const  _styledButton = css`
   height: 60%;
   text-align: center;
   margin: 1rem;
-  color: ${colors.$lightBGColor};
+  color:${({theme})=>{
+    return theme.$authPrimaryCTAColor;
+  }};
   font-weight: 600;
   ${makeColFlexCenter};
-  border: .1rem solid ${colors.$blurColor};
+  border: .1rem solid ${({theme})=>{
+    return theme.$blurColor;
+  }};
   @media only screen and (max-width: 680px) {
     font-size: 1.5rem;
   }
@@ -17,12 +21,12 @@ const  _styledButton = css`
 
 export const CustomButtonStyled = styled.button`
 	${_styledButton};
-	background-color: ${({$group})=>{
+	background-color: ${({$group,theme})=>{
 	  switch ($group){
 	    case `primary`:
-			return `${colors.$darkTextColor}`;
+			return `${theme.$darkCTABackgroundColor}`;
 	    case `secondary`:
-			return `${colors.$authSecondaryCTAColor}`;
+			return `${theme.$authSecondaryCTAColor}`;
 	  }
 	}};
 	width: ${({$group})=>{

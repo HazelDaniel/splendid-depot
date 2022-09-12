@@ -39,7 +39,9 @@ export const CartItemDetailsStyled = styled.div`
   ${makeColFlexCenter};
 
   p {
-    color: ${colors.$homeNavTextColor};
+    color: ${({theme})=>{
+      return theme.$homeNavTextColor;
+    }};
   }
   
   .item-quantity {

@@ -73,7 +73,12 @@ export const AuthBodyStyled = styled.div`
   input {
     outline: none;
     border: unset;
-    border-bottom: .1rem solid ${colors.$authTextColor};
+    border-bottom: .1rem solid ${({theme})=>{
+      return theme.$authTextColor;
+    }};
+    background-color:  ${({theme})=>{
+      return theme.$lightBGColor;
+    }};;
   }
   
 
@@ -112,11 +117,15 @@ export const AuthHeadingDivStyled = styled.div`
   .title {
     font-size: 1.8rem;
     font-weight: 600;
-    color: ${colors.$authMainTitleColor};
+    color: ${({theme})=>{
+      return theme.$authMainTitleColor;
+    }};
   }
   
   .subtitle {
-    color: ${colors.$authSubtitleColor};
+    color: ${({theme})=>{
+      return theme.$authSubtitleColor;
+    }};
     font-size: 1.1rem;
     font-weight: 500;
     font-family: montserrat;
