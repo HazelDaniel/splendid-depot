@@ -71,10 +71,9 @@ const App = (_) => {
 		}
 	})(),[]);
 	
-	useEffect(()=>{
-		//checking for the last auth session only when the app mounts (to determine whether user was previously logged in)
-		checkLastSignedIn();
-	},[]);
+	// useEffect(()=>{
+	//
+	// },[]);
 	
 	
 	const {data:checkedData,error:checkedError,isSuccess:checkedIsSuccessful,isError:checkedIsErrored} = useFetchUser(lastAuth?.uid);
@@ -85,7 +84,7 @@ const App = (_) => {
 			(async () => {
 				if(checkedIsSuccessful){
 					// console.log("fetching user auth details")
-					console.log(checkedData);
+					// console.log(checkedData);
 					
 					const {fields} = checkedData.data;
 					const reformedUserWithCart = checkForArraysAndReform(reformUserObject(fields));
@@ -105,6 +104,7 @@ const App = (_) => {
 	useEffect(() => {
 		//welcome message if the user exists
 		// prettier-ignore
+		console.log(currentUser);
 		if (!(!!currentUser.currentUser)) return;
 		const checkUserIsWelcome = async () => {
 			appDispatch(__renderWelcome());
@@ -117,6 +117,8 @@ const App = (_) => {
 	useEffect(() => {
 		
 		(async () => {
+			//checking for the last auth session only when the app mounts (to determine whether user was previously logged in)
+			await checkLastSignedIn();
 			await fetchAuthedUserDetails();
 		})();
 	}, [fetchAuthedUserDetails]);
@@ -124,6 +126,7 @@ const App = (_) => {
 	useEffect(() => {
 		(async () => {
 			if (!!manualSignedIn) {
+				await  checkLastSignedIn();
 				await fetchAuthedUserDetails();
 			}
 		})();

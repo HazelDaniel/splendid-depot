@@ -47,7 +47,6 @@ const Wrapper = React.memo(({location}) => {
 		}
 	},[themeState]);
 	
-	console.log("wrapper rendering")
 	const toggleCartModal = useCallback(() => handleCartModalToggle(cartModal), []);
 	let displayName = currentUser.displayName ? currentUser.displayName?.split(" ") : null;
 	return (

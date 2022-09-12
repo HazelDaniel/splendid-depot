@@ -98,13 +98,15 @@ export const CartModalCTAStyled = styled.button`
   height: 4rem;
   transform: translateY(50%);
   width: 80%;
-  background-color: transparent;
+  background-color: ${({theme})=>{
+    return theme.$authPrimaryCTAColor;
+  }};
   border: .1rem solid ${({theme})=>{
     return theme.$cartModalBorderColor;
   }};
   cursor: pointer;
   color: ${({theme})=>{
-    return theme.$authPrimaryCTAColor;
+    return theme.$darkCTABackgroundColor;
   }};
 
   &:hover {

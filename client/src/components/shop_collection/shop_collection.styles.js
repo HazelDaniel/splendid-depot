@@ -39,7 +39,6 @@ const _previewMediaQuery = css`
     }
 `;
 const _conditionallyUseMedia = ({$isPreview})=>{
-	console.log($isPreview);
 	if($isPreview) return _previewMediaQuery;
 };
 

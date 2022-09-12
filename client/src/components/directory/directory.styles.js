@@ -157,7 +157,7 @@ export const CategoryStyled = styled.div`
       height: 50%;
 	${makeColFlexCenter};
       color: ${({theme})=>{
-        return theme.$lightBGColor;
+        return theme.$authPrimaryCTAColor;
       }};
     }
 

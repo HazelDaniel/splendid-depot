@@ -9,7 +9,6 @@ const isEqual = require("lodash.isequal");
 
 const CollectionItem = React.memo(
 	({ $isPreview, ...cartDetails }) => {
-		console.log('collection item rendering')
 		const { imageUrl, name, price } = cartDetails;
 		return (
 			<CollectionItemStyled $isPreview={$isPreview}>

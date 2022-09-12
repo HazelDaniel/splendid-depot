@@ -8,7 +8,6 @@ import {memo} from "react";
 import isEqual from "lodash.isequal";
 
 const CartModalItem = memo(({ cart }) => {
-	console.log("modal item rendering")
 	return (
 		<CartModalItemStyled >
 			<CartModalItemImageStyled src={cart.imageUrl} alt=""/>

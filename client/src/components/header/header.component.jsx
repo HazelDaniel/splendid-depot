@@ -60,7 +60,6 @@ const Header = React.memo(({toggleCartModal,theme}) => {
 	useEffect(()=>{
 		if(isSuccess) {
 			const res = data.data;
-			console.log(res)
 			const collections = res.documents.map(entry => entry.fields).map(col=>checkForArraysAndReform((reformUserObject((col)))));
 			const convertedCollections = collections.reduce((acc, current) => {
 				acc[current.title.toLowerCase()] = current;

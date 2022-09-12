@@ -18,7 +18,9 @@ export const useFetchUser = (uid) => {
 	return useQuery({
 		queryKey: ["user",uid],
 		queryFn: fetchUser,
-		staleTime: 50000,
-		enabled: !!uid
+		staleTime: 0,
+		enabled: !!uid,
+		keepPreviousData: false,
+		cacheTime: 0
 	})
 }
