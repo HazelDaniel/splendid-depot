@@ -80,27 +80,31 @@ const darkTheme = {
 
 
 export const initialThemeState = {
-	theme: darkTheme,
-	isLightTheme: false
+	theme: lightTheme,
+	isLightTheme: true
 }
+
+const toggledThemeObject = (state)=>{
+	switch (state.isLightTheme){
+		case true:
+			
+			return {
+				theme: darkTheme,
+				isLightTheme:  false
+			}
+		case false:
+			return {
+				theme: lightTheme,
+				isLightTheme: true
+			}
+	}
+}
+
 
 const toggleTheme = (state)=>{
 	return {
 		...state,
-		...(()=>{
-			switch (state.isLightTheme){
-				case true:
-					return {
-						theme: darkTheme,
-						isLightTheme:  false
-					}
-				case false:
-					return {
-						theme: lightTheme,
-						isLightTheme: true
-					}
-			}
-		}),
+		...toggledThemeObject(state),
 	}
 }
 export const themeReducer = (state = initialThemeState, action)=>{

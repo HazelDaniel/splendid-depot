@@ -22,6 +22,7 @@ import { AppContext, userContext } from "../../App";
 import {ThemeProvider} from "styled-components";
 import {useIsFetching} from "react-query";
 import {initialThemeState, themeReducer} from "../../reducers/theme.reducer";
+import ThemeController from "../../theme_controller/theme_controller.component";
 
 
 
@@ -43,7 +44,8 @@ const Wrapper = React.memo(({location}) => {
 	
 	const themeValue = useMemo(()=>{
 		return {
-			themeState
+			themeState,
+			themeStateDispatch
 		}
 	},[themeState]);
 	
@@ -63,9 +65,9 @@ const Wrapper = React.memo(({location}) => {
 					<Route exact path="/auth" render={() => (currentUser.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
 					<Route exact path="/*" render={() => <Redirect to="/FourZeroFour" />} />
 				</Switch>
-				
 				<AlertPopup displayName={displayName} />;
 				<Loader/>
+				<ThemeController themeStore={themeValue}/>
 			</WrapperStyled>
 		</ThemeProvider>
 	);

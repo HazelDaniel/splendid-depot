@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 
 import { Link, Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Logo } from "../logo/logo.component";
@@ -27,16 +27,17 @@ import {useTheme} from "styled-components";
 
 const detectScrollAndStyle = ({current:element},color) => {
 	if (!element) return;
-	var oldScrollY = window.scrollY;
+	let oldScrollY = window.scrollY;
+	element.style.backgroundColor = 'transparent';
 	window.onscroll = function (e) {
 		if (oldScrollY < window.scrollY) {
 			// DOWN
-			element.style.backgroundColor = color;
-			// element.style.visibility = `hidden`;
+			element.style.backgroundColor = `transparent`;
+			
 		} else {
 			// UP
-			// element.style.visibility = `visible`;
-			element.style.backgroundColor = `transparent`;
+			element.style.backgroundColor = color;
+			
 		}
 		oldScrollY = window.scrollY;
 	};
@@ -51,7 +52,7 @@ const Header = React.memo(({toggleCartModal,theme}) => {
 	const { clientCartState, clientCartDispatch } = useContext(cartContext);
 	// const {themeState} = useContext()
 	const { shopDispatch } = useContext(ShopContext);
-	const {isLoading,isSuccess,data,isError,error} = useFetchCollections();
+	const {isLoading,isSuccess,data,isError,error,refetch:reFetchCollections} = useFetchCollections();
 
 	const history = useHistory();
 	const headerRef = useRef(null);
@@ -69,13 +70,17 @@ const Header = React.memo(({toggleCartModal,theme}) => {
 		}
 		if(isError) alert(error.message);
 
-	},[isSuccess,isError])
+	},[isSuccess,isError]);
+	
+	useEffect(()=>{
+		reFetchCollections();
+	},[])
 	
 	
 	
 	useEffect(() => {
 		detectScrollAndStyle(headerRef,theme.$BodyColor);
-	},[]);
+	},[theme]);
 	return (
 		<HEADER ref={headerRef}>
 			<div className="logo-div">

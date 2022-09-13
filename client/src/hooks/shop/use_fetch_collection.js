@@ -11,7 +11,7 @@ import isEqual from "lodash.isequal";
 import {reformUserObject,checkForArraysAndReform} from "../../utils";
 
  const fetchCollections = ({queryKey}) => {
-	return axios.get(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${queryKey}`).catch(err=>{
+	 return axios.get(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${queryKey}`).catch(err=>{
 		throw err;
 	})
 };
@@ -21,7 +21,10 @@ import {reformUserObject,checkForArraysAndReform} from "../../utils";
 	 return useQuery({
 		 queryKey: key,
 		 queryFn: fetchCollections,
-		 staleTime: 50000,
+		 staleTime: 250000,
+		 keepPreviousData: true,
+		 cacheTime: 500000,
+		 enabled: false,
 	 })
  }
  

@@ -104,7 +104,7 @@ const App = (_) => {
 	useEffect(() => {
 		//welcome message if the user exists
 		// prettier-ignore
-		console.log(currentUser);
+		// console.log(currentUser);
 		if (!(!!currentUser.currentUser)) return;
 		const checkUserIsWelcome = async () => {
 			appDispatch(__renderWelcome());
