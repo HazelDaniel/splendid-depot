@@ -16,11 +16,6 @@ export const ThemeControllerStyled = styled.div`
         return theme.$blurColor
     }};
     backdrop-filter: blur(2rem);
-    .toggled-dark{
-        left: 0;
-        right: unset;
-    }
-    
 `;
 export const ThemeControllerSwitchStyled = styled.span`
   ${makeAbsoluteTopDiv};

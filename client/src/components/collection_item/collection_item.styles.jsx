@@ -141,6 +141,11 @@ export const ItemDetailsDivStyled = styled.div`
     @media only screen and (max-width: 550px) {
       font-size: 2rem;
     }
+      display: -webkit-box;
+      -webkit-line-clamp: 1.5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 2rem;
   }
 
   .item-price-text {

@@ -10,6 +10,7 @@ export const HEADER = styled.header`
 	padding-top: 3rem;
 	position: fixed;
 	z-index: 2;
+  top: 0;
 	// margin-bottom: 2rem;
 	transition: background-color ease-in .7s;
 
