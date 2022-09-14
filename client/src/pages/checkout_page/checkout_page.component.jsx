@@ -18,6 +18,8 @@ import {
 	CheckoutTitlesStyled,
 	CheckoutTitleStyled, CheckoutWrapperStyled
 } from "./checkout_page.styles";
+import {PlaceholderVector} from "../../components/placeholder/placeholder.component";
+import {PlaceholderText} from "../../components/placeholder_text/placeholder_text.component";
 
 const cartPricesTotal = (carts) => {
 	// console.log(carts);
@@ -69,7 +71,8 @@ export const CheckoutPage = () => {
 						<CheckoutTitleStyled>Remove</CheckoutTitleStyled>
 					</CheckoutTitlesStyled>
 				</CheckoutTitleDivStyled>
-				{clientCartState.carts.map((cart) => {
+				{clientCartState.carts.length === 0? <PlaceholderText $variant={`L`} message={`no items added yet !`}/>:null}
+				{ clientCartState.carts.map((cart) => {
 					return <CheckoutItem key={cart.id} cart={cart} />;
 				})}
 			</CheckoutBodyStyled>

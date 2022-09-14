@@ -38,6 +38,13 @@ const lightTheme = {
 	$authSecondaryCTAColor: "#2f77e2",
 	$authPrimaryCTAColor: "#ffffff",
 	
+	//popup messages
+	$successPopupBodyColor: "#0FC13E91",
+	$successPopupBorderColor: "#07FF87",
+	$failurePopupBodyColor: "#C10F0FB3",
+	$failurePopupBorderColor: "#FF0707",
+	$popupTextColor: "#ffffff",
+	
 };
 
 const darkTheme = {
@@ -76,6 +83,13 @@ const darkTheme = {
 	$authTextColor: "#808080",
 	$authSecondaryCTAColor: "#2f77e2",
 	$authPrimaryCTAColor: "#ffffff",
+	
+	//popup messages
+	$successPopupBodyColor: "#0FC13E91",
+	$successPopupBorderColor: "#07FF87",
+	$failurePopupBodyColor: "#C10F0FB3",
+	$failurePopupBorderColor: "#FF0707",
+	$popupTextColor: "#ffffff",
 }
 
 

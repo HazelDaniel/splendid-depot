@@ -10,7 +10,7 @@ export const ThemeControllerStyled = styled.div`
   border-radius: 4rem;
   z-index: 4;
   outline: .2rem solid ${({theme})=> {
-    return theme.$darkTextColor
+    return theme.$cartModalBorderColor
   }};
     box-shadow: inset .2rem .3rem .6rem ${({theme})=> {
         return theme.$blurColor

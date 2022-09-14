@@ -21,3 +21,6 @@ code {
 #root{
   height: max-content;
 }
+.hidden {
+  display: none !important;
+}

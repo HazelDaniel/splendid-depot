@@ -12,6 +12,7 @@ import { nanoid } from "@reduxjs/toolkit";
 // GLOBAL STATE
 import { cartContext } from "../../App";
 import {CartCancelButtonStyled, CartItemsBodyStyled, CartModalCTAStyled, CartModalStyled} from "./cart_modal.styles";
+import {PlaceholderText} from "../placeholder_text/placeholder_text.component";
 
 
 
@@ -27,6 +28,7 @@ const CartModal = React.forwardRef(({toggleCartModal},ref) => {
 				<button onClick={toggleCartModal}>X</button>
 			</CartCancelButtonStyled>
 			<CartItemsBodyStyled >
+				{clientCartState.carts.length === 0? <PlaceholderText $variant={`M`} message={`cart is empty !`}/>:null}
 				{clientCartState.carts.map((cartItem) => (
 					<CartModalItem cart={cartItem} key={cartItem.id} />
 				))}
