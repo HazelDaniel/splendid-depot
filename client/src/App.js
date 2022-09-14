@@ -10,7 +10,10 @@ import { appReducer, initialAppState, __renderLoader, __renderWelcome, __unmount
 import { initialShopState, shopReducer } from "./reducers/shop.reducer";
 import {useFetchUser} from "./hooks/app/app.use_fetch_user";
 
-let unsubscribeFromSnapshot;
+// CONTEXT PROVIDERS
+import {ThemeProvider} from "styled-components";
+import {initialThemeState, themeReducer} from "./reducers/theme.reducer";
+import Footer from "./components/footer/footer.component";
 
 export const user = {
 	currentUser: null,
@@ -45,7 +48,10 @@ const App = (_) => {
 	const [{ manualSignedIn }, manualSignIn] = useState(manualAuth);
 	const [appState, appDispatch] = useReducer(appReducer, initialAppState);
 	const [shopState, shopDispatch] = useReducer(shopReducer, initialShopState);
-
+	const [themeState,themeStateDispatch] = useReducer(themeReducer,initialThemeState);
+	
+	
+	
 	// CONTEXT SELECTORS
 	const shopSelector = useCallback((callback) => contextSelector(callback, shopState), [shopState]);
 
@@ -54,6 +60,13 @@ const App = (_) => {
 	const userProviderValue = useMemo(() => ({ currentUser, updateCurrentUser }), [currentUser]);
 	const appProviderValue = useMemo(() => ({ appState, appDispatch }), [appState]);
 	const shopProviderValue = useMemo(() => ({ shopState, shopDispatch,shopSelector }), [shopState,shopSelector]);
+	const themeValue = useMemo(()=>{
+		return {
+			themeState,
+			themeStateDispatch
+		}
+	},[themeState]);
+	
 	const [lastAuth,setLastAuth] = useState(null);
 	const manualSignInValue = useMemo(
 		() => ({
@@ -138,7 +151,10 @@ const App = (_) => {
 				<ClientCartProvider value={clientCartProviderValue}>
 					<ManualSignInProvider value={manualSignInValue}>
 						<AppProvider value={appProviderValue}>
-							<Wrapper />
+							<ThemeProvider theme={themeValue.themeState.theme}>
+								<Wrapper themeValue={themeValue} />
+								<Footer/>
+							</ThemeProvider>
 						</AppProvider>
 					</ManualSignInProvider>
 				</ClientCartProvider>
@@ -146,7 +162,5 @@ const App = (_) => {
 		</UserProvider>
 	);
 };
-
-//TODO: THERE IS A BUG WHEN FETCHING THE USER AUTH THAT THROWS AN ERROR SAYING THE .json data has already been read;
 
 export default App;

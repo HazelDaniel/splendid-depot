@@ -18,10 +18,7 @@ import Loader from "../loader/loader.component";
 
 import AlertPopup from "../popup/alert_popup/alert_popup.component";
 // GLOBAL STATE
-import { AppContext, userContext } from "../../App";
-import {ThemeProvider} from "styled-components";
-import {useIsFetching} from "react-query";
-import {initialThemeState, themeReducer} from "../../reducers/theme.reducer";
+import { userContext } from "../../App";
 import ThemeController from "../../theme_controller/theme_controller.component";
 
 
@@ -37,22 +34,15 @@ const handleCartModalToggle = ({ current }) => {
 	current.classList.toggle("hidden");
 }
 
-const Wrapper = React.memo(({location}) => {
+const Wrapper = React.memo(({location,themeValue}) => {
 	const { currentUser } = useContext(userContext);
 	const cartModal = useRef(null);
-	const [themeState,themeStateDispatch] = useReducer(themeReducer,initialThemeState);
 	
-	const themeValue = useMemo(()=>{
-		return {
-			themeState,
-			themeStateDispatch
-		}
-	},[themeState]);
+	
 	
 	const toggleCartModal = useCallback(() => handleCartModalToggle(cartModal), []);
 	let displayName = currentUser.displayName ? currentUser.displayName?.split(" ") : null;
 	return (
-		<ThemeProvider theme={themeValue.themeState.theme}>
 			<WrapperStyled $bgColor ={location.pathname === `/auth`? `auth-color`: `home-color`}>
 				<Header toggleCartModal={toggleCartModal} />
 				<CartModal ref={cartModal} toggleCartModal={toggleCartModal} />
@@ -69,7 +59,6 @@ const Wrapper = React.memo(({location}) => {
 				<Loader/>
 				<ThemeController themeStore={themeValue}/>
 			</WrapperStyled>
-		</ThemeProvider>
 	);
 },(prev,next)=>{
 	if(isEqual(prev,next)) return true;

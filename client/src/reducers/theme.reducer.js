@@ -44,6 +44,10 @@ const lightTheme = {
 	$failurePopupBodyColor: "#C10F0FB3",
 	$failurePopupBorderColor: "#FF0707",
 	$popupTextColor: "#ffffff",
+	// footer
+	$footerTextColor: "#191919",
+	$footerColor: "#bb9d88"
+	
 	
 };
 
@@ -90,6 +94,9 @@ const darkTheme = {
 	$failurePopupBodyColor: "#C10F0FB3",
 	$failurePopupBorderColor: "#FF0707",
 	$popupTextColor: "#ffffff",
+	// footer
+	$footerTextColor: "#ffffff",
+	$footerColor: "#1C1A1A"
 }
 
 
