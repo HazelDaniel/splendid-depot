@@ -106,8 +106,8 @@ const SignUp = React.memo(
 					}}
 				>
 					<div className="inputs-div">
-						<FormInput handleChange={handleChange} type="text" name="displayName" placeholder="Display Name" required value={formState.displayName} />
-						<FormInput handleChange={handleChange} type="email" name="email" placeholder="Email" required value={formState.email} />
+						<FormInput handleChange={handleChange} type="text" name="displayName" placeholder="Display Name" required value={formState.displayName} autoComplete={`on`}/>
+						<FormInput handleChange={handleChange} type="email" name="email" placeholder="Email" required value={formState.email} autoComplete={`on`}/>
 						<FormInput handleChange={handleChange} type="password" name="password" placeholder="Password" required value={formState.password} />
 						<FormInput handleChange={handleChange} type="password" name="confirmPassword" placeholder="Confirm password" required value={formState.confirmPassword} />
 					</div>

@@ -3,15 +3,14 @@ import React, {useContext, useEffect, useLayoutEffect, useRef, useState} from "r
 import { Link, Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Logo } from "../logo/logo.component";
 import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
-import {HEADER} from "./header.styles";
+import {HEADER, HeaderNavListsStyled, HeaderNavTextStyled} from "./header.styles";
 
 import { signOut } from "firebase/auth";
 import { auth, DB, getCollectionsMap } from "../../firebase/firebase.utils";
 
 import { useDispatch } from "react-redux";
 import { collection, onSnapshot } from "firebase/firestore";
-import { updateCollections } from "../../redux/shop/shop.slice";
-import { AppContext, cartContext, ShopContext, userContext } from "../../App";
+import { cartContext, ShopContext, userContext } from "../../App";
 import { user as userInit } from "../../App";
 import { __emptyCart } from "../../reducers/cart.reducer";
 import { __renderLoader, __unmountLoader } from "../../reducers/app.reducer";
@@ -23,6 +22,7 @@ import {withTheme} from "styled-components";
 
 import {useDatabaseSnapshot, useDatabaseValue} from "@react-query-firebase/database";
 import {useTheme} from "styled-components";
+import {HeaderNav} from "../header_nav/header_nav.component";
 
 
 const detectScrollAndStyle = ({current:element},color) => {
@@ -48,8 +48,7 @@ const collectionsRef = collection(DB, "collections");
 
 
 const Header = React.memo(({toggleCartModal,theme}) => {
-	const user = useContext(userContext);
-	const { clientCartState, clientCartDispatch } = useContext(cartContext);
+	
 	// const {themeState} = useContext()
 	const { shopDispatch } = useContext(ShopContext);
 	const {isLoading,isSuccess,data,isError,error,refetch:reFetchCollections} = useFetchCollections();
@@ -84,49 +83,9 @@ const Header = React.memo(({toggleCartModal,theme}) => {
 	return (
 		<HEADER ref={headerRef}>
 			<div className="logo-div">
-				<Link to="/">
-					<Logo></Logo>
-				</Link>
+					<Logo/>
 			</div>
-			<nav className="header-nav">
-				<ul className="header-nav-texts">
-					<li
-						className="header-nav-text"
-						onClick={() => {
-							history.push(`/shop`);
-						}}
-					>
-						SHOP
-					</li>
-					<li className="header-nav-text">CONTACT</li>
-					{user.currentUser.currentUser ? (
-						<li
-							className="header-nav-text"
-							onClick={async () => {
-								clientCartDispatch(__emptyCart());
-								await signOut(auth);
-								user.updateCurrentUser(userInit);
-								history.push(`/auth`);
-							}}
-						>
-							SIGN OUT
-						</li>
-					) : (
-						<li
-							className="header-nav-text"
-							onClick={() => {
-								history.push(`/auth`);
-							}}
-						>
-							SIGN IN
-						</li>
-					)}
-				</ul>
-				<div className="shopping-icon-div">
-					<CartIcon toggleCartModal={toggleCartModal}/>
-					<span>{clientCartState.carts.length}</span>
-				</div>
-			</nav>
+			<HeaderNav toggleCartModal={toggleCartModal}/>
 		</HEADER>
 	);
 })

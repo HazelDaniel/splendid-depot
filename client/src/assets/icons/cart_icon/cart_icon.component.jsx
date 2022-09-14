@@ -1,14 +1,17 @@
 import isEqual from "lodash.isequal";
-import React from "react";
+import React, {useContext} from "react";
 import "../../../sass_modules/_variables.scss";
+import {cartModalContext} from "../../../components/wrapper/wrapper.component";
+import {__toggleCartModal} from "../../../reducers/cart_modal.reducer";
 
 
 
-const CartIcon = React.memo(({ toggleCartModal }) => {
+const CartIcon = React.memo(() => {
+	const {cartModalState,cartModalStateDispatch} = useContext(cartModalContext);
 	return (
 		<svg
 			onClick={() => {
-				toggleCartModal();
+				cartModalStateDispatch(__toggleCartModal());
 			}}
 			width="43px"
 			height="42.999996px"

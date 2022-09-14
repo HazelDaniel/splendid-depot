@@ -1,8 +1,8 @@
-import { React, useEffect, useRef, createContext, useReducer, useState, memo, useCallback, useMemo } from "react";
+import {useEffect, createContext, useReducer, useState, useCallback, useMemo, useRef} from "react";
 import "./App.scss";
 import Wrapper from "./components/wrapper/wrapper.component";
 // FIREBASE
-import { addCollectionAndDocument, checkLastAuthSession, projectId, SHOP_DATA } from "./firebase/firebase.utils";
+import { checkLastAuthSession } from "./firebase/firebase.utils";
 // UTILS
 import { checkForArraysAndReform, reformUserObject, wait } from "./utils";
 import { clientCartInitial, clientCartReducer, currentDBcart, __syncCart } from "./reducers/cart.reducer";
@@ -14,6 +14,7 @@ import {useFetchUser} from "./hooks/app/app.use_fetch_user";
 import {ThemeProvider} from "styled-components";
 import {initialThemeState, themeReducer} from "./reducers/theme.reducer";
 import Footer from "./components/footer/footer.component";
+import {footerReducer, initialFooterState} from "./reducers/footer.reducer";
 
 export const user = {
 	currentUser: null,
@@ -30,12 +31,14 @@ export const userContext = createContext({
 });
 export const AppContext = createContext(initialAppState);
 export const ShopContext = createContext(initialShopState);
+export const FooterContext = createContext(initialFooterState);
 
 const UserProvider = userContext.Provider;
 const ManualSignInProvider = manualSignInContext.Provider;
 const ClientCartProvider = cartContext.Provider;
 const AppProvider = AppContext.Provider;
 const ShopProvider = ShopContext.Provider;
+const FooterProvider = FooterContext.Provider;
 
 
 const contextSelector = (callback, state) => {
@@ -49,8 +52,9 @@ const App = (_) => {
 	const [appState, appDispatch] = useReducer(appReducer, initialAppState);
 	const [shopState, shopDispatch] = useReducer(shopReducer, initialShopState);
 	const [themeState,themeStateDispatch] = useReducer(themeReducer,initialThemeState);
+	const [footerState,footerStateDispatch] = useReducer(footerReducer,initialFooterState);
 	
-	
+	const footerRef = useRef(null);
 	
 	// CONTEXT SELECTORS
 	const shopSelector = useCallback((callback) => contextSelector(callback, shopState), [shopState]);
@@ -66,6 +70,7 @@ const App = (_) => {
 			themeStateDispatch
 		}
 	},[themeState]);
+	const footerValue = useMemo(()=>({footerState,footerStateDispatch,footerRef}),[footerState]);
 	
 	const [lastAuth,setLastAuth] = useState(null);
 	const manualSignInValue = useMemo(
@@ -84,9 +89,6 @@ const App = (_) => {
 		}
 	})(),[]);
 	
-	// useEffect(()=>{
-	//
-	// },[]);
 	
 	
 	const {data:checkedData,error:checkedError,isSuccess:checkedIsSuccessful,isError:checkedIsErrored} = useFetchUser(lastAuth?.uid);
@@ -152,8 +154,10 @@ const App = (_) => {
 					<ManualSignInProvider value={manualSignInValue}>
 						<AppProvider value={appProviderValue}>
 							<ThemeProvider theme={themeValue.themeState.theme}>
-								<Wrapper themeValue={themeValue} />
-								<Footer/>
+								<FooterProvider value={footerValue}>
+									<Wrapper themeValue={themeValue} />
+									<Footer ref={footerRef}/>
+								</FooterProvider>
 							</ThemeProvider>
 						</AppProvider>
 					</ManualSignInProvider>

@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useMemo, useReducer, useRef} from "react";
+import React, {createContext, useCallback, useContext, useMemo, useReducer, useRef} from "react";
 
 
 // ROUTER
@@ -20,6 +20,7 @@ import AlertPopup from "../popup/alert_popup/alert_popup.component";
 // GLOBAL STATE
 import { userContext } from "../../App";
 import ThemeController from "../../theme_controller/theme_controller.component";
+import {cartModalReducer, initialCartModalState} from "../../reducers/cart_modal.reducer";
 
 
 
@@ -30,22 +31,29 @@ export const areEqual = (currentProps, nextProps) => {
 	if (isEqual(currentProps, nextProps)) return true;
 	return false;
 };
-const handleCartModalToggle = ({ current }) => {
-	current.classList.toggle("hidden");
-}
+
+//CONTEXTS
+export const cartModalContext = createContext(initialCartModalState);
+const CartModalProvider = cartModalContext.Provider;
+
+
 
 const Wrapper = React.memo(({location,themeValue}) => {
 	const { currentUser } = useContext(userContext);
-	const cartModal = useRef(null);
+	const [cartModalState, cartModalStateDispatch] = useReducer(cartModalReducer,initialCartModalState);
+	
+	//PROVIDER VALUES
+	const cartModalProviderValue = useMemo(() => ({ cartModalState, cartModalStateDispatch}), [cartModalState]);
 	
 	
 	
-	const toggleCartModal = useCallback(() => handleCartModalToggle(cartModal), []);
 	let displayName = currentUser.displayName ? currentUser.displayName?.split(" ") : null;
 	return (
 			<WrapperStyled $bgColor ={location.pathname === `/auth`? `auth-color`: `home-color`}>
-				<Header toggleCartModal={toggleCartModal} />
-				<CartModal ref={cartModal} toggleCartModal={toggleCartModal} />
+				<CartModalProvider value={cartModalProviderValue}>
+					<Header />
+					<CartModal />
+				</CartModalProvider>
 				<Switch>
 					<Route exact path="/" component={Homepage} />
 					<Route exact path="/FourZeroFour" component={F04Page} />

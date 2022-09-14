@@ -13,19 +13,23 @@ import { nanoid } from "@reduxjs/toolkit";
 import { cartContext } from "../../App";
 import {CartCancelButtonStyled, CartItemsBodyStyled, CartModalCTAStyled, CartModalStyled} from "./cart_modal.styles";
 import {PlaceholderText} from "../placeholder_text/placeholder_text.component";
+import {cartModalContext} from "../wrapper/wrapper.component";
+import {__toggleCartModal} from "../../reducers/cart_modal.reducer";
 
 
 
 
-const CartModal = React.forwardRef(({toggleCartModal},ref) => {
+const CartModal = () => {
 	const { clientCartState } = useContext(cartContext);
-	// console.log("rendering cart modal.")
+	const {cartModalState,cartModalStateDispatch} = useContext(cartModalContext);
+	// console.log(cartModalState.cartModalToggled,cartModalState);
 	const history = useHistory();
-	// console.log(history)
 	return (
-		<CartModalStyled ref={ref} className="cart-modal hidden">
+		<CartModalStyled className={cartModalState.cartModalToggled === `off` ? `hidden`:``}>
 			<CartCancelButtonStyled >
-				<button onClick={toggleCartModal}>X</button>
+				<button onClick={()=>{
+					cartModalStateDispatch(__toggleCartModal());
+				}}>X</button>
 			</CartCancelButtonStyled>
 			<CartItemsBodyStyled >
 				{clientCartState.carts.length === 0? <PlaceholderText $variant={`M`} message={`cart is empty !`}/>:null}
@@ -35,7 +39,7 @@ const CartModal = React.forwardRef(({toggleCartModal},ref) => {
 			</CartItemsBodyStyled>
 			<CartModalCTAStyled
 				onClick={() => {
-					toggleCartModal();
+					cartModalStateDispatch(__toggleCartModal());
 					history.push(`/checkout`);
 				}}
 			>
@@ -43,6 +47,6 @@ const CartModal = React.forwardRef(({toggleCartModal},ref) => {
 			</CartModalCTAStyled>
 		</CartModalStyled>
 	);
-});
+};
 
 export default CartModal;

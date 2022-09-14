@@ -97,7 +97,7 @@ const SignIn = React.memo(
 					}}
 				>
 					<div className="inputs-div">
-						<FormInput handleChange={handleChange} type="email" name="email" placeholder="Email" required value={formState.email} />
+						<FormInput handleChange={handleChange} type="email" name="email" placeholder="Email" required value={formState.email} autoComplete={`on`}/>
 						<FormInput handleChange={handleChange} type="password" name="password" placeholder="Password" required value={formState.password} />
 					</div>
 					<div className="cta-div">

@@ -35,13 +35,6 @@ export const FooterStyled = styled.footer`
   }
 `;
 
-export const footerBrandDivStyled = styled.div`
-  ${makeFullWidthBlock};
-  ${makeColFlexStart};
-  height: max-content;
-  margin-top: 8rem;
-  background-color: red !important;
-`;
 
 export const FooterLogoDivStyled = styled.div`
   height: 5rem;
@@ -113,6 +106,7 @@ export const FooterTabStyled = styled.li`
   ${makeColFlexCenter};
   transition: transform .5s ease-out;
   ${_useConditionalActiveStyle};
+  cursor: pointer;
 `;
 
 export const FooterDisplayDivStyled = styled.div`
