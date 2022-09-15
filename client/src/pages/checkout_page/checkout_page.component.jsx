@@ -20,6 +20,7 @@ import {
 } from "./checkout_page.styles";
 import {PlaceholderVector} from "../../components/placeholder/placeholder.component";
 import {PlaceholderText} from "../../components/placeholder_text/placeholder_text.component";
+import {toast} from "react-toastify";
 
 const cartPricesTotal = (carts) => {
 	// console.log(carts);
@@ -53,6 +54,7 @@ export const CheckoutPage = () => {
 
 			await updateDoc(userRef, data);
 			currentDBcart.carts = carts;
+			toast.success("cart updated successfully");
 			clientCartDispatch(__stopCartUpload());
 		};
 		uploadCartToDB();

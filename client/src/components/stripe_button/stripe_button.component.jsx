@@ -13,6 +13,7 @@ import axios from "axios";
 import { AppContext } from "../../App";
 import { __renderPaymentPopup } from "../../reducers/app.reducer";
 import {CheckoutCTAButtonStyled} from "../update_cart_button/update_cart_button.styles";
+import {toast} from "react-toastify";
 
 
 
@@ -36,10 +37,11 @@ const StripeButton = ({ price }) => {
 			return res.data;
 		}).then(res => {
 			// console.log(res);
-			showAndHide(appDispatch,__renderPaymentPopup, unmountPaymentPopup, 3);
+			toast.success("payment successful",{
+				position: toast.POSITION.TOP_LEFT
+			})
 		}).catch(err => {
-			alert(err.message);
-			console.log(err)
+			toast.error(err.message);
 		})
 
 		return token;

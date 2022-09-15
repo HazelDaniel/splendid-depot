@@ -15,6 +15,13 @@ import {ReactQueryDevtools} from "react-query/devtools";
 
 
 const GlobalStyles = createGlobalStyle`
+  :root{
+    --toastify-color-light: #fff;
+    --toastify-toast-width: 25rem;
+    --toastify-toast-max-height: 4rem;
+
+    //untouched
+  }
   @font-face {
     font-family: "Autography";
     src: url(${process.env.PUBLIC_URL + `/fonts/Autography.ttf`}) format('truetype');

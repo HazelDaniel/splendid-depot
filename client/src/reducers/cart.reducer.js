@@ -1,4 +1,5 @@
 import isEqual from "lodash.isequal";
+import {toast} from "react-toastify";
 
 // CART REDUCER
 const cartActionTypes = {
@@ -71,7 +72,12 @@ export const currentDBcart = {
 	carts: [],
 };
 const uploadCart = (updatedClientCartState) => {
-	if (isEqual(currentDBcart.carts, updatedClientCartState.carts)) throw new Error("cart is already up to date");
+	if (isEqual(currentDBcart.carts, updatedClientCartState.carts)) {
+		toast.warn("cart is already up to date !",{
+			toastId: "uploadCartErrorToast"
+		});
+		return updatedClientCartState
+	}
 	// currentDBcart.carts = updatedClientCartState.carts;
 	return {
 		...updatedClientCartState,

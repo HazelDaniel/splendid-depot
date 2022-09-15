@@ -11,10 +11,61 @@ import { initialShopState, shopReducer } from "./reducers/shop.reducer";
 import {useFetchUser} from "./hooks/app/app.use_fetch_user";
 
 // CONTEXT PROVIDERS
-import {ThemeProvider} from "styled-components";
+import styled, {ThemeProvider} from "styled-components";
 import {initialThemeState, themeReducer} from "./reducers/theme.reducer";
 import Footer from "./components/footer/footer.component";
 import {footerReducer, initialFooterState} from "./reducers/footer.reducer";
+import {toast, ToastContainer} from "react-toastify";
+import {injectStyle} from "react-toastify/inject-style";
+
+if (typeof window !== "undefined") {
+	injectStyle();
+}
+const ToastContainerStyled = styled(ToastContainer)`
+  /** Classes for the displayed toast **/
+  .Toastify__toast {
+    background-color: ${({theme})=>{
+		return theme.$lightBGColor
+    }};
+    div{
+      color: ${({theme})=>{
+        return theme.$footerTextColor
+      }};
+      font-family: montserrat;
+      text-transform: capitalize;
+      font-size: 1.2rem;
+      font-weight: bolder;
+      
+    }
+  }
+  .Toastify__progress-bar {
+    background: ${({theme})=>{
+      return theme.$accentColor
+    }};
+  }
+  /** Used to position the icon **/
+  .Toastify__toast-icon {
+    svg{
+      fill: ${({theme})=>{
+        return theme.$accentColor
+      }};
+    }
+  }
+
+  .Toastify__close-button {
+    svg{
+      fill: ${({theme})=>{
+        return theme.$authPrimaryCTAColor
+      }};
+    }
+  }
+  .Toastify__progress-bar--error {
+    background: ${({theme})=>{
+      return theme.accentColor
+    }};
+  }
+`;
+
 
 export const user = {
 	currentUser: null,
@@ -121,10 +172,13 @@ const App = (_) => {
 		// prettier-ignore
 		// console.log(currentUser);
 		if (!(!!currentUser.currentUser)) return;
+		let displayName = currentUser.currentUser ? currentUser.currentUser.displayName?.split(" ") : null;
 		const checkUserIsWelcome = async () => {
-			appDispatch(__renderWelcome());
-			await wait(3);
-			appDispatch(__unmountWelcome());
+			toast.success(`WELCOME, ${Array.isArray(displayName) ? displayName[displayName.length - 1] : displayName}!`,{
+				position: toast.POSITION.BOTTOM_LEFT,
+				autoClose: 3000,
+				toastId: currentUser.currentUser.id
+			})
 		};
 		(async _ =>checkUserIsWelcome())();
 	}, [currentUser, appDispatch]);
@@ -158,6 +212,7 @@ const App = (_) => {
 									<Wrapper themeValue={themeValue} />
 									<Footer ref={footerRef}/>
 								</FooterProvider>
+								<ToastContainerStyled/>
 							</ThemeProvider>
 						</AppProvider>
 					</ManualSignInProvider>
