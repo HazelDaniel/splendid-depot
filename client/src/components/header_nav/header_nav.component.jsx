@@ -4,7 +4,7 @@ import {signOut} from "firebase/auth";
 import {auth} from "../../firebase/firebase.utils";
 import {cartContext, FooterContext, user as userInit, userContext} from "../../App";
 import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
-import React, {memo, useContext, useReducer} from "react";
+import React, {memo, startTransition, useContext, useReducer} from "react";
 import {useHistory} from "react-router-dom";
 import {__showContact, makeOneTrue} from "../../reducers/footer.reducer";
 
@@ -54,14 +54,16 @@ export const HeaderNav = ()=>{
 			<HeaderNavListsStyled>
 				<HeaderNavTextStyled
 					onClick={() => {
-						history.push(`/`);
+						startTransition(()=>
+							history.push(`/`));
 						navStateDispatch(__hideActive());
 					}}
 				>HOME</HeaderNavTextStyled>
 				<HeaderNavTextStyled
 					$isActive={navState.shopActive}
 					onClick={() => {
-						history.push(`/shop`);
+						startTransition(()=>
+							history.push(`/shop`));
 						navStateDispatch(__shopActive());
 					}}
 				>
@@ -75,7 +77,9 @@ export const HeaderNav = ()=>{
 							clientCartDispatch(__emptyCart());
 							await signOut(auth);
 							user.updateCurrentUser(userInit);
-							history.push(`/auth`);
+							startTransition(()=>
+								history.push(`/auth`));
+							
 							navStateDispatch(__authActive());
 						}}
 					>
@@ -85,7 +89,8 @@ export const HeaderNav = ()=>{
 					<HeaderNavTextStyled
 						$isActive={navState.authActive}
 						onClick={() => {
-							history.push(`/auth`);
+							startTransition(()=>
+								history.push(`/auth`));
 							navStateDispatch(__authActive());
 						}}
 					>

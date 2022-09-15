@@ -1,6 +1,7 @@
-import {useEffect, createContext, useReducer, useState, useCallback, useMemo, useRef} from "react";
+import {useEffect, createContext, useReducer, useState, useCallback, useMemo, useRef, lazy} from "react";
 import "./App.scss";
-import Wrapper from "./components/wrapper/wrapper.component";
+
+// import Wrapper from "./components/wrapper/wrapper.component";
 // FIREBASE
 import { checkLastAuthSession } from "./firebase/firebase.utils";
 // UTILS
@@ -17,6 +18,8 @@ import Footer from "./components/footer/footer.component";
 import {footerReducer, initialFooterState} from "./reducers/footer.reducer";
 import {toast, ToastContainer} from "react-toastify";
 import {injectStyle} from "react-toastify/inject-style";
+
+const Wrapper = lazy(()=>import("./components/wrapper/wrapper.component"));
 
 if (typeof window !== "undefined") {
 	injectStyle();
@@ -95,6 +98,15 @@ const FooterProvider = FooterContext.Provider;
 const contextSelector = (callback, state) => {
 	return callback(state);
 }
+
+const initialThemeChecked = ()=>{
+	if(JSON.parse(sessionStorage.getItem("themes"))) {
+		return JSON.parse(sessionStorage.getItem("themes"))
+	}
+	else{
+		return initialThemeState
+	}
+};
 const App = (_) => {
 	// CONTEXT STATES
 	const [currentUser, updateCurrentUser] = useState(user);
@@ -102,7 +114,8 @@ const App = (_) => {
 	const [{ manualSignedIn }, manualSignIn] = useState(manualAuth);
 	const [appState, appDispatch] = useReducer(appReducer, initialAppState);
 	const [shopState, shopDispatch] = useReducer(shopReducer, initialShopState);
-	const [themeState,themeStateDispatch] = useReducer(themeReducer,initialThemeState);
+	const initialThemeStateCheckedMemo = useMemo(()=>initialThemeChecked(),[]);
+	const [themeState,themeStateDispatch] = useReducer(themeReducer,initialThemeStateCheckedMemo);
 	const [footerState,footerStateDispatch] = useReducer(footerReducer,initialFooterState);
 	
 	const footerRef = useRef(null);

@@ -123,10 +123,12 @@ const toggledThemeObject = (state)=>{
 
 
 const toggleTheme = (state)=>{
-	return {
+	const newTheme = {
 		...state,
 		...toggledThemeObject(state),
 	}
+	sessionStorage.setItem("themes",JSON.stringify(newTheme));
+	return newTheme;
 }
 export const themeReducer = (state = initialThemeState, action)=>{
 	switch(action.type){

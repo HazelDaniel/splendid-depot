@@ -78,7 +78,6 @@ const uploadCart = (updatedClientCartState) => {
 		});
 		return updatedClientCartState
 	}
-	// currentDBcart.carts = updatedClientCartState.carts;
 	return {
 		...updatedClientCartState,
 		shouldCartUpload: true,
@@ -105,7 +104,6 @@ export const clientCartReducer = (state =clientCartInitial, action) => {
 			return state;
 	}
 };
-
 export const __addToCart = (payload) => {
 	return {
 		type: cartActionTypes.addToCart,

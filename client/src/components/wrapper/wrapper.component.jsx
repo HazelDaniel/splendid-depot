@@ -1,16 +1,15 @@
-import React, {createContext, useCallback, useContext, useMemo, useReducer, useRef} from "react";
+import React, {createContext, lazy, Suspense, useCallback, useContext, useMemo, useReducer, useRef} from "react";
+
 
 
 // ROUTER
-import { Switch, Route, Redirect, withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { Switch, Route, withRouter,Redirect } from "react-router-dom/cjs/react-router-dom.min";
+// import Redirect from ;
 
-// COMPONENTS
+// COMPONENTS AND STYLED
 import {WrapperStyled} from "./wrapper.styles";
-import Header from "../header/header.component";
+// import CheckoutPage from "../../pages/checkout_page/checkout_page.component";
 import Homepage from "../../pages/homepage/homepage.component";
-import ShopPage from "../../pages/shop_page/shop_page.component";
-import CheckoutPage from "../../pages/checkout_page/checkout_page.component";
-import { AuthPage } from "../../pages/auth_page/auth_page.component";
 import CartModal from "../cart_modal/cart_modal.component";
 import ShopCollection from "../shop_collection/shop_collection.component";
 import F04Page from "../../pages/404_page/F04_page.component";
@@ -22,8 +21,12 @@ import { userContext } from "../../App";
 import ThemeController from "../../theme_controller/theme_controller.component";
 import {cartModalReducer, initialCartModalState} from "../../reducers/cart_modal.reducer";
 
-
-
+//DYNAMIC IMPORTS AND LAZY
+// const Homepage = lazy(()=> import("../../pages/homepage/homepage.component"));
+const Header = lazy(()=>import("../header/header.component"));
+const ShopPage = lazy(()=>import("../../pages/shop_page/shop_page.component"));
+const CheckoutPage = lazy(()=>import("../../pages/checkout_page/checkout_page.component"));
+const AuthPage = lazy(()=>import("../../pages/auth_page/auth_page.component"));
 
 const isEqual = require("lodash.isequal");
 
@@ -41,7 +44,6 @@ const CartModalProvider = cartModalContext.Provider;
 const Wrapper = React.memo(({location,themeValue}) => {
 	const { currentUser } = useContext(userContext);
 	const [cartModalState, cartModalStateDispatch] = useReducer(cartModalReducer,initialCartModalState);
-	
 	//PROVIDER VALUES
 	const cartModalProviderValue = useMemo(() => ({ cartModalState, cartModalStateDispatch}), [cartModalState]);
 	
@@ -49,24 +51,27 @@ const Wrapper = React.memo(({location,themeValue}) => {
 	
 	let displayName = currentUser.displayName ? currentUser.displayName?.split(" ") : null;
 	return (
-			<WrapperStyled $bgColor ={location.pathname === `/auth`? `auth-color`: `home-color`}>
-				<CartModalProvider value={cartModalProviderValue}>
-					<Header />
-					<CartModal />
-				</CartModalProvider>
-				<Switch>
-					<Route exact path="/" component={Homepage} />
-					<Route exact path="/FourZeroFour" component={F04Page} />
-					<Route exact path="/shop" component={ShopPage} />
-					<Route exact path="/shop/:collection" render={() => <ShopCollection />} />
-					<Route exact path="/checkout" component={CheckoutPage} />
-					<Route exact path="/auth" render={() => (currentUser.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
-					<Route exact path="/*" render={() => <Redirect to="/FourZeroFour" />} />
-				</Switch>
-				<AlertPopup displayName={displayName} />;
-				<Loader/>
-				<ThemeController themeStore={themeValue}/>
-			</WrapperStyled>
+				<WrapperStyled $bgColor ={location.pathname === `/auth`? `auth-color`: `home-color`}>
+					<CartModalProvider value={cartModalProviderValue}>
+						<Header />
+						<CartModal />
+					</CartModalProvider>
+					<React.Suspense fallback={<F04Page/>}>
+					
+					<Switch>
+							<Route exact path="/" component={Homepage} />
+							<Route exact path="/FourZeroFour" component={F04Page} />
+							<Route exact path="/shop" component={ShopPage} />
+							<Route exact path="/shop/:collection" render={() => <ShopCollection />} />
+							<Route exact path="/checkout" component={CheckoutPage} />
+							<Route exact path="/auth" render={() => (currentUser.currentUser ? <Redirect to="/" /> : <AuthPage />)} />
+							<Route exact path="/*" render={()=><Redirect to="/FourZeroFour"/>}/>
+					</Switch>
+					</React.Suspense>
+					<AlertPopup displayName={displayName} />;
+					<Loader/>
+					<ThemeController themeStore={themeValue}/>
+				</WrapperStyled>
 	);
 },(prev,next)=>{
 	if(isEqual(prev,next)) return true;

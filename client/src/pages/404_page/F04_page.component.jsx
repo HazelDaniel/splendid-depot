@@ -27,4 +27,4 @@ const F04Page = () => {
 	)
 }
 
-export default withRouter(F04Page);
+export default (F04Page);

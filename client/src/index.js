@@ -12,6 +12,7 @@ import Loader from "./components/loader/loader.component";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {createGlobalStyle} from "styled-components";
 import {ReactQueryDevtools} from "react-query/devtools";
+import F04Page from "./pages/404_page/F04_page.component";
 
 
 const GlobalStyles = createGlobalStyle`
@@ -45,17 +46,20 @@ const queryClient = new QueryClient({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
-		<GlobalStyles/>
-		<QueryClientProvider client={queryClient}>
-			<Provider store={store}>
-				<PersistGate persistor={persistedStore} loading={<Loader />}>
-					<Router>
-						<App />
-					</Router>
-				</PersistGate>
-			</Provider>
-			{/*<ReactQueryDevtools initialIsOpen={false}/>*/}
-		</QueryClientProvider>
+	<QueryClientProvider client={queryClient}>
+		<React.Suspense fallback={<F04Page/>}>
+			<GlobalStyles/>
+				<Provider store={store}>
+					<PersistGate persistor={persistedStore} loading={<Loader />}>
+						<Router>
+							<App />
+						</Router>
+					</PersistGate>
+				</Provider>
+		</React.Suspense>
+		{/*<ReactQueryDevtools initialIsOpen={false}/>*/}
+	</QueryClientProvider>
+	
 	</>
 	// {/* </React.StrictMode> */}
 );
