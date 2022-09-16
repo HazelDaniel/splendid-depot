@@ -4,7 +4,7 @@ import {signOut} from "firebase/auth";
 import {auth} from "../../firebase/firebase.utils";
 import {cartContext, FooterContext, user as userInit, userContext} from "../../App";
 import CartIcon from "../../assets/icons/cart_icon/cart_icon.component";
-import React, {memo, startTransition, useContext, useReducer} from "react";
+import React, {memo, startTransition, useCallback, useContext, useReducer, useRef} from "react";
 import {useHistory} from "react-router-dom";
 import {__showContact, makeOneTrue} from "../../reducers/footer.reducer";
 
@@ -43,19 +43,33 @@ const __hideActive = ()=>({
 	type: "HIDE_ACTIVE"
 })
 
+const scrollToWindowTop =()=>{
+	window.scrollTo({
+		top: 0,
+		left: 0,
+		behavior: 'smooth'
+	});
+}
 
 export const HeaderNav = ()=>{
+	const navPane = useRef(null);
 	const history = useHistory();
 	const user = useContext(userContext);
 	const { clientCartState, clientCartDispatch } = useContext(cartContext);
 	const [navState,navStateDispatch] = useReducer(navTabReducer,initialNavTabState);
+	const navToAuth  = useCallback((()=>{
+		history.push(`/auth`);
+		scrollToWindowTop();
+		navStateDispatch(__authActive());
+	}),[]);
 	return (
-		<HeaderNavStyled>
+		<HeaderNavStyled ref={navPane}>
 			<HeaderNavListsStyled>
 				<HeaderNavTextStyled
 					onClick={() => {
 						startTransition(()=>
-							history.push(`/`));
+						history.push(`/`));
+						scrollToWindowTop();
 						navStateDispatch(__hideActive());
 					}}
 				>HOME</HeaderNavTextStyled>
@@ -63,7 +77,8 @@ export const HeaderNav = ()=>{
 					$isActive={navState.shopActive}
 					onClick={() => {
 						startTransition(()=>
-							history.push(`/shop`));
+						history.push(`/shop`));
+						scrollToWindowTop();
 						navStateDispatch(__shopActive());
 					}}
 				>
@@ -78,9 +93,8 @@ export const HeaderNav = ()=>{
 							await signOut(auth);
 							user.updateCurrentUser(userInit);
 							startTransition(()=>
-								history.push(`/auth`));
-							
-							navStateDispatch(__authActive());
+								navToAuth()
+							)
 						}}
 					>
 						SIGN OUT
@@ -90,8 +104,8 @@ export const HeaderNav = ()=>{
 						$isActive={navState.authActive}
 						onClick={() => {
 							startTransition(()=>
-								history.push(`/auth`));
-							navStateDispatch(__authActive());
+								navToAuth()
+							)
 						}}
 					>
 						SIGN IN

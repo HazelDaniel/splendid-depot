@@ -23,11 +23,19 @@ import {AuthBodyStyled, AuthHeadingDivStyled} from "../../pages/auth_page/auth_p
 
 const validateFromClient = (password, confirmPassword) => {
 	if (password !== confirmPassword) {
-		toast.error("password credentials do not match !");
+		toast.error("password credentials do not match !",{
+			position: toast.POSITION.BOTTOM_LEFT,
+			autoClose: 3000,
+			toastId: " unmatched credential error"
+		});
 		return false;
 	}
 	if (password.length < 6) {
-		toast.error("password too short, use longer keys");
+		toast.error("password too short, use longer keys",{
+			position: toast.POSITION.BOTTOM_LEFT,
+			autoClose: 3000,
+			toastId: " short credential error"
+		});
 		return false;
 	}
 	return true;
@@ -82,7 +90,11 @@ const SignUp = React.memo(
 				loginManually();
 			},
 			onError: error => {
-				console.error(`couldn't sign you up. reason: ${error.message}`);
+				toast.error(`couldn't sign you up. reason: ${error.message}`,{
+					position: toast.POSITION.BOTTOM_LEFT,
+					autoClose: 3000,
+					toastId: " sign up error"
+				});
 			}
 		});
 		const handleChange = (event) => {

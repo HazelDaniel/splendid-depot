@@ -32,6 +32,9 @@ const StripeButton = ({ price }) => {
 			data: {
 				amount: priceForStripe,
 				token
+			},
+			headers: {
+				"Accept-Encoding": "br"
 			}
 		}).then(res => {
 			return res.data;

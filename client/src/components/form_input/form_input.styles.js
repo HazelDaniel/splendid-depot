@@ -19,4 +19,7 @@ export const FormInputStyled = styled.input`
       left: 0;
     }
   }
+    color: ${({theme})=>{
+        return theme.$darkTextColor
+    }}
 `;

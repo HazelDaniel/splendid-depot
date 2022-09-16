@@ -1,4 +1,14 @@
-import {useEffect, createContext, useReducer, useState, useCallback, useMemo, useRef, lazy} from "react";
+import {
+	useEffect,
+	createContext,
+	useReducer,
+	useState,
+	useCallback,
+	useMemo,
+	useRef,
+	lazy,
+	useLayoutEffect
+} from "react";
 import "./App.scss";
 
 // import Wrapper from "./components/wrapper/wrapper.component";
@@ -185,7 +195,7 @@ const App = (_) => {
 		// prettier-ignore
 		// console.log(currentUser);
 		if (!(!!currentUser.currentUser)) return;
-		let displayName = currentUser.currentUser ? currentUser.currentUser.displayName?.split(" ") : null;
+		let displayName = currentUser.currentUser?.emailVerified ? currentUser.currentUser.displayName?.trim().split(" ") : currentUser.currentUser? currentUser.displayName?.trim().split(" "): null;
 		const checkUserIsWelcome = async () => {
 			toast.success(`WELCOME, ${Array.isArray(displayName) ? displayName[displayName.length - 1] : displayName}!`,{
 				position: toast.POSITION.BOTTOM_LEFT,

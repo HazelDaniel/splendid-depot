@@ -35,7 +35,7 @@ const queryClient = new QueryClient({
 		queries:{
 			refetchOnWindowFocus: false,
 			retry: (failureCount,error)=>{
-				console.log(error);
+				console.error(error);
 				return 1;
 			},
 			keepPreviousData: true
@@ -47,7 +47,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
 	<QueryClientProvider client={queryClient}>
-		<React.Suspense fallback={<F04Page/>}>
+		<React.Suspense fallback={<Loader/>}>
 			<GlobalStyles/>
 				<Provider store={store}>
 					<PersistGate persistor={persistedStore} loading={<Loader />}>

@@ -7,7 +7,7 @@ const footerActionTypes = {
 
 
 export const initialFooterState = {
-	showContact: true,
+	showContact: false,
 	showAbout:false,
 	showAddress: false
 };

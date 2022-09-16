@@ -19,8 +19,7 @@ const handleGoogleSignIn = async () => {
 		const googleAuthResult = await signInWithRedirect(auth, provider);
 		return googleAuthResult.user;
 	} catch (error) {
-		console.log(error);
-		return error;
+		throw error;
 	}
 }
 
@@ -70,12 +69,15 @@ const SignIn = React.memo(
 		
 		const { mutate: signInAuthMutate, isLoading: signInAuthIsLoading } = useAuthSignInWithEmailAndPassword(auth, {
 			onSuccess: async ({user}) => {
-				toast.success(`sign in success ${user}`);
 				// NOTE: WE ARE LOGGING IN MANUALLY BECAUSE WE DO NOT WANT TO CREATE USER DATA FOR THE USER ON SIGN IN WITH E&P. IT ALREADY EXISTS SO WE ARE ONLY READING IT
 				loginManually();
 			},
 			onError: (error) => {
-				toast.error(`couldn't sign you in. reason: ${error.message}`);
+				toast.error(`couldn't sign you in. reason: ${error.message}`,{
+					position: toast.POSITION.BOTTOM_RIGHT,
+					autoClose: 3000,
+					toastId: " sign in error"
+				});
 			},
 		});
 		const handleChange = (event) => {
@@ -114,7 +116,11 @@ const SignIn = React.memo(
 									loginManually();
 								}
 							} catch(error) {
-								alert(error.message)
+								toast.error("could not sign you in ! try again",{
+									position: toast.POSITION.BOTTOM_RIGHT,
+									autoClose: 3000,
+									toastId: "google sign in error"
+								})
 							}
 						}}>
 							SIGN IN WITH GOOGLE

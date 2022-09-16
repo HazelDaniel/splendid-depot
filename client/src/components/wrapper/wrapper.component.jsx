@@ -56,7 +56,7 @@ const Wrapper = React.memo(({location,themeValue}) => {
 						<Header />
 						<CartModal />
 					</CartModalProvider>
-					<React.Suspense fallback={<F04Page/>}>
+					<React.Suspense fallback={<Loader/>}>
 					
 					<Switch>
 							<Route exact path="/" component={Homepage} />
@@ -68,7 +68,6 @@ const Wrapper = React.memo(({location,themeValue}) => {
 							<Route exact path="/*" render={()=><Redirect to="/FourZeroFour"/>}/>
 					</Switch>
 					</React.Suspense>
-					<AlertPopup displayName={displayName} />;
 					<Loader/>
 					<ThemeController themeStore={themeValue}/>
 				</WrapperStyled>
