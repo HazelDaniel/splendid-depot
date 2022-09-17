@@ -11,8 +11,7 @@ import { persistedStore } from "./redux/store";
 import Loader from "./components/loader/loader.component";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {createGlobalStyle} from "styled-components";
-import {ReactQueryDevtools} from "react-query/devtools";
-import F04Page from "./pages/404_page/F04_page.component";
+
 
 
 const GlobalStyles = createGlobalStyle`
