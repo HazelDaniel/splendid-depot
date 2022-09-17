@@ -1,11 +1,11 @@
 {
   "name": "splendid-depot-server",
   "version": "1.0.0",
-	"engines": {
-		"node": "v16.15.1",
-		"npm": "8.11.0"
-	},
-	"proxy": "http://localhost:5555",
+  "engines": {
+    "node": "v16.15.1",
+    "npm": "8.11.0"
+  },
+  "proxy": "http://localhost:5555",
   "scripts": {
     "client": "cd client && npm start",
     "server": "nodemon server.js",
@@ -20,6 +20,7 @@
     "cors": "2.8.5",
     "dotenv": "7.0.0",
     "express": "^4.16.4",
+    "react-scripts": "^5.0.1",
     "stripe": "6.28.0"
   },
   "devDependencies": {
